@@ -8,13 +8,13 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 
 ## ✨ Features
 
-- 📊 **Beautiful Yearly Charts** - Visualize spending with interactive charts over the year
-- 📅 **Monthly View** - Track expenses month by month
-- 🏷️ **Categories & Tags** - Organize expenses by category and location
-- 🎨 **Dark Mode** - Beautiful UI in both light and dark themes
-- 🔒 **Password Protected** - Simple password protection for your data
-- 📱 **Responsive** - Works on desktop, tablet, and mobile
-- 📈 **Yearly Analytics** - Comprehensive yearly spending insights
+- **Beautiful Yearly Charts** - Visualize spending with interactive charts over the year
+- **Monthly View** - Track expenses month by month
+- **Categories & Tags** - Organize expenses by category and location
+- **Dark Mode** - Beautiful UI in both light and dark themes
+- **Password Protected** - Simple password protection for your data
+- **Responsive** - Works on desktop, tablet, and mobile
+- **Yearly Analytics** - Comprehensive yearly spending insights
 - **Debt Repayment**: Credit cards, personal loans, or money owed
 - **Savings Goals**: Emergency fund, vacation savings, house down payment
 - **Friend Loans**: Money lent or borrowed from friends/family
@@ -421,12 +421,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
@@ -463,6 +457,6 @@ Feel free to open a [discussion](../../discussions) or [pull request](../../pull
 
 ---
 
-**Made with ❤️ by [Usman Khalid Mian]**
+**Made with care and love by Usman Khalid Mian**
 
 [⬆ Back to top](#-daily-expenses-tracker)
