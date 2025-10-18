@@ -59,23 +59,6 @@ const TrackersPage = () => {
     return { total, breakdown };
   };
 
-  // const handleCreateTracker = (
-  //   newTracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">
-  // ) => {
-  //   const tracker: Tracker = {
-  //     ...newTracker,
-  //     id: crypto.randomUUID(),
-  //     entries: [],
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //   };
-
-  //   setTrackers((prev) => [...prev, tracker]);
-  //   toast.success("Tracker created!", {
-  //     description: `${tracker.title} has been created`,
-  //   });
-  // };
-
   const handleCreateTracker = async (
     newTracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">
   ) => {
@@ -105,28 +88,6 @@ const TrackersPage = () => {
     setEditingTracker(undefined);
   };
 
-  // const handleEditTracker = (
-  //   updated: Omit<
-  //     Tracker,
-  //     "id" | "createdAt" | "updatedAt" | "entries" | "initialBalance"
-  //   >
-  // ) => {
-  //   if (!editingTracker) return;
-
-  //   setTrackers((prev) =>
-  //     prev.map((t) =>
-  //       t.id === editingTracker.id
-  //         ? { ...t, ...updated, updatedAt: new Date() }
-  //         : t
-  //     )
-  //   );
-
-  //   toast.success("Tracker updated!", {
-  //     description: `${updated.title} has been updated`,
-  //   });
-  //   setEditingTracker(undefined);
-  // };
-
   const handleDeleteTracker = async (id: string) => {
     const tracker = trackers.find((t) => t.id === id);
     await deleteTracker(id);
@@ -135,51 +96,12 @@ const TrackersPage = () => {
     });
   };
 
-  // const handleDeleteTracker = (id: string) => {
-  //   const tracker = trackers.find((t) => t.id === id);
-  //   setTrackers((prev) => prev.filter((t) => t.id !== id));
-  //   toast.success("Tracker deleted", {
-  //     description: `${tracker?.title} has been removed`,
-  //   });
-  // };
-
   const handleAddEntry = async (
     trackerId: string,
     entryData: Omit<TrackerEntry, "id" | "balance" | "createdAt">
   ) => {
     await addEntry({ trackerId, entryData });
   };
-
-  // const handleAddEntry = (
-  //   trackerId: string,
-  //   entryData: Omit<TrackerEntry, "id" | "balance" | "createdAt">
-  // ) => {
-  //   setTrackers((prev) =>
-  //     prev.map((tracker) => {
-  //       if (tracker.id !== trackerId) return tracker;
-
-  //       const newBalance =
-  //         tracker.currentBalance + entryData.debit - entryData.credit;
-  //       const newEntry: TrackerEntry = {
-  //         ...entryData,
-  //         id: crypto.randomUUID(),
-  //         balance: newBalance,
-  //         createdAt: new Date(),
-  //       };
-
-  //       return {
-  //         ...tracker,
-  //         currentBalance: newBalance,
-  //         entries: [...tracker.entries, newEntry],
-  //         updatedAt: new Date(),
-  //       };
-  //     })
-  //   );
-
-  //   toast.success("Entry added!", {
-  //     description: "Transaction has been recorded",
-  //   });
-  // };
 
   const openEditSheet = (tracker: Tracker) => {
     console.log(tracker);

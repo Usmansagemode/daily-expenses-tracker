@@ -1,24 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { getIsDemoMode, supabase } from "@/lib/supabase";
 import { Tracker, TrackerEntry } from "@/entities/Tracker";
-import { mockTrackers } from "@/components/trackers/data/trackerData";
+import { getDemoTrackers } from "@/lib/demoStorage/trackers";
 
-const isDemoMode = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
+const isDemoMode = getIsDemoMode();
 
-/**
- * Fetch all trackers and their entries.
- */
 export const useTrackers = () => {
   return useQuery<Tracker[]>({
     queryKey: ["trackers"],
-    queryFn: async () => {
+    queryFn: async (): Promise<Tracker[]> => {
       if (isDemoMode) {
-        // Demo data for offline/demo mode
+        // Demo mode - return shared demo storage
         await new Promise((r) => setTimeout(r, 300));
-        return mockTrackers;
+        return getDemoTrackers();
       }
 
-      // Fetch trackers
+      // Production mode - fetch from Supabase
+      if (!supabase) {
+        console.warn("Supabase not available");
+        return [];
+      }
+
       const { data: trackers, error: trackersError } = await supabase
         .from("trackers")
         .select("*")

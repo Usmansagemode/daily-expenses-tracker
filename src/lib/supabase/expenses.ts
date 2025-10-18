@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 export async function createExpense(
   expense: Omit<Expense, "createdAt" | "updatedAt">
 ) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("expenses")
     .insert({
@@ -26,6 +27,7 @@ export async function saveAll(expenses: Expense[]) {
     ...expense,
     updatedAt: new Date().toISOString(),
   }));
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("expenses")
     .upsert(expensesToSave, { onConflict: "id" })
@@ -37,12 +39,14 @@ export async function saveAll(expenses: Expense[]) {
 
 /** ---------- DELETE Expense ----------*/
 export async function deleteExpense(id: string) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { error } = await supabase.from("expenses").delete().eq("id", id);
 
   if (error) throw error;
 }
 
 export async function deleteExpenses(ids: string[]) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { error } = await supabase.from("expenses").delete().in("id", ids);
 
   if (error) throw error;

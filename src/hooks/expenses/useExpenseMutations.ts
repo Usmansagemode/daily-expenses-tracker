@@ -1,6 +1,6 @@
 // src/hooks/useExpenseMutations.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { getIsDemoMode, supabase } from "@/lib/supabase";
 import { Expense, ExpenseWithDetails } from "@/entities/Expense";
 import {
   createExpense,
@@ -9,7 +9,7 @@ import {
   saveAll,
 } from "@/lib/supabase/expenses";
 
-const isDemoMode = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
+const isDemoMode = getIsDemoMode();
 
 export const useExpenseMutations = (year: number, month: number) => {
   const queryClient = useQueryClient();

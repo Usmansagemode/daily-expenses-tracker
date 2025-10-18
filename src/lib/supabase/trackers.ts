@@ -1,10 +1,21 @@
 import { supabase } from "@/lib/supabase";
 import type { Tracker, TrackerEntry } from "@/entities/Tracker";
 
+// Helper to throw if supabase is not available
+function ensureSupabase() {
+  if (!supabase) {
+    throw new Error(
+      "Supabase client not available. Check your environment configuration."
+    );
+  }
+  return supabase;
+}
+
 //
 // ---------- FETCH ALL TRACKERS WITH ENTRIES ----------
 //
 export async function fetchTrackers(): Promise<Tracker[]> {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackers")
     .select("*, trackerEntries(*)")
@@ -20,6 +31,7 @@ export async function fetchTrackers(): Promise<Tracker[]> {
 export async function createTracker(
   tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">
 ) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackers")
     .insert([
@@ -42,6 +54,7 @@ export async function createTracker(
 // ---------- UPDATE TRACKER ----------
 //
 export async function updateTracker(id: string, updates: Partial<Tracker>) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackers")
     .update({
@@ -63,6 +76,7 @@ export async function updateTracker(id: string, updates: Partial<Tracker>) {
 // ---------- DELETE TRACKER ----------
 //
 export async function deleteTracker(id: string) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { error } = await supabase.from("trackers").delete().eq("id", id);
   if (error) throw error;
 }
@@ -74,6 +88,7 @@ export async function addTrackerEntry(
   trackerId: string,
   entry: Omit<TrackerEntry, "id" | "createdAt">
 ) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackerEntries")
     .insert([
@@ -97,6 +112,7 @@ export async function createTrackerEntry(
   trackerId: string,
   entry: Omit<TrackerEntry, "id">
 ) {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackerEntries")
     .insert([{ ...entry, trackerId: trackerId }])
@@ -113,6 +129,7 @@ export async function createTrackerEntry(
 export async function fetchTrackerEntries(
   trackerId: string
 ): Promise<TrackerEntry[]> {
+  if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackerEntries")
     .select("*")
@@ -128,6 +145,7 @@ export async function fetchTrackerEntries(
  * then adds a single carry-over entry with the last known balance.
  */
 export async function cleanupTrackerEntries(trackerId: string) {
+  if (!supabase) throw new Error("Supabase not initialized");
   // Step 1: Get all existing entries
   const { data: entries, error: fetchError } = await supabase
     .from("trackerEntries")
