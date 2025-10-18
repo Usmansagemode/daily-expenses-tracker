@@ -453,6 +453,14 @@ If you have questions or run into issues:
 - [ ] Multi-user/family sharing
 - [ ] Export reports (PDF, CSV)
 
+## 🪪 License
+This project is open-source and available under the [MIT License](./LICENSE).
+
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome!
+Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).
+
+
 ---
 
 **Made with ❤️ by [Usman Khalid Mian]**
