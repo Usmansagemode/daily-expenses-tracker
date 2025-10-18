@@ -56,7 +56,7 @@ pnpm --version
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/daily-expenses-tracker.git
+git clone https://github.com/Usmansagemode/daily-expenses-tracker
 cd daily-expenses-tracker
 ```
 
