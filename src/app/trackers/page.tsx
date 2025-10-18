@@ -16,8 +16,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { AddEntrySheet } from "@/components/trackers/AddEntrySheet";
-import { useTrackers } from "@/hooks/useTrackers";
-import { useTrackerMutations } from "@/hooks/useTrackersMutations";
+import { useTrackers } from "@/hooks/trackers/useTrackers";
+import { useTrackerMutations } from "@/hooks/trackers/useTrackersMutations";
 
 const TrackersPage = () => {
   // const [trackers, setTrackers] = useState<Tracker[]>(mockTrackers);
