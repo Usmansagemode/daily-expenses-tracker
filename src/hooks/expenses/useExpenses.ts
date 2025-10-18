@@ -48,6 +48,12 @@ const fetchApiExpenses = async (
   year: number,
   month: number
 ): Promise<ExpenseWithDetails[]> => {
+  // Check if supabase is available
+  if (!supabase) {
+    console.warn("Supabase not available, returning empty expenses");
+    return [];
+  }
+
   const { data, error } = await supabase
     .from("expenses")
     .select("*")

@@ -9,9 +9,11 @@ export default function TestPage() {
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      const { data, error } = await supabase.from("expenses").select("*");
-      if (error) console.error(error);
-      else setExpenses(data || []);
+      if (supabase) {
+        const { data, error } = await supabase.from("expenses").select("*");
+        if (error) console.error(error);
+        else setExpenses(data || []);
+      }
     };
     fetchExpenses();
   }, []);
