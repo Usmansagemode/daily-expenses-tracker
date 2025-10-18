@@ -297,7 +297,7 @@ const ExpensesPage = () => {
       </div>
 
       {/* Action buttons */}
-      <div className="flex justify-between items-center p-4 border-t">
+      <div className="flex justify-end  items-center gap-2 p-4 border-t">
         {/* <div className="text-sm text-muted-foreground">
           {localExpenses.length}{" "}
           {localExpenses.length === 1 ? "expense" : "expenses"}
