@@ -1,9 +1,6 @@
-# 💰 Daily Expenses Tracker
+# Daily Expenses Tracker
 
 A modern, self-hosted expense tracking application built with Next.js, Supabase, and shadcn/ui. Track your daily expenses with meaningful charts, categorize spending, and gain insights into your financial habits. Furthermore, you may track debts, savings, loans, and any financial goals outside of daily expenses. Each tracker maintains a running balance with debit (money in) and credit (money out) entries, giving you a clear view of your financial progress over time.
-
-
-![Daily Expenses Tracker](https://via.placeholder.com/800x400?text=Add+Screenshot+Here)
 
 | Dashboard | Expenses | Trackers |
 |------------|-----------|--------------|
