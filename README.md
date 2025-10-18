@@ -1,9 +1,6 @@
-# 💰 Daily Expenses Tracker
+# Daily Expenses Tracker
 
 A modern, self-hosted expense tracking application built with Next.js, Supabase, and shadcn/ui. Track your daily expenses with meaningful charts, categorize spending, and gain insights into your financial habits. Furthermore, you may track debts, savings, loans, and any financial goals outside of daily expenses. Each tracker maintains a running balance with debit (money in) and credit (money out) entries, giving you a clear view of your financial progress over time.
-
-
-![Daily Expenses Tracker](https://via.placeholder.com/800x400?text=Add+Screenshot+Here)
 
 | Dashboard | Expenses | Trackers |
 |------------|-----------|--------------|
@@ -11,13 +8,13 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 
 ## ✨ Features
 
-- 📊 **Beautiful Yearly Charts** - Visualize spending with interactive charts over the year
-- 📅 **Monthly View** - Track expenses month by month
-- 🏷️ **Categories & Tags** - Organize expenses by category and location
-- 🎨 **Dark Mode** - Beautiful UI in both light and dark themes
-- 🔒 **Password Protected** - Simple password protection for your data
-- 📱 **Responsive** - Works on desktop, tablet, and mobile
-- 📈 **Yearly Analytics** - Comprehensive yearly spending insights
+- **Beautiful Yearly Charts** - Visualize spending with interactive charts over the year
+- **Monthly View** - Track expenses month by month
+- **Categories & Tags** - Organize expenses by category and location
+- **Dark Mode** - Beautiful UI in both light and dark themes
+- **Password Protected** - Simple password protection for your data
+- **Responsive** - Works on desktop, tablet, and mobile
+- **Yearly Analytics** - Comprehensive yearly spending insights
 - **Debt Repayment**: Credit cards, personal loans, or money owed
 - **Savings Goals**: Emergency fund, vacation savings, house down payment
 - **Friend Loans**: Money lent or borrowed from friends/family
@@ -59,7 +56,7 @@ pnpm --version
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/daily-expenses-tracker.git
+git clone https://github.com/Usmansagemode/daily-expenses-tracker
 cd daily-expenses-tracker
 ```
 
@@ -424,12 +421,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
@@ -456,8 +447,16 @@ If you have questions or run into issues:
 - [ ] Multi-user/family sharing
 - [ ] Export reports (PDF, CSV)
 
+## 🪪 License
+This project is open-source and available under the [MIT License](./LICENSE).
+
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome!
+Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).
+
+
 ---
 
-**Made with ❤️ by [Usman Khalid Mian]**
+**Made with care and love by Usman Khalid Mian**
 
 [⬆ Back to top](#-daily-expenses-tracker)

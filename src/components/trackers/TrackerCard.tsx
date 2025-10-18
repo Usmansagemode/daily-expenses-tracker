@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Tracker } from "@/entities/Tracker";
-import TrackerCleanupDialog from "./TrackerCleanupDialog";
+
 import { useState } from "react";
 
 // Update TrackerCard props

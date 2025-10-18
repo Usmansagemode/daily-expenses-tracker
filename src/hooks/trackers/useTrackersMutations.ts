@@ -4,13 +4,14 @@ import {
   createTracker,
   updateTracker,
   deleteTracker,
-  addTrackerEntry,
   cleanupTrackerEntries,
   createTrackerEntry,
 } from "@/lib/supabase/trackers";
 import { toast } from "sonner";
+import { getIsDemoMode } from "@/lib/supabase";
+import { getDemoTrackersRef } from "@/lib/demoStorage/trackers";
 
-const isDemoMode = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
+const isDemoMode = getIsDemoMode();
 
 export const useTrackerMutations = () => {
   const queryClient = useQueryClient();
@@ -20,55 +21,68 @@ export const useTrackerMutations = () => {
     mutationFn: async (
       tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">
     ) => {
+      await new Promise((r) => setTimeout(r, 300));
+
       if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 300));
-        return {
+        const demoTrackers = getDemoTrackersRef();
+        const newTracker: Tracker = {
           ...tracker,
           id: crypto.randomUUID(),
           createdAt: new Date(),
           updatedAt: new Date(),
-        } as Tracker;
+        };
+        demoTrackers.push(newTracker);
+        return newTracker;
       }
       return await createTracker(tracker);
     },
     onSuccess: (newTracker) => {
-      queryClient.setQueryData<Tracker[]>(["trackers"], (old = []) => [
-        ...old,
-        newTracker,
-      ]);
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
     },
   });
 
-  // Update tracker (title, description, etc.)
+  // Update tracker
   const updateMutation = useMutation({
     mutationFn: async (tracker: Partial<Tracker> & { id: string }) => {
+      await new Promise((r) => setTimeout(r, 300));
+
       if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 300));
-        return tracker;
+        const demoTrackers = getDemoTrackersRef();
+        const index = demoTrackers.findIndex((t) => t.id === tracker.id);
+        if (index === -1) throw new Error("Tracker not found");
+
+        demoTrackers[index] = {
+          ...demoTrackers[index],
+          ...tracker,
+          updatedAt: new Date(),
+        };
+        return JSON.parse(JSON.stringify(demoTrackers[index]));
       }
       return await updateTracker(tracker.id, tracker);
     },
-    onSuccess: (updated) => {
-      queryClient.setQueryData<Tracker[]>(["trackers"], (old = []) =>
-        old.map((t) => (t.id === updated.id ? { ...t, ...updated } : t))
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
     },
   });
 
   // Delete tracker
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      await new Promise((r) => setTimeout(r, 300));
+
       if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 300));
+        const demoTrackers = getDemoTrackersRef();
+        const index = demoTrackers.findIndex((t) => t.id === id);
+        if (index !== -1) {
+          demoTrackers.splice(index, 1);
+        }
         return id;
       }
       await deleteTracker(id);
       return id;
     },
-    onSuccess: (id) => {
-      queryClient.setQueryData<Tracker[]>(["trackers"], (old = []) =>
-        old.filter((t) => t.id !== id)
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
     },
   });
 
@@ -81,7 +95,31 @@ export const useTrackerMutations = () => {
       trackerId: string;
       entryData: Omit<TrackerEntry, "id" | "balance" | "createdAt">;
     }) => {
-      // Get tracker to compute new balance
+      await new Promise((r) => setTimeout(r, 300));
+
+      if (isDemoMode) {
+        const demoTrackers = getDemoTrackersRef();
+        const tracker = demoTrackers.find((t) => t.id === trackerId);
+        if (!tracker) throw new Error("Tracker not found");
+
+        const newBalance =
+          tracker.currentBalance + entryData.debit - entryData.credit;
+
+        const newEntry: TrackerEntry = {
+          ...entryData,
+          id: crypto.randomUUID(),
+          balance: newBalance,
+          createdAt: new Date(),
+        };
+
+        tracker.entries.push(newEntry);
+        tracker.currentBalance = newBalance;
+        tracker.updatedAt = new Date();
+
+        return { trackerId, newEntry, newBalance };
+      }
+
+      // Production mode
       const tracker = queryClient
         .getQueryData<Tracker[]>(["trackers"])
         ?.find((t) => t.id === trackerId);
@@ -91,83 +129,74 @@ export const useTrackerMutations = () => {
       const newBalance =
         tracker.currentBalance + entryData.debit - entryData.credit;
 
-      const newEntry: Omit<TrackerEntry, "id"> = {
+      const entry = await createTrackerEntry(trackerId, {
         ...entryData,
         balance: newBalance,
         createdAt: new Date(),
-      };
-
-      if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 300));
-        return { trackerId, newEntry, newBalance };
-      }
-
-      const entry = await createTrackerEntry(trackerId, newEntry);
-      //   await updateTracker(trackerId, { currentBalance: newBalance });
+      });
 
       return { trackerId, newEntry: entry, newBalance };
     },
-    onSuccess: ({ trackerId, newEntry, newBalance }) => {
-      // Update cached tracker
-      queryClient.setQueryData<Tracker[]>(["trackers"], (old = []) =>
-        old.map((t) =>
-          t.id === trackerId
-            ? {
-                ...t,
-                entries: [...t.entries, newEntry],
-                currentBalance: newBalance,
-                updatedAt: new Date(),
-              }
-            : t
-        )
-      );
-
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
       toast.success("Entry added!", {
         description: "Transaction has been recorded",
       });
     },
   });
-  //   const addEntryMutation = useMutation({
-  //     mutationFn: async ({
-  //       trackerId,
-  //       entry,
-  //     }: {
-  //       trackerId: string;
-  //       entry: Omit<TrackerEntry, "id" | "createdAt">;
-  //     }) => {
-  //       if (isDemoMode) {
-  //         await new Promise((r) => setTimeout(r, 300));
-  //         return {
-  //           ...entry,
-  //           id: crypto.randomUUID(),
-  //           createdAt: new Date(),
-  //         } as TrackerEntry;
-  //       }
-  //       return await addTrackerEntry(trackerId, entry);
-  //     },
-  //     onSuccess: (_, { trackerId }) => {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["tracker-entries", trackerId],
-  //       });
-  //       queryClient.invalidateQueries({ queryKey: ["trackers"] });
-  //     },
-  //   });
 
-  // Cleanup entries (delete all and add carry-over)
+  // Cleanup entries
   const cleanupMutation = useMutation({
     mutationFn: async (trackerId: string) => {
+      await new Promise((r) => setTimeout(r, 300));
+
       if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 300));
-        return trackerId;
+        const demoTrackers = getDemoTrackersRef();
+        const tracker = demoTrackers.find((t) => t.id === trackerId);
+        if (!tracker) throw new Error("Tracker not found");
+
+        // Get the latest balance
+        const latestBalance =
+          tracker.entries.length > 0
+            ? tracker.entries[tracker.entries.length - 1].balance
+            : tracker.initialBalance;
+
+        // Clear all entries
+        tracker.entries = [];
+
+        // Add carry-over entry
+        const carryOverEntry: TrackerEntry = {
+          id: crypto.randomUUID(),
+          date: new Date(),
+          description: "Balance carry-over (cleanup)",
+          debit: latestBalance,
+          credit: 0,
+          balance: latestBalance,
+          createdAt: new Date(),
+        };
+
+        tracker.entries.push(carryOverEntry);
+        tracker.currentBalance = latestBalance;
+        tracker.updatedAt = new Date();
+
+        return { trackerId, balance: latestBalance };
       }
-      await cleanupTrackerEntries(trackerId);
-      return trackerId;
+
+      // Production mode
+      const result = await cleanupTrackerEntries(trackerId);
+      return result;
     },
-    onSuccess: (trackerId) => {
-      queryClient.invalidateQueries({
-        queryKey: ["tracker-entries", trackerId],
-      });
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["trackers"] });
+      toast.success("Entries cleaned up!", {
+        description: "All entries replaced with carry-over balance",
+      });
+    },
+    onError: (error) => {
+      console.error("Cleanup error:", error);
+      toast.error("Failed to cleanup entries", {
+        description: "Please try again",
+      });
     },
   });
 

@@ -8,9 +8,9 @@ import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChar
 import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
 import { expensesData } from "@/components/expenses/data/expenseData";
 import { transformExpenses } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
+import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
 
-const isDemoMode = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
+const isDemoMode = getIsDemoMode();
 
 const YearlyChartsPage = () => {
   const [expenses, setExpenses] = useState<ExpenseWithDetails[]>([]);
@@ -30,17 +30,18 @@ const YearlyChartsPage = () => {
           const startDate = new Date(currentYear, 0, 1); // Jan 1
           const endDate = new Date(currentYear, 11, 31); // Dec 31
 
-          const { data, error } = await supabase
-            .from("expenses")
-            .select("*")
-            .gte("date", startDate.toISOString())
-            .lte("date", endDate.toISOString())
-            .order("date", { ascending: false });
+          if (isSupabaseAvailable() && supabase) {
+            const { data, error } = await supabase
+              .from("expenses")
+              .select("*")
+              .gte("date", startDate.toISOString())
+              .lte("date", endDate.toISOString())
+              .order("date", { ascending: false });
+            if (error) throw error;
 
-          if (error) throw error;
-
-          const transformedExpenses = transformExpenses(data || []);
-          setExpenses(transformedExpenses);
+            const transformedExpenses = transformExpenses(data || []);
+            setExpenses(transformedExpenses);
+          }
         } catch (error) {
           console.error("Error fetching expenses:", error);
           // Fallback to demo data on error
