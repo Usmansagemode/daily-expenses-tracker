@@ -1,0 +1,94 @@
+"use client";
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+import { ExpenseWithDetails } from "@/entities/Expense";
+import { getCategoryColor } from "@/lib/utils";
+import { useMemo } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
+
+interface CategoryAverageChartProps {
+  expenses: ExpenseWithDetails[];
+}
+
+const chartConfig = {
+  average: {
+    label: "Average per Transaction",
+    color: "hsl(var(--chart-3))",
+  },
+} satisfies ChartConfig;
+
+const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
+  const categoryData = useMemo(() => {
+    const stats: Record<string, { total: number; count: number }> = {};
+
+    expenses.forEach((expense) => {
+      const category = expense.categoryName || "Uncategorized";
+      if (!stats[category]) {
+        stats[category] = { total: 0, count: 0 };
+      }
+      stats[category].total += expense.amount;
+      stats[category].count += 1;
+    });
+
+    return Object.entries(stats)
+      .map(([category, { total, count }]) => ({
+        category,
+        average: total / count,
+        count,
+      }))
+      .sort((a, b) => b.average - a.average);
+  }, [expenses]);
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    }).format(value);
+  };
+
+  return (
+    <div>
+      <h2 className="text-lg font-medium mb-6">Average Spending by Category</h2>
+      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+        <BarChart accessibilityLayer data={categoryData} layout="vertical">
+          <CartesianGrid horizontal={false} />
+          <XAxis type="number" tickFormatter={formatCurrency} />
+          <YAxis
+            dataKey="category"
+            type="category"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            width={100}
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                formatter={(value) => formatCurrency(value as number)}
+              />
+            }
+          />
+
+          <Bar dataKey="average" radius={[0, 4, 4, 0]}>
+            {categoryData.map((entry, index) => {
+              return (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={getCategoryColor(entry.category)}
+                />
+              );
+            })}
+          </Bar>
+        </BarChart>
+      </ChartContainer>
+    </div>
+  );
+};
+
+export default CategoryAverageChart;
