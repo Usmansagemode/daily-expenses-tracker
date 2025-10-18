@@ -8,10 +8,10 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 
 ## ✨ Features
 
-- **Beautiful Yearly Charts** - Visualize spending with interactive charts over the year
+- **Meaningful Yearly Charts** - Visualize spending with interactive charts over the year
 - **Monthly View** - Track expenses month by month
 - **Categories & Tags** - Organize expenses by category and location
-- **Dark Mode** - Beautiful UI in both light and dark themes
+- **Dark Mode** - UI in both light and dark themes
 - **Password Protected** - Simple password protection for your data
 - **Responsive** - Works on desktop, tablet, and mobile
 - **Yearly Analytics** - Comprehensive yearly spending insights
