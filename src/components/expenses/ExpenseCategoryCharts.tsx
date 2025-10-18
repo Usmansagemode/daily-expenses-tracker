@@ -95,7 +95,7 @@ const ExpenseCategoryCharts = ({
 
       {/* Category Cards Grid */}
       {showCharts && categoryTotals.length > 0 && (
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
           {categoryTotals.map((category) => {
             const percentage =
               maxAmount > 0 ? (category.amount / maxAmount) * 100 : 0;
