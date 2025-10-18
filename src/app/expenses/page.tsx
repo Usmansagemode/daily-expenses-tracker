@@ -298,60 +298,60 @@ const ExpensesPage = () => {
 
       {/* Action buttons */}
       <div className="flex justify-between items-center p-4 border-t">
-        <div className="text-sm text-muted-foreground">
+        {/* <div className="text-sm text-muted-foreground">
           {localExpenses.length}{" "}
           {localExpenses.length === 1 ? "expense" : "expenses"}
-        </div>
-        <div className="flex gap-2">
-          {selectedIds.length > 0 && (
-            <Button
-              onClick={handleBulkDelete}
-              size="sm"
-              variant="destructive"
-              className="gap-2"
-              disabled={isDeleting}
-            >
-              {isDeleting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                <>
-                  <Minus className="h-4 w-4" />
-                  Delete {selectedIds.length}
-                </>
-              )}
-            </Button>
-          )}
+        </div> */}
+        {/* <div className="flex gap-2"> */}
+        {selectedIds.length > 0 && (
           <Button
-            onClick={handleSaveAll}
-            variant="default"
+            onClick={handleBulkDelete}
             size="sm"
-            disabled={!hasUnsavedChanges || isSaving}
-            className="gap-2 cursor-pointer"
+            variant="destructive"
+            className="gap-2"
+            disabled={isDeleting}
           >
-            {isSaving ? (
+            {isDeleting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Saving...
+                Deleting...
               </>
             ) : (
               <>
-                <Save className="h-4 w-4" />
-                Save Changes
+                <Minus className="h-4 w-4" />
+                Delete {selectedIds.length}
               </>
             )}
           </Button>
-          <Button
-            onClick={handleAddNew}
-            size="sm"
-            className="gap-2 cursor-pointer"
-          >
-            <Plus className="h-4 w-4" />
-            Add Expense
-          </Button>
-        </div>
+        )}
+        <Button
+          onClick={handleSaveAll}
+          variant="default"
+          size="sm"
+          disabled={!hasUnsavedChanges || isSaving}
+          className="gap-2 cursor-pointer"
+        >
+          {isSaving ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="h-4 w-4" />
+              Save
+            </>
+          )}
+        </Button>
+        <Button
+          onClick={handleAddNew}
+          size="sm"
+          className="gap-2 cursor-pointer"
+        >
+          <Plus className="h-4 w-4" />
+          Add Expense
+        </Button>
+        {/* </div> */}
       </div>
     </div>
   );
