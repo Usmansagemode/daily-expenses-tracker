@@ -148,33 +148,6 @@ create table if not exists public."trackerEntries" (
   "createdAt" timestamp with time zone not null default timezone('utc'::text, now())
 );
 
--- Function to recalculate tracker currentBalance
-create or replace function public."updateTrackerBalance"()
-returns trigger as $$
-declare
-  "totalDebit" numeric(12, 2);
-  "totalCredit" numeric(12, 2);
-begin
-  select coalesce(sum("debit"), 0), coalesce(sum("credit"), 0)
-  into "totalDebit", "totalCredit"
-  from public."trackerEntries"
-  where "trackerId" = new."trackerId";
-
-  update public."trackers"
-  set "currentBalance" = "initialBalance" + "totalDebit" - "totalCredit",
-      "updatedAt" = now()
-  where "id" = new."trackerId";
-
-  return new;
-end;
-$$ language plpgsql;
-
--- Trigger to auto-update tracker balance when entries change
-create trigger "recalcTrackerBalance"
-after insert or update or delete on public."trackerEntries"
-for each row
-execute function public."updateTrackerBalance"();
-
 ```
 
 4. Click **"Run"** to execute the queries
