@@ -135,6 +135,9 @@ export const useTrackerMutations = () => {
         createdAt: new Date(),
       });
 
+      // Update the tracker's current balance
+      await updateTracker(trackerId, { currentBalance: newBalance });
+
       return { trackerId, newEntry: entry, newBalance };
     },
     onSuccess: () => {

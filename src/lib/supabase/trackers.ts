@@ -144,21 +144,63 @@ export async function fetchTrackerEntries(
  * Deletes all entries for a given tracker,
  * then adds a single carry-over entry with the last known balance.
  */
+// export async function cleanupTrackerEntries(trackerId: string) {
+//   if (!supabase) throw new Error("Supabase not initialized");
+//   // Step 1: Get all existing entries
+//   const { data: entries, error: fetchError } = await supabase
+//     .from("trackerEntries")
+//     .select("*")
+//     .eq("trackerId", trackerId)
+//     .order("date", { ascending: false })
+//     .limit(1);
+
+//   if (fetchError) throw fetchError;
+
+//   const latestBalance = entries?.[0]?.balance ?? 0;
+
+//   // Step 2: Delete all existing entries
+//   const { error: deleteError } = await supabase
+//     .from("trackerEntries")
+//     .delete()
+//     .eq("trackerId", trackerId);
+
+//   if (deleteError) throw deleteError;
+
+//   // Step 3: Add a single carry-over entry
+//   const newEntry: Omit<TrackerEntry, "id" | "createdAt"> = {
+//     date: new Date(),
+//     description: "Balance carry-over (cleanup)",
+//     debit: latestBalance,
+//     credit: 0,
+//     balance: latestBalance,
+//   };
+
+//   const { error: insertError } = await supabase.from("trackerEntries").insert({
+//     ...newEntry,
+//     trackerId: trackerId,
+//     createdAt: new Date().toISOString(),
+//   });
+
+//   if (insertError) throw insertError;
+
+//   return { trackerId, balance: latestBalance };
+// }
+
 export async function cleanupTrackerEntries(trackerId: string) {
   if (!supabase) throw new Error("Supabase not initialized");
-  // Step 1: Get all existing entries
-  const { data: entries, error: fetchError } = await supabase
-    .from("trackerEntries")
-    .select("*")
-    .eq("trackerId", trackerId)
-    .order("date", { ascending: false })
-    .limit(1);
 
-  if (fetchError) throw fetchError;
+  // Step 1: Get current balance from tracker
+  const { data: tracker, error: trackerError } = await supabase
+    .from("trackers")
+    .select("currentBalance")
+    .eq("id", trackerId)
+    .single();
 
-  const latestBalance = entries?.[0]?.balance ?? 0;
+  if (trackerError) throw trackerError;
 
-  // Step 2: Delete all existing entries
+  const currentBalance = tracker.currentBalance;
+
+  // Step 2: Delete all entries
   const { error: deleteError } = await supabase
     .from("trackerEntries")
     .delete()
@@ -166,22 +208,24 @@ export async function cleanupTrackerEntries(trackerId: string) {
 
   if (deleteError) throw deleteError;
 
-  // Step 3: Add a single carry-over entry
-  const newEntry: Omit<TrackerEntry, "id" | "createdAt"> = {
-    date: new Date(),
-    description: "Balance carry-over (cleanup)",
-    debit: latestBalance,
+  // Step 3: Add carry-over entry
+  const newEntry = {
+    date: new Date().toISOString(),
+    description: `Balance carry-over: ${
+      currentBalance >= 0 ? "$" : "-$"
+    }${Math.abs(currentBalance).toFixed(2)}`,
+    debit: 0,
     credit: 0,
-    balance: latestBalance,
-  };
-
-  const { error: insertError } = await supabase.from("trackerEntries").insert({
-    ...newEntry,
+    balance: currentBalance,
     trackerId: trackerId,
     createdAt: new Date().toISOString(),
-  });
+  };
+
+  const { error: insertError } = await supabase
+    .from("trackerEntries")
+    .insert(newEntry);
 
   if (insertError) throw insertError;
 
-  return { trackerId, balance: latestBalance };
+  return { trackerId, balance: currentBalance };
 }
