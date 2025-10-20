@@ -142,15 +142,13 @@ export const createColumns = ({
     },
     {
       accessorKey: "id",
-      header: ({ column }) => <p className="pl-2">#</p>,
-      cell: (info) => {
-        return <p className="pl-2">{info.row.index + 1}</p>;
-      },
+      header: "#",
+      cell: ({ row }) => row.index + 1,
     },
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Date" />
+        <DataTableColumnHeader column={column} title="Transaction Date" />
       ),
       cell: ({ row }) => {
         const [dateValue, setDateValue] = useState(
@@ -170,7 +168,7 @@ export const createColumns = ({
               onUpdate(row.original.id, "date", new Date(e.target.value));
             }}
             onFocus={(e) => e.target.showPicker?.()}
-            className="h-8 w-32 border bg-transparent hover:bg-accent focus:ring-1 focus:ring-ring"
+            className="h-8 w-42 border bg-transparent hover:bg-accent focus:ring-1 focus:ring-ring"
           />
         );
       },
