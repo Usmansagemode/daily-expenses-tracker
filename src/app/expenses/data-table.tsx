@@ -38,7 +38,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   onRowSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "date", desc: false }, // Default sort by date, newest last
+    { id: "createdAt", desc: false }, // Default sort by date, newest last
   ]);
   // Internal state as fallback
   const [internalSelection, setInternalSelection] = useState({});
