@@ -1,10 +1,4 @@
-import {
-  User2,
-  BadgeDollarSign,
-  ChartNoAxesColumnIncreasing,
-  Banknote,
-  BookOpenCheck,
-} from "lucide-react";
+import { Receipt, TrendingUp, Wallet, ListChecks, Users } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -24,9 +18,14 @@ import {
 
 const items = [
   {
+    title: "Expenses",
+    url: "expenses",
+    icon: Receipt,
+  },
+  {
     title: "Yearly Charts",
     url: "yearly-charts",
-    icon: ChartNoAxesColumnIncreasing,
+    icon: TrendingUp,
   },
 ];
 
@@ -45,7 +44,7 @@ const AppSideBar = () => {
                   height={20}
                   // className="light:#1111"
                 /> */}
-                <Banknote />
+                <Wallet />
                 <span>Daily Expenses</span>
               </Link>
             </SidebarMenuButton>
@@ -71,21 +70,7 @@ const AppSideBar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Expenses</SidebarGroupLabel>
 
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/expenses">
-                    <BadgeDollarSign /> Expenses
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Misc</SidebarGroupLabel>
 
@@ -94,7 +79,7 @@ const AppSideBar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link href="/trackers">
-                    <BookOpenCheck /> Tracker
+                    <ListChecks /> Tracker
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -104,7 +89,7 @@ const AppSideBar = () => {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center">
-          <User2 className="m-2 h-4 w-4" /> Sage Family
+          <Users className="m-2 h-4 w-4" /> Sage Family
         </div>
       </SidebarFooter>
     </Sidebar>
