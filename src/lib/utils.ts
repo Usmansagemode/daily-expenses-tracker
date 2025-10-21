@@ -1,5 +1,6 @@
 import {
   DEFAULT_CATEGORIES,
+  DEFAULT_MEMBERS,
   DEFAULT_TAGS,
   Expense,
   ExpenseWithDetails,
@@ -12,7 +13,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Helper function to transform expenses to ExpenseWithDetails
-export const transformExpenses = (
+export const transformToExpenseWithDetails = (
   expenses: Expense[]
 ): ExpenseWithDetails[] => {
   return expenses.map((expense) => {
@@ -20,11 +21,12 @@ export const transformExpenses = (
       (c) => c.id === expense.categoryId
     );
     const tag = DEFAULT_TAGS.find((t) => t.id === expense.tagId);
-
+    const member = DEFAULT_MEMBERS.find((m) => m.id === expense.memberId);
     return {
       ...expense,
       categoryName: category?.name || null,
       tagName: tag?.name || null,
+      memberName: member?.fullName || null,
     };
   });
 };

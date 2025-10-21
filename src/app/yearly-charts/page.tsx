@@ -7,8 +7,9 @@ import CategoryTotalChart from "@/components/yearly-charts/CategoryTotalChart";
 import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
 import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
 import { expensesData } from "@/components/expenses/data/expenseData";
-import { transformExpenses } from "@/lib/utils";
+import { transformToExpenseWithDetails } from "@/lib/utils";
 import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
+import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
 
 const isDemoMode = getIsDemoMode();
 
@@ -21,7 +22,7 @@ const YearlyChartsPage = () => {
     const fetchExpenses = async () => {
       if (isDemoMode) {
         // Use dummy data
-        const transformedExpenses = transformExpenses(expensesData);
+        const transformedExpenses = transformToExpenseWithDetails(expensesData);
         setExpenses(transformedExpenses);
         setIsLoading(false);
       } else {
@@ -39,13 +40,16 @@ const YearlyChartsPage = () => {
               .order("date", { ascending: false });
             if (error) throw error;
 
-            const transformedExpenses = transformExpenses(data || []);
+            const transformedExpenses = transformToExpenseWithDetails(
+              data || []
+            );
             setExpenses(transformedExpenses);
           }
         } catch (error) {
           console.error("Error fetching expenses:", error);
           // Fallback to demo data on error
-          const transformedExpenses = transformExpenses(expensesData);
+          const transformedExpenses =
+            transformToExpenseWithDetails(expensesData);
           setExpenses(transformedExpenses);
         } finally {
           setIsLoading(false);
@@ -111,24 +115,28 @@ const YearlyChartsPage = () => {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-        {/* Monthly Spending Trend */}
-        <div className="bg-primary-foreground p-6 rounded-lg">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-6"> */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+        {/* Monthly Spending - Takes 2 columns */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
           <MonthlySpendingChart expenses={yearExpenses} year={currentYear} />
         </div>
 
-        {/* Total Spending by Category */}
-        <div className="bg-primary-foreground p-6 rounded-lg">
+        {/* Total Spending by Category - Takes 2 columns */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
           <CategoryTotalChart expenses={yearExpenses} />
         </div>
 
         {/* Average Spending by Category */}
-        <div className="bg-primary-foreground p-6 rounded-lg">
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2">
           <CategoryAverageChart expenses={yearExpenses} />
         </div>
-
-        {/* Category Spending Over Time */}
-        <div className="bg-primary-foreground p-6 rounded-lg">
+        {/* Member Spending - Takes 1 column */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2">
+          <MemberSpendingChart expenses={yearExpenses} />
+        </div>
+        {/* Category by Month - Takes 3 columns */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-3 xl:col-span-3">
           <CategoryByMonthChart expenses={yearExpenses} year={currentYear} />
         </div>
       </div>
