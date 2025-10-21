@@ -27,8 +27,8 @@ interface LocaleConfig {
 
 // Change these values to configure locale and currency
 export const LOCALE_CONFIG: LocaleConfig = {
-  locale: "en-PK",
-  currency: "PKR",
+  locale: "en-US",
+  currency: "USD",
   style: "currency" as const,
-  symbol: "Rs.",
+  symbol: "$",
 } as const;

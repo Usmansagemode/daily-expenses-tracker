@@ -647,7 +647,7 @@ export const expensesData: Expense[] = [
     categoryId: "6",
     tagId: "amazon",
     date: new Date("2025-12-24"),
-    description: "Christmas gifts",
+    description: "Gifts",
     createdAt: new Date("2025-12-24"),
     updatedAt: new Date("2025-12-24"),
   },
