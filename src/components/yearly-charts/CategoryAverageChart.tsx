@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { getCategoryColor } from "@/lib/utils";
+import { formatCurrency, getCategoryColor } from "@/lib/utils";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
@@ -44,21 +44,18 @@ const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
       .sort((a, b) => b.average - a.average);
   }, [expenses]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
-
   return (
     <div>
       <h2 className="text-lg font-medium mb-6">Average Spending by Category</h2>
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <BarChart accessibilityLayer data={categoryData} layout="vertical">
           <CartesianGrid horizontal={false} />
-          <XAxis type="number" tickFormatter={formatCurrency} />
+          <XAxis
+            type="number"
+            tickFormatter={(value) =>
+              formatCurrency(value, { minimumFractionDigits: 0 })
+            }
+          />
           <YAxis
             dataKey="category"
             type="category"
@@ -70,7 +67,9 @@ const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
           <ChartTooltip
             content={
               <ChartTooltipContent
-                formatter={(value) => formatCurrency(value as number)}
+                formatter={(value) =>
+                  formatCurrency(value as number, { minimumFractionDigits: 0 })
+                }
               />
             }
           />

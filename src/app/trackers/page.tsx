@@ -18,6 +18,8 @@ import {
 import { AddEntrySheet } from "@/components/trackers/AddEntrySheet";
 import { useTrackers } from "@/hooks/trackers/useTrackers";
 import { useTrackerMutations } from "@/hooks/trackers/useTrackersMutations";
+import { formatCurrency } from "@/lib/utils";
+import { LOCALE_CONFIG } from "@/lib/config";
 
 const TrackersPage = () => {
   // const [trackers, setTrackers] = useState<Tracker[]>(mockTrackers);
@@ -35,13 +37,10 @@ const TrackersPage = () => {
   const [addEntrySheetOpen, setAddEntrySheetOpen] = useState(false);
   const [selectedTracker, setSelectedTracker] = useState<Tracker | undefined>();
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrencySign = (amount: number) => {
     const abs = Math.abs(amount);
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(abs);
-    return amount < 0 ? `-${formatted}` : formatted;
+    const formatted = formatCurrency(abs);
+    return amount < 0 ? `-${LOCALE_CONFIG.symbol}${formatted}` : formatted;
   };
 
   const getTotalNet = () => {
@@ -50,11 +49,14 @@ const TrackersPage = () => {
 
     const breakdownParts = trackers.map((t) => {
       const sign = t.currentBalance >= 0 ? "+" : "-";
-      return `${sign}$${Math.abs(t.currentBalance).toFixed(2)} (${t.title})`;
+      return `${sign}${LOCALE_CONFIG.symbol}${Math.abs(
+        t.currentBalance
+      ).toFixed(2)} (${t.title})`;
     });
 
     const total = trackers.reduce((sum, t) => sum + t.currentBalance, 0);
-    const breakdown = breakdownParts.join(" ") + ` = $${total}`;
+    const breakdown =
+      breakdownParts.join(" ") + ` = ${LOCALE_CONFIG.symbol}${total}`;
 
     return { total, breakdown };
   };
@@ -151,7 +153,7 @@ const TrackersPage = () => {
                       : "text-red-600 dark:text-red-500"
                   }`}
                 >
-                  {formatCurrency(totalNet)}
+                  {formatCurrencySign(totalNet)}
                 </span>
                 {isPositive ? (
                   <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-500" />

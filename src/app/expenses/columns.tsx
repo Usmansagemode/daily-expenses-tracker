@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { LOCALE_CONFIG } from "@/lib/config";
 
 interface CreateColumnsProps {
   members: Member[];
@@ -60,7 +61,7 @@ const EditableAmountCell = ({
 
   return (
     <>
-      <span className="mr-1 text-muted-foreground">$</span>
+      <span className="mr-1 text-muted-foreground">{LOCALE_CONFIG.symbol}</span>
       <Input
         type="number"
         value={value}

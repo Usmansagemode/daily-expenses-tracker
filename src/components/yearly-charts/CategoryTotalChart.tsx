@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { getCategoryColor } from "@/lib/utils";
+import { formatCurrency, getCategoryColor } from "@/lib/utils";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
@@ -36,21 +36,18 @@ const CategoryTotalChart = ({ expenses }: CategoryTotalChartProps) => {
       .sort((a, b) => b.amount - a.amount);
   }, [expenses]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
-
   return (
     <div>
       <h2 className="text-lg font-medium mb-6">Total Spending by Category</h2>
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <BarChart accessibilityLayer data={categoryData} layout="vertical">
           <CartesianGrid horizontal={false} />
-          <XAxis type="number" tickFormatter={formatCurrency} />
+          <XAxis
+            type="number"
+            tickFormatter={(value) =>
+              formatCurrency(value, { minimumFractionDigits: 0 })
+            }
+          />
           <YAxis
             dataKey="category"
             type="category"

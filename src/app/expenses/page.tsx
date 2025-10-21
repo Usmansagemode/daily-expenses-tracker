@@ -18,6 +18,7 @@ import { useExpenses } from "@/hooks/expenses/useExpenses";
 import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
 
 import { toast } from "sonner";
+import { formatCurrency } from "@/lib/utils";
 
 const ExpensesPage = () => {
   const currentDate = new Date();
@@ -224,11 +225,6 @@ const ExpensesPage = () => {
     [localExpenses]
   );
 
-  const formattedTotal = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(total);
-
   const columns = useMemo(
     () =>
       createColumns({
@@ -253,7 +249,7 @@ const ExpensesPage = () => {
     <div className="mt-2">
       <ExpenseCategoryCharts
         data={localExpenses}
-        formattedTotal={formattedTotal}
+        formattedTotal={formatCurrency(total)}
         currentMonth={currentMonth}
         currentYear={currentYear}
         onMonthYearChange={handleMonthYearChange}

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { LOCALE_CONFIG } from "@/lib/config";
 
 interface AddEntrySheetProps {
   open: boolean;
@@ -86,7 +87,8 @@ export const AddEntrySheet = ({
                   : "text-red-600 dark:text-red-500 font-semibold"
               }
             >
-              ${currentBalance.toFixed(2)}
+              ${LOCALE_CONFIG.symbol}
+              {currentBalance.toFixed(2)}
             </span>
           </SheetDescription>
         </SheetHeader>
@@ -122,7 +124,7 @@ export const AddEntrySheet = ({
               <Label htmlFor="debit">Debit (Money In)</Label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  $
+                  ${LOCALE_CONFIG.symbol}
                 </span>
                 <Input
                   id="debit"
@@ -153,7 +155,7 @@ export const AddEntrySheet = ({
               <Label htmlFor="credit">Credit (Money Out)</Label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  $
+                  ${LOCALE_CONFIG.symbol}
                 </span>
                 <Input
                   id="credit"

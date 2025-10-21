@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import type { Tracker, TrackerEntry } from "@/entities/Tracker";
+import { LOCALE_CONFIG } from "../config";
 
 // Helper to throw if supabase is not available
 function ensureSupabase() {
@@ -212,7 +213,9 @@ export async function cleanupTrackerEntries(trackerId: string) {
   const newEntry = {
     date: new Date().toISOString(),
     description: `Balance carry-over: ${
-      currentBalance >= 0 ? "$" : "-$"
+      currentBalance >= 0
+        ? `${LOCALE_CONFIG.symbol}`
+        : `-${LOCALE_CONFIG.symbol}`
     }${Math.abs(currentBalance).toFixed(2)}`,
     debit: 0,
     credit: 0,

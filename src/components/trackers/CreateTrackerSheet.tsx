@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tracker } from "@/entities/Tracker";
+import { LOCALE_CONFIG } from "@/lib/config";
 
 interface CreateTrackerSheetProps {
   open: boolean;
@@ -128,7 +129,7 @@ export const CreateTrackerSheet = ({
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                $
+                ${LOCALE_CONFIG.symbol}
               </span>
               <Input
                 id="initialBalance"

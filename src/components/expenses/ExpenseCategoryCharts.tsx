@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { CATEGORY_ICONS_BY_NAME, ExpenseWithDetails } from "@/entities/Expense";
 import { useMemo, useState } from "react";
 import MonthYearSelector from "./MonthYearSelector";
+import { formatCurrency } from "@/lib/utils";
 
 interface ExpenseCategoryChartsProps {
   data: ExpenseWithDetails[];
-
   formattedTotal: string | number;
   currentMonth: number;
   currentYear: number;
@@ -49,13 +49,6 @@ const ExpenseCategoryCharts = ({
     () => Math.max(...categoryTotals.map((c) => c.amount), 0),
     [categoryTotals]
   );
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  };
 
   return (
     <div className="flex flex-col w-full">

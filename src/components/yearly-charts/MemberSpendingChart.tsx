@@ -7,6 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { formatCurrency } from "@/lib/utils";
 import { useMemo } from "react";
 import { Pie, PieChart, Cell, Legend } from "recharts";
 
@@ -52,14 +53,6 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
     () => memberData.reduce((sum, item) => sum + item.value, 0),
     [memberData]
   );
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
 
   const CustomLabel = ({
     cx,

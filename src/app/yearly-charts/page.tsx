@@ -7,7 +7,7 @@ import CategoryTotalChart from "@/components/yearly-charts/CategoryTotalChart";
 import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
 import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
 import { expensesData } from "@/components/expenses/data/expenseData";
-import { transformToExpenseWithDetails } from "@/lib/utils";
+import { formatCurrency, transformToExpenseWithDetails } from "@/lib/utils";
 import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
 import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
 import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
@@ -48,7 +48,12 @@ const YearlyChartsPage = () => {
       if (isDemoMode) {
         // Use dummy data
         const transformedExpenses = transformToExpenseWithDetails(expensesData);
-        setExpenses(transformedExpenses);
+        // Filter demo data to current year immediately
+        const currentYearExpenses = transformedExpenses.filter((expense) => {
+          const expenseYear = new Date(expense.date).getFullYear();
+          return expenseYear === currentYear;
+        });
+        setExpenses(currentYearExpenses);
         setIsLoading(false);
       } else {
         // Fetch from Supabase
@@ -85,30 +90,17 @@ const YearlyChartsPage = () => {
     fetchExpenses();
   }, [currentYear]);
 
-  // Filter expenses for current year
-  const yearExpenses = useMemo(() => {
-    return expenses.filter((expense) => {
-      const expenseYear = new Date(expense.date).getFullYear();
-      return expenseYear === currentYear;
-    });
-  }, [expenses, currentYear]);
-
   const totalYearSpending = useMemo(() => {
-    return yearExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-  }, [yearExpenses]);
+    return expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  }, [expenses]);
 
   // Filter expenses by selected categories
   const filteredYearExpenses = useMemo(() => {
-    return yearExpenses.filter((expense) => {
+    return expenses.filter((expense) => {
       const category = expense.categoryName || "Uncategorized";
       return selectedCategories.includes(category);
     });
-  }, [yearExpenses, selectedCategories]);
-
-  const formattedTotal = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(totalYearSpending);
+  }, [expenses, selectedCategories]);
 
   if (isLoading) {
     return (
@@ -139,10 +131,12 @@ const YearlyChartsPage = () => {
             <span className="text-sm text-muted-foreground mr-4">
               Total Spending:
             </span>
-            <span className="text-3xl font-bold">{formattedTotal}</span>
+            <span className="text-3xl font-bold">
+              {formatCurrency(totalYearSpending)}
+            </span>
           </div>
           <p className="text-sm text-muted-foreground self-end">
-            {yearExpenses.length} transactions this year
+            {expenses.length} transactions this year
           </p>
           {/* Category Filter */}
           <div className="self-end">

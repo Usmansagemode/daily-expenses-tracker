@@ -20,7 +20,8 @@ import {
   YAxis,
 } from "recharts";
 import { BarChart3, LineChart as LineChartIcon } from "lucide-react";
-import { GREEN, ORANGE, RED } from "@/lib/utils";
+import { GREEN, ORANGE, RED } from "@/lib/config";
+import { formatCurrency } from "@/lib/utils";
 
 interface MonthlySpendingChartProps {
   expenses: ExpenseWithDetails[];
@@ -73,14 +74,6 @@ const MonthlySpendingChart = ({
       maxAmount: max,
     };
   }, [expenses]);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
 
   const getColorByIntensity = (amount: number): string => {
     if (maxAmount === 0) return GREEN;
@@ -141,7 +134,9 @@ const MonthlySpendingChart = ({
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={formatCurrency}
+              tickFormatter={(value) =>
+                formatCurrency(value, { minimumFractionDigits: 0 })
+              }
             />
             <ChartTooltip
               content={
@@ -171,7 +166,9 @@ const MonthlySpendingChart = ({
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={formatCurrency}
+              tickFormatter={(value) =>
+                formatCurrency(value, { minimumFractionDigits: 0 })
+              }
             />
             <ChartTooltip
               content={

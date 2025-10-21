@@ -9,6 +9,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { formatCurrency } from "@/lib/utils";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
@@ -75,14 +76,6 @@ const CategoryMemberBreakdownChart = ({
     };
   }, [expenses]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
-
   if (chartData.length === 0) {
     return (
       <div>
@@ -102,7 +95,12 @@ const CategoryMemberBreakdownChart = ({
       <ChartContainer config={chartConfig} className="min-h-[400px] w-full">
         <BarChart accessibilityLayer data={chartData} layout="vertical">
           <CartesianGrid horizontal={false} />
-          <XAxis type="number" tickFormatter={formatCurrency} />
+          <XAxis
+            type="number"
+            tickFormatter={(value) =>
+              formatCurrency(value, { minimumFractionDigits: 0 })
+            }
+          />
           <YAxis
             dataKey="category"
             type="category"

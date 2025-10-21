@@ -39,6 +39,7 @@ import {
 import { Tracker } from "@/entities/Tracker";
 
 import { useState } from "react";
+import { formatCurrency } from "@/lib/utils";
 
 // Update TrackerCard props
 interface TrackerCardProps {
@@ -58,12 +59,9 @@ const TrackerCard = ({
 }: TrackerCardProps) => {
   const [cleanupDialogOpen, setCleanupDialogOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const formatCurrency = (amount: number) => {
+  const formatCurrencySign = (amount: number) => {
     const abs = Math.abs(amount);
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(abs);
+    const formatted = formatCurrency(abs);
     return amount < 0 ? `-${formatted}` : formatted;
   };
 
@@ -149,7 +147,7 @@ const TrackerCard = ({
                       : "text-green-600 dark:text-green-500"
                   }`}
                 >
-                  {formatCurrency(tracker.currentBalance)}
+                  {formatCurrencySign(tracker.currentBalance)}
                 </p>
                 {isDebt ? (
                   <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-500" />
@@ -161,7 +159,7 @@ const TrackerCard = ({
             <div>
               <p className="text-xs text-muted-foreground">Initial</p>
               <p className="text-2xl font-bold mt-1">
-                {formatCurrency(tracker.initialBalance)}
+                {formatCurrencySign(tracker.initialBalance)}
               </p>
             </div>
           </div>
@@ -172,14 +170,14 @@ const TrackerCard = ({
               <TrendingUp className="h-3 w-3 text-green-600" />
               <span className="text-muted-foreground">Debit:</span>
               <span className="font-medium text-green-600">
-                {formatCurrency(totalDebit)}
+                {formatCurrencySign(totalDebit)}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <TrendingDown className="h-3 w-3 text-red-600" />
               <span className="text-muted-foreground">Credit:</span>
               <span className="font-medium text-red-600">
-                {formatCurrency(totalCredit)}
+                {formatCurrencySign(totalCredit)}
               </span>
             </div>
           </div>
@@ -215,7 +213,7 @@ const TrackerCard = ({
                         <TableCell className="text-right text-xs">
                           {entry.debit > 0 ? (
                             <span className="text-green-600 font-medium">
-                              +{formatCurrency(entry.debit)}
+                              +{formatCurrencySign(entry.debit)}
                             </span>
                           ) : (
                             <span className="text-muted-foreground">—</span>
@@ -224,14 +222,14 @@ const TrackerCard = ({
                         <TableCell className="text-right text-xs">
                           {entry.credit > 0 ? (
                             <span className="text-red-600 font-medium">
-                              -{formatCurrency(entry.credit)}
+                              -{formatCurrencySign(entry.credit)}
                             </span>
                           ) : (
                             <span className="text-muted-foreground">—</span>
                           )}
                         </TableCell>
                         <TableCell className="text-right text-xs font-medium">
-                          {formatCurrency(entry.balance)}
+                          {formatCurrencySign(entry.balance)}
                         </TableCell>
                       </TableRow>
                     ))

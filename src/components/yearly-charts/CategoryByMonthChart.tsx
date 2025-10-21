@@ -9,7 +9,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { getCategoryColor } from "@/lib/utils";
+import { formatCurrency, getCategoryColor } from "@/lib/utils";
 import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
@@ -71,14 +71,6 @@ const CategoryByMonthChart = ({
     return { chartData: monthlyData, chartConfig: config, categories };
   }, [expenses]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
-
   const categories = Object.keys(chartConfig);
 
   return (
@@ -99,12 +91,16 @@ const CategoryByMonthChart = ({
             tickLine={false}
             tickMargin={10}
             axisLine={false}
-            tickFormatter={formatCurrency}
+            tickFormatter={(value) =>
+              formatCurrency(value, { minimumFractionDigits: 0 })
+            }
           />
           <ChartTooltip
             content={
               <ChartTooltipContent
-                formatter={(value) => formatCurrency(value as number)}
+                formatter={(value) =>
+                  formatCurrency(value as number, { minimumFractionDigits: 0 })
+                }
               />
             }
           />

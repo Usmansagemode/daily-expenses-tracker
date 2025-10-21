@@ -4,6 +4,7 @@ import { Row } from "@tanstack/react-table";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { LOCALE_CONFIG } from "@/lib/config";
 
 interface RowActionsProps {
   row: Row<ExpenseWithDetails>;
@@ -16,7 +17,7 @@ export function RowActions({ row, onDelete }: RowActionsProps) {
   const handleDelete = () => {
     if (
       confirm(
-        `Are you sure you want to delete this expense of $${expense.amount}?`
+        `Are you sure you want to delete this expense of ${LOCALE_CONFIG.symbol}${expense.amount}?`
       )
     ) {
       onDelete(expense.id);
