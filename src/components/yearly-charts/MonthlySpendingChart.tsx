@@ -94,12 +94,16 @@ const MonthlySpendingChart = ({
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-medium">Monthly Spending Trend</h2>
-        <div className="bg-secondary flex gap-1 rounded-md p-1">
+        <div
+          className="bg-secondary flex gap-1 rounded-md p-1"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
           <Button
             variant={chartType === "area" ? "default" : "ghost"}
             size="sm"
             onClick={() => setChartType("area")}
-            className="h-8 px-3"
+            className="h-8 cursor-pointer px-3 hover:scale-105"
           >
             <LineChartIcon className="h-4 w-4" />
           </Button>
@@ -107,7 +111,7 @@ const MonthlySpendingChart = ({
             variant={chartType === "bar" ? "default" : "ghost"}
             size="sm"
             onClick={() => setChartType("bar")}
-            className="h-8 px-3"
+            className="h-8 cursor-pointer px-3 hover:scale-105"
           >
             <BarChart3 className="h-4 w-4" />
           </Button>
