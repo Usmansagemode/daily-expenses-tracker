@@ -128,9 +128,22 @@ export const AddEntrySheet = ({
                   id="debit"
                   type="number"
                   step="0.01"
+                  min="0"
                   placeholder="0.00"
                   value={debit}
-                  onChange={(e) => setDebit(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Only allow positive numbers and decimals
+                    if (value === "" || parseFloat(value) >= 0) {
+                      setDebit(value);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Prevent minus and plus signs
+                    if (e.key === "-" || e.key === "+" || e.key === "e") {
+                      e.preventDefault();
+                    }
+                  }}
                   className="pl-7"
                 />
               </div>
@@ -146,9 +159,22 @@ export const AddEntrySheet = ({
                   id="credit"
                   type="number"
                   step="0.01"
+                  min="0"
                   placeholder="0.00"
                   value={credit}
-                  onChange={(e) => setCredit(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Only allow positive numbers and decimals
+                    if (value === "" || parseFloat(value) >= 0) {
+                      setCredit(value);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Prevent minus and plus signs
+                    if (e.key === "-" || e.key === "+" || e.key === "e") {
+                      e.preventDefault();
+                    }
+                  }}
                   className="pl-7"
                 />
               </div>
