@@ -10,6 +10,8 @@ import { expensesData } from "@/components/expenses/data/expenseData";
 import { transformToExpenseWithDetails } from "@/lib/utils";
 import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
 import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
+import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
+import CategoryFilter from "@/components/yearly-charts/CategoryFilter";
 
 const isDemoMode = getIsDemoMode();
 
@@ -17,6 +19,29 @@ const YearlyChartsPage = () => {
   const [expenses, setExpenses] = useState<ExpenseWithDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const currentYear = new Date().getFullYear();
+
+  // Add category filter state
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Get all unique categories from expenses
+  const allCategories = useMemo(() => {
+    const categories = Array.from(
+      new Set(expenses.map((e) => e.categoryName || "Uncategorized"))
+    ).sort();
+    return categories;
+  }, [expenses]);
+
+  // Initialize selected categories when data loads
+  useEffect(() => {
+    if (allCategories.length > 0 && selectedCategories.length === 0) {
+      setSelectedCategories(allCategories);
+    }
+  }, [allCategories, selectedCategories.length]);
+
+  // Recalculate total with filtered expenses
+  // const totalYearSpending = useMemo(() => {
+  //   return filteredYearExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+  // }, [filteredYearExpenses]);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -72,6 +97,14 @@ const YearlyChartsPage = () => {
     return yearExpenses.reduce((sum, expense) => sum + expense.amount, 0);
   }, [yearExpenses]);
 
+  // Filter expenses by selected categories
+  const filteredYearExpenses = useMemo(() => {
+    return yearExpenses.filter((expense) => {
+      const category = expense.categoryName || "Uncategorized";
+      return selectedCategories.includes(category);
+    });
+  }, [yearExpenses, selectedCategories]);
+
   const formattedTotal = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -111,6 +144,14 @@ const YearlyChartsPage = () => {
           <p className="text-sm text-muted-foreground self-end">
             {yearExpenses.length} transactions this year
           </p>
+          {/* Category Filter */}
+          <div className="self-end">
+            <CategoryFilter
+              categories={allCategories}
+              selectedCategories={selectedCategories}
+              onSelectionChange={setSelectedCategories}
+            />
+          </div>
         </div>
       </div>
 
@@ -119,25 +160,34 @@ const YearlyChartsPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
         {/* Monthly Spending - Takes 2 columns */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
-          <MonthlySpendingChart expenses={yearExpenses} year={currentYear} />
+          <MonthlySpendingChart
+            expenses={filteredYearExpenses}
+            year={currentYear}
+          />
         </div>
 
         {/* Total Spending by Category - Takes 2 columns */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
-          <CategoryTotalChart expenses={yearExpenses} />
+          <CategoryTotalChart expenses={filteredYearExpenses} />
         </div>
 
         {/* Average Spending by Category */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2">
-          <CategoryAverageChart expenses={yearExpenses} />
+          <CategoryAverageChart expenses={filteredYearExpenses} />
         </div>
         {/* Member Spending - Takes 1 column */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2">
-          <MemberSpendingChart expenses={yearExpenses} />
+          <MemberSpendingChart expenses={filteredYearExpenses} />
+        </div>
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
+          <CategoryMemberBreakdownChart expenses={filteredYearExpenses} />
         </div>
         {/* Category by Month - Takes 3 columns */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-3 xl:col-span-3">
-          <CategoryByMonthChart expenses={yearExpenses} year={currentYear} />
+          <CategoryByMonthChart
+            expenses={filteredYearExpenses}
+            year={currentYear}
+          />
         </div>
       </div>
     </div>
