@@ -122,7 +122,7 @@ ALTER TABLE expenses DISABLE ROW LEVEL SECURITY;
 
 -- Insert sample expense (not required)
 INSERT INTO expenses (id, amount, "categoryId", "tagId", date, description) VALUES
-('1', 127.45, '1', '1', '2025-10-14', 'Weekly groceries at Costco');
+('1', 127.45, '1', 'costco', '2025-10-14', 'Weekly groceries at Costco');
 
 -- Trackers table
 create table if not exists public."trackers" (
