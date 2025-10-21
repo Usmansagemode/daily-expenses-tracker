@@ -1,15 +1,17 @@
 "use client";
 
+import { useMemo } from "react";
+import { Cell, Legend, Pie, PieChart } from "recharts";
+
 import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
+import { LabelProps } from "@/entities/Charts";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency } from "@/lib/utils";
-import { useMemo } from "react";
-import { Pie, PieChart, Cell, Legend } from "recharts";
 
 interface MemberSpendingChartProps {
   expenses: ExpenseWithDetails[];
@@ -29,29 +31,32 @@ const chartConfig = {
 
 const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
   const memberData = useMemo(() => {
-    const memberTotals = expenses.reduce((acc, expense) => {
-      const memberName = expense.memberName || "Unassigned";
-      acc[memberName] = (acc[memberName] || 0) + expense.amount;
-      return acc;
-    }, {} as Record<string, number>);
+    const memberTotals = expenses.reduce(
+      (acc, expense) => {
+        const memberName = expense.memberName || "Unassigned";
+        acc[memberName] = (acc[memberName] || 0) + expense.amount;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     const total = Object.values(memberTotals).reduce(
       (sum, val) => sum + val,
-      0
+      0,
     );
 
     return Object.entries(memberTotals)
       .map(([name, value]) => ({
         name,
-        value,
         percentage: total > 0 ? (value / total) * 100 : 0,
+        value,
       }))
       .sort((a, b) => b.value - a.value);
   }, [expenses]);
 
   const total = useMemo(
     () => memberData.reduce((sum, item) => sum + item.value, 0),
-    [memberData]
+    [memberData],
   );
 
   const CustomLabel = ({
@@ -61,7 +66,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
     innerRadius,
     outerRadius,
     percent,
-  }: any) => {
+  }: LabelProps) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -87,8 +92,8 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
   if (memberData.length === 0) {
     return (
       <div>
-        <h2 className="text-lg font-medium mb-6">Spending by Member</h2>
-        <div className="flex flex-col items-center justify-center h-[300px]">
+        <h2 className="mb-6 text-lg font-medium">Spending by Member</h2>
+        <div className="flex h-[300px] flex-col items-center justify-center">
           <p className="text-muted-foreground">
             No member spending data available
           </p>
@@ -99,7 +104,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">Spending by Member</h2>
+      <h2 className="mb-6 text-lg font-medium">Spending by Member</h2>
 
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <PieChart>
@@ -110,7 +115,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
                   <div className="flex flex-col gap-1">
                     <span className="font-semibold">{name}</span>
                     <span>{formatCurrency(value as number)}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {(((value as number) / total) * 100).toFixed(1)}% of total
                     </span>
                   </div>
@@ -141,7 +146,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
       </ChartContainer>
 
       {/* Summary Table */}
-      <div className="space-y-2 mt-6">
+      <div className="mt-6 space-y-2">
         {memberData.map((member, index) => (
           <div
             key={member.name}
@@ -149,7 +154,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
           >
             <div className="flex items-center gap-2">
               <div
-                className="w-3 h-3 rounded-full"
+                className="h-3 w-3 rounded-full"
                 style={{
                   backgroundColor: MEMBER_COLORS[index % MEMBER_COLORS.length],
                 }}
@@ -160,7 +165,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
               <span className="text-muted-foreground">
                 {member.percentage.toFixed(1)}%
               </span>
-              <span className="font-semibold min-w-[80px] text-right">
+              <span className="min-w-[80px] text-right font-semibold">
                 {formatCurrency(member.value)}
               </span>
             </div>

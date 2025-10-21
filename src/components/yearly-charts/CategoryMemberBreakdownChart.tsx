@@ -1,17 +1,18 @@
 "use client";
 
+import { useMemo } from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+
 import {
+  type ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-  type ChartConfig,
+  ChartTooltip,
+  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency } from "@/lib/utils";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 interface CategoryMemberBreakdownChartProps {
   expenses: ExpenseWithDetails[];
@@ -41,48 +42,48 @@ const CategoryMemberBreakdownChart = ({
 
     // Get unique members
     const uniqueMembers = Array.from(
-      new Set(expenses.map((e) => e.memberName || "Unassigned"))
+      new Set(expenses.map((e) => e.memberName || "Unassigned")),
     ).sort();
 
     // Transform into chart data format
     const data = Object.entries(categoryMemberTotals)
       .map(([category, memberTotals]) => {
-        const row: any = { category };
+        const row: Record<string, number | string> = { category };
         uniqueMembers.forEach((member) => {
           row[member] = memberTotals[member] || 0;
         });
         // Calculate total for sorting
         row._total = Object.values(memberTotals).reduce(
           (sum: number, val) => sum + (val as number),
-          0
+          0,
         );
         return row;
       })
-      .sort((a, b) => b._total - a._total); // Sort by total spending
+      .sort((a, b) => (b._total as number) - (a._total as number)); // Sort by total spending
 
     // Create chart config dynamically
     const config: ChartConfig = {};
     uniqueMembers.forEach((member, index) => {
       config[member] = {
-        label: member,
         color: MEMBER_COLORS[index % MEMBER_COLORS.length],
+        label: member,
       };
     });
 
     return {
+      chartConfig: config,
       chartData: data,
       members: uniqueMembers,
-      chartConfig: config,
     };
   }, [expenses]);
 
   if (chartData.length === 0) {
     return (
       <div>
-        <h2 className="text-lg font-medium mb-6">
+        <h2 className="mb-6 text-lg font-medium">
           Category Spending by Member
         </h2>
-        <div className="flex flex-col items-center justify-center h-[300px]">
+        <div className="flex h-[300px] flex-col items-center justify-center">
           <p className="text-muted-foreground">No data available</p>
         </div>
       </div>
@@ -91,7 +92,7 @@ const CategoryMemberBreakdownChart = ({
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">Category Spending by Member</h2>
+      <h2 className="mb-6 text-lg font-medium">Category Spending by Member</h2>
       <ChartContainer config={chartConfig} className="min-h-[400px] w-full">
         <BarChart accessibilityLayer data={chartData} layout="vertical">
           <CartesianGrid horizontal={false} />

@@ -1,17 +1,26 @@
 "use client";
 
+import { useMemo } from "react";
+import { format } from "date-fns";
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  TooltipProps,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/utils";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
-import { format } from "date-fns";
 
 interface TopExpensesChartProps {
   expenses: ExpenseWithDetails[];
@@ -20,10 +29,46 @@ interface TopExpensesChartProps {
 
 const chartConfig = {
   amount: {
-    label: "Amount",
     color: "hsl(var(--chart-2))",
+    label: "Amount",
   },
 } satisfies ChartConfig;
+
+const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-popover border-border min-w-[200px] rounded-lg border p-3 shadow-lg">
+        <p className="mb-2 text-sm font-semibold">{data.description}</p>
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Amount:</span>
+            <span className="font-semibold">{formatCurrency(data.amount)}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Category:</span>
+            <span>{data.category}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Date:</span>
+            <span>{format(new Date(data.date), "MMM d, yyyy")}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-muted-foreground">Paid by:</span>
+            <span>{data.member}</span>
+          </div>
+          {data.location !== "Unknown" && (
+            <div className="flex justify-between gap-4">
+              <span className="text-muted-foreground">Location:</span>
+              <span>{data.location}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 const TopExpensesChart = ({ expenses, limit = 10 }: TopExpensesChartProps) => {
   const topExpenses = useMemo(() => {
@@ -31,59 +76,21 @@ const TopExpensesChart = ({ expenses, limit = 10 }: TopExpensesChartProps) => {
       .sort((a, b) => b.amount - a.amount)
       .slice(0, limit)
       .map((expense) => ({
-        id: expense.id,
-        description: expense.description || "No description",
         amount: expense.amount,
         category: expense.categoryName || "Uncategorized",
         date: expense.date,
-        member: expense.memberName || "Unknown",
+        description: expense.description || "No description",
+        id: expense.id,
         location: expense.tagName || "Unknown",
+        member: expense.memberName || "Unknown",
       }));
   }, [expenses, limit]);
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-popover border border-border rounded-lg shadow-lg p-3 min-w-[200px]">
-          <p className="font-semibold text-sm mb-2">{data.description}</p>
-          <div className="space-y-1 text-xs">
-            <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground">Amount:</span>
-              <span className="font-semibold">
-                {formatCurrency(data.amount)}
-              </span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground">Category:</span>
-              <span>{data.category}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground">Date:</span>
-              <span>{format(new Date(data.date), "MMM d, yyyy")}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground">Paid by:</span>
-              <span>{data.member}</span>
-            </div>
-            {data.location !== "Unknown" && (
-              <div className="flex justify-between gap-4">
-                <span className="text-muted-foreground">Location:</span>
-                <span>{data.location}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
 
   if (topExpenses.length === 0) {
     return (
       <div>
-        <h2 className="text-lg font-medium mb-6">Top {limit} Expenses</h2>
-        <div className="flex flex-col items-center justify-center h-[300px]">
+        <h2 className="mb-6 text-lg font-medium">Top {limit} Expenses</h2>
+        <div className="flex h-[300px] flex-col items-center justify-center">
           <p className="text-muted-foreground">No expenses available</p>
         </div>
       </div>
@@ -92,7 +99,7 @@ const TopExpensesChart = ({ expenses, limit = 10 }: TopExpensesChartProps) => {
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">
+      <h2 className="mb-6 text-lg font-medium">
         Top {topExpenses.length} Individual Expenses
       </h2>
       <ChartContainer config={chartConfig} className="min-h-[400px] w-full">

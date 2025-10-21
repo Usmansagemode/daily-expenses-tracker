@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -12,6 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { DataTablePagination } from "@/components/expenses/TablePagination";
 import {
   Table,
   TableBody,
@@ -20,9 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { DataTablePagination } from "@/components/expenses/TablePagination";
-import { useState } from "react";
 
 interface DataTableProps<TData extends { id: string | number }, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,7 +37,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   onRowSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "createdAt", desc: false }, // Default sort by date, newest last
+    { desc: false, id: "createdAt" }, // Default sort by date, newest last
   ]);
   // Internal state as fallback
   const [internalSelection, setInternalSelection] = useState({});
@@ -47,21 +46,21 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   const setRowSelection = onRowSelectionChange ?? setInternalSelection;
 
   const table = useReactTable({
-    data,
     columns,
+    data,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
-    onRowSelectionChange: setRowSelection,
     getRowId: (row) => String(row.id),
+    getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
     state: {
-      sorting,
-      rowSelection,
       pagination: {
         pageIndex: 0, //custom initial page index
         pageSize: 50, //custom default page size
       },
+      rowSelection,
+      sorting,
     },
   });
 
@@ -79,7 +78,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -98,7 +97,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { getIsDemoMode, supabase } from "@/lib/supabase";
+
 import { Tracker, TrackerEntry } from "@/entities/Tracker";
 import { getDemoTrackers } from "@/lib/demoStorage/trackers";
+import { getIsDemoMode, supabase } from "@/lib/supabase";
 
 const isDemoMode = getIsDemoMode();
 
 export const useTrackers = () => {
   return useQuery<Tracker[]>({
-    queryKey: ["trackers"],
     queryFn: async (): Promise<Tracker[]> => {
       if (isDemoMode) {
         // Demo mode - return shared demo storage
@@ -40,7 +40,7 @@ export const useTrackers = () => {
       // Group entries by tracker_id
       const entriesByTracker: Record<string, TrackerEntry[]> = {};
       for (const entry of entries ?? []) {
-        const tid = (entry as any).trackerId;
+        const tid = (entry as { trackerId: string }).trackerId;
         if (!entriesByTracker[tid]) entriesByTracker[tid] = [];
         entriesByTracker[tid].push(entry as TrackerEntry);
       }
@@ -53,5 +53,6 @@ export const useTrackers = () => {
 
       return combined as Tracker[];
     },
+    queryKey: ["trackers"],
   });
 };

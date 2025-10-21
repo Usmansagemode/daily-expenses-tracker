@@ -69,12 +69,12 @@ export const useArrowKeyNavigation = (onCreateNewRecord?: () => void) => {
               const newAllRows = Array.from(table.querySelectorAll("tr"));
               const newLastRow = newAllRows[newAllRows.length - 1];
               const newTargetCells = Array.from(
-                newLastRow.querySelectorAll("td")
+                newLastRow.querySelectorAll("td"),
               );
               const newTargetCell = newTargetCells[currentCellIndex];
               const focusableElement =
                 newTargetCell?.querySelector<HTMLElement>(
-                  'input, select, button, [tabindex]:not([tabindex="-1"])'
+                  'input, select, button, [tabindex]:not([tabindex="-1"])',
                 );
               focusableElement?.focus();
             }, 50);
@@ -92,7 +92,7 @@ export const useArrowKeyNavigation = (onCreateNewRecord?: () => void) => {
 
           if (targetCell) {
             const focusableElement = targetCell.querySelector<HTMLElement>(
-              'input, select, button, [tabindex]:not([tabindex="-1"])'
+              'input, select, button, [tabindex]:not([tabindex="-1"])',
             );
             focusableElement?.focus();
           }
@@ -106,7 +106,7 @@ export const useArrowKeyNavigation = (onCreateNewRecord?: () => void) => {
         const targetCell = targetCells[currentCellIndex];
         if (targetCell) {
           const focusableElement = targetCell.querySelector<HTMLElement>(
-            'input, select, button, [tabindex]:not([tabindex="-1"])'
+            'input, select, button, [tabindex]:not([tabindex="-1"])',
           );
           focusableElement?.focus();
         }

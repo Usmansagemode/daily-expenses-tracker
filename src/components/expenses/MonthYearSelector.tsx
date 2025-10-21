@@ -1,5 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -8,8 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo } from "react";
 
 interface MonthYearSelectorProps {
   currentMonth: number; // 0-11
@@ -37,7 +38,7 @@ const MonthYearSelector = ({
       "November",
       "December",
     ],
-    []
+    [],
   );
 
   const years = useMemo(() => {
@@ -81,7 +82,7 @@ const MonthYearSelector = ({
       </Button>
 
       <Select value={currentMonth.toString()} onValueChange={handleMonthChange}>
-        <SelectTrigger className="w-32 h-8">
+        <SelectTrigger className="h-8 w-32">
           <SelectValue>{months[currentMonth]}</SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -94,7 +95,7 @@ const MonthYearSelector = ({
       </Select>
 
       <Select value={currentYear.toString()} onValueChange={handleYearChange}>
-        <SelectTrigger className="w-24 h-8">
+        <SelectTrigger className="h-8 w-24">
           <SelectValue>{currentYear}</SelectValue>
         </SelectTrigger>
         <SelectContent>

@@ -1,15 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
+
 import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency, getCategoryColor } from "@/lib/utils";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
 interface CategoryAverageChartProps {
   expenses: ExpenseWithDetails[];
@@ -17,8 +18,8 @@ interface CategoryAverageChartProps {
 
 const chartConfig = {
   average: {
-    label: "Average per Transaction",
     color: "hsl(var(--chart-3))",
+    label: "Average per Transaction",
   },
 } satisfies ChartConfig;
 
@@ -29,7 +30,7 @@ const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
     expenses.forEach((expense) => {
       const category = expense.categoryName || "Uncategorized";
       if (!stats[category]) {
-        stats[category] = { total: 0, count: 0 };
+        stats[category] = { count: 0, total: 0 };
       }
       stats[category].total += expense.amount;
       stats[category].count += 1;
@@ -37,8 +38,8 @@ const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
 
     return Object.entries(stats)
       .map(([category, { total, count }]) => ({
-        category,
         average: total / count,
+        category,
         count,
       }))
       .sort((a, b) => b.average - a.average);
@@ -46,7 +47,7 @@ const CategoryAverageChart = ({ expenses }: CategoryAverageChartProps) => {
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">Average Spending by Category</h2>
+      <h2 className="mb-6 text-lg font-medium">Average Spending by Category</h2>
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <BarChart accessibilityLayer data={categoryData} layout="vertical">
           <CartesianGrid horizontal={false} />

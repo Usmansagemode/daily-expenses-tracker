@@ -1,24 +1,24 @@
 "use client";
 
-import {
-  ExpenseWithDetails,
-  DEFAULT_CATEGORIES,
-  DEFAULT_TAGS,
-  Expense,
-  DEFAULT_MEMBERS,
-} from "@/entities/Expense";
-import { createColumns } from "./columns";
-import { DataTable } from "./data-table";
-import { useState, useEffect, useMemo, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, Save, Loader2, Minus } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Loader2, Minus, Plus, Save } from "lucide-react";
+import { toast } from "sonner";
+
 import ExpenseCategoryCharts from "@/components/expenses/ExpenseCategoryCharts";
+import { Button } from "@/components/ui/button";
+import { Expense, ExpenseWithDetails } from "@/entities/Expense";
 import { useExpenseMutations } from "@/hooks/expenses/useExpenseMutations";
 import { useExpenses } from "@/hooks/expenses/useExpenses";
 import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
-
-import { toast } from "sonner";
+import {
+  DEFAULT_CATEGORIES,
+  DEFAULT_MEMBERS,
+  DEFAULT_TAGS,
+} from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
+
+import { createColumns } from "./columns";
+import { DataTable } from "./data-table";
 
 const ExpensesPage = () => {
   const currentDate = new Date();
@@ -30,7 +30,7 @@ const ExpensesPage = () => {
   // Fetch data from API/demo
   const { data: fetchedData = [], isLoading } = useExpenses(
     currentYear,
-    currentMonth
+    currentMonth,
   );
 
   // Local state for editing
@@ -77,7 +77,7 @@ const ExpensesPage = () => {
     if (hasUnsavedChanges) {
       if (
         !confirm(
-          "You have unsaved changes. Do you want to discard them and switch months?"
+          "You have unsaved changes. Do you want to discard them and switch months?",
         )
       ) {
         return;
@@ -90,13 +90,13 @@ const ExpensesPage = () => {
   const handleUpdate = (
     id: string,
     field: keyof ExpenseWithDetails,
-    value: any
+    value: ExpenseWithDetails[keyof ExpenseWithDetails],
   ) => {
     // Update local state immediately
     setLocalExpenses((prev) =>
       prev.map((expense) =>
-        expense.id === id ? { ...expense, [field]: value } : expense
-      )
+        expense.id === id ? { ...expense, [field]: value } : expense,
+      ),
     );
     setHasUnsavedChanges(true);
   };
@@ -113,18 +113,18 @@ const ExpensesPage = () => {
   };
 
   const handleAddNew = () => {
-    let newExpense: ExpenseWithDetails = {
-      id: crypto.randomUUID(),
+    const newExpense: ExpenseWithDetails = {
       amount: 0,
-      memberId: "1",
-      memberName: null,
       categoryId: "1",
-      tagId: null,
       categoryName: null,
-      tagName: null,
+      createdAt: new Date(),
       date: new Date(),
       description: "",
-      createdAt: new Date(),
+      id: crypto.randomUUID(),
+      memberId: "1",
+      memberName: null,
+      tagId: null,
+      tagName: null,
       updatedAt: new Date(),
     };
 
@@ -139,7 +139,7 @@ const ExpensesPage = () => {
   const handleSaveAll = async () => {
     try {
       const expensesToSave: Expense[] = localExpenses.map(
-        ({ categoryName, tagName, memberName, ...expense }) => expense
+        ({ categoryName, tagName, memberName, ...expense }) => expense,
       );
 
       await saveAllAsync(expensesToSave); // Use async version
@@ -156,18 +156,18 @@ const ExpensesPage = () => {
 
       // Error toast
       toast.error("Failed to save changes", {
-        description: "Please try again or check your connection",
         action: {
           label: "Retry",
           onClick: () => handleSaveAll(),
         },
+        description: "Please try again or check your connection",
       });
     }
   };
 
   const selectedIds = useMemo(
     () => Object.keys(rowSelection).filter((id) => rowSelection[id]),
-    [rowSelection]
+    [rowSelection],
   );
 
   console.log(selectedIds);
@@ -182,7 +182,7 @@ const ExpensesPage = () => {
       !confirm(
         `Are you sure you want to delete ${selectedIds.length} ${
           selectedIds.length === 1 ? "expense" : "expenses"
-        }?`
+        }?`,
       )
     ) {
       return;
@@ -191,7 +191,7 @@ const ExpensesPage = () => {
     try {
       // Remove from local state immediately (optimistic update)
       setLocalExpenses((prev) =>
-        prev.filter((expense) => !selectedIds.includes(expense.id))
+        prev.filter((expense) => !selectedIds.includes(expense.id)),
       );
 
       // Delete from backend
@@ -222,25 +222,25 @@ const ExpensesPage = () => {
   // Calculate total for the current view
   const total = useMemo(
     () => localExpenses.reduce((sum, expense) => sum + expense.amount, 0),
-    [localExpenses]
+    [localExpenses],
   );
 
   const columns = useMemo(
     () =>
       createColumns({
-        members: DEFAULT_MEMBERS,
         categories: DEFAULT_CATEGORIES,
-        tags: DEFAULT_TAGS,
-        onUpdate: handleUpdate,
+        members: DEFAULT_MEMBERS,
         onDelete: handleDelete,
+        onUpdate: handleUpdate,
+        tags: DEFAULT_TAGS,
       }),
-    []
+    [],
   );
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      <div className="flex min-h-[400px] items-center justify-center">
+        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -257,13 +257,13 @@ const ExpensesPage = () => {
 
       {/* Unsaved changes indicator */}
       {hasUnsavedChanges && (
-        <div className="flex items-center gap-2 mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+        <div className="mb-4 flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
           <div className="flex-1">
             <p className="text-sm font-medium text-yellow-600 dark:text-yellow-500">
               You have unsaved changes
             </p>
-            <p className="text-xs text-muted-foreground">
-              Click "Save Changes" to persist your edits
+            <p className="text-muted-foreground text-xs">
+              {'Click "Save Changes" to persist your edits'}
             </p>
           </div>
           <Button
@@ -297,7 +297,7 @@ const ExpensesPage = () => {
       </div>
 
       {/* Action buttons */}
-      <div className="flex justify-end  items-center gap-2 p-4 border-t">
+      <div className="flex items-center justify-end gap-2 border-t p-4">
         {/* <div className="text-sm text-muted-foreground">
           {localExpenses.length}{" "}
           {localExpenses.length === 1 ? "expense" : "expenses"}
@@ -329,7 +329,7 @@ const ExpensesPage = () => {
           variant="default"
           size="sm"
           disabled={!hasUnsavedChanges || isSaving}
-          className="gap-2 cursor-pointer"
+          className="cursor-pointer gap-2"
         >
           {isSaving ? (
             <>
@@ -346,7 +346,7 @@ const ExpensesPage = () => {
         <Button
           onClick={handleAddNew}
           size="sm"
-          className="gap-2 cursor-pointer"
+          className="cursor-pointer gap-2"
         >
           <Plus className="h-4 w-4" />
           Add Expense

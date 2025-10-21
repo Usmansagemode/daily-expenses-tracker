@@ -1,39 +1,39 @@
 "use client";
 
-import { ExpenseWithDetails } from "@/entities/Expense";
-import { useMemo, useState, useEffect } from "react";
-import MonthlySpendingChart from "@/components/yearly-charts/MonthlySpendingChart";
-import CategoryTotalChart from "@/components/yearly-charts/CategoryTotalChart";
-import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
-import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
-import { expensesData } from "@/components/expenses/data/expenseData";
-import { formatCurrency, transformToExpenseWithDetails } from "@/lib/utils";
-import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
-import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
-import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
-import CategoryFilter from "@/components/yearly-charts/CategoryFilter";
-import MemberCategoryHeatmap from "@/components/yearly-charts/MemberCategoryHeatmap";
-import LocationSpendingChart from "@/components/yearly-charts/LocationSpendingChart";
-import TopExpensesChart from "@/components/yearly-charts/TopExpensesChart";
-
+import { useEffect, useMemo, useState } from "react";
 // DND Kit imports
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
+  rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
-  rectSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+import { expensesData } from "@/components/expenses/data/expenseData";
+import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
+import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
+import CategoryFilter from "@/components/yearly-charts/CategoryFilter";
+import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
+import CategoryTotalChart from "@/components/yearly-charts/CategoryTotalChart";
+import LocationSpendingChart from "@/components/yearly-charts/LocationSpendingChart";
+import MemberCategoryHeatmap from "@/components/yearly-charts/MemberCategoryHeatmap";
+import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
+import MonthlySpendingChart from "@/components/yearly-charts/MonthlySpendingChart";
+import TopExpensesChart from "@/components/yearly-charts/TopExpensesChart";
+import { ExpenseWithDetails } from "@/entities/Expense";
+import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
+import { formatCurrency, transformToExpenseWithDetails } from "@/lib/utils";
 
 const isDemoMode = getIsDemoMode();
 
@@ -72,14 +72,7 @@ const SortableChart = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`
-        bg-primary-foreground p-6 rounded-lg
-        ${colSpan}
-        ${isDragging ? "opacity-50 z-50" : "opacity-100"}
-        cursor-grab active:cursor-grabbing
-        transition-all duration-200
-        border-2 border-transparent hover:border-primary/30
-      `}
+      className={`bg-primary-foreground rounded-lg p-6 ${colSpan} ${isDragging ? "z-50 opacity-50" : "opacity-100"} hover:border-primary/30 cursor-grab border-2 border-transparent transition-all duration-200 active:cursor-grabbing`}
       {...attributes}
       {...listeners}
     >
@@ -125,7 +118,7 @@ const YearlyChartsPage = () => {
   // Get all unique categories from expenses
   const allCategories = useMemo(() => {
     const categories = Array.from(
-      new Set(expenses.map((e) => e.categoryName || "Uncategorized"))
+      new Set(expenses.map((e) => e.categoryName || "Uncategorized")),
     ).sort();
     return categories;
   }, [expenses]);
@@ -165,7 +158,7 @@ const YearlyChartsPage = () => {
             if (error) throw error;
 
             const transformedExpenses = transformToExpenseWithDetails(
-              data || []
+              data || [],
             );
             setExpenses(transformedExpenses);
           }
@@ -201,7 +194,7 @@ const YearlyChartsPage = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   // Handle drag end
@@ -235,61 +228,61 @@ const YearlyChartsPage = () => {
     string,
     { component: React.ReactNode; colSpan: string }
   > = {
-    "monthly-spending": {
-      component: (
-        <MonthlySpendingChart
-          expenses={filteredYearExpenses}
-          year={currentYear}
-        />
-      ),
-      colSpan: "lg:col-span-2 xl:col-span-2",
-    },
-    "category-total": {
-      component: <CategoryTotalChart expenses={filteredYearExpenses} />,
-      colSpan: "lg:col-span-2 xl:col-span-2",
-    },
     "category-average": {
+      colSpan: "lg:col-span-2",
       component: <CategoryAverageChart expenses={filteredYearExpenses} />,
-      colSpan: "lg:col-span-2",
-    },
-    "member-spending": {
-      component: <MemberSpendingChart expenses={filteredYearExpenses} />,
-      colSpan: "lg:col-span-2",
-    },
-    "category-member-breakdown": {
-      component: (
-        <CategoryMemberBreakdownChart expenses={filteredYearExpenses} />
-      ),
-      colSpan: "lg:col-span-2 xl:col-span-2",
-    },
-    "location-spending": {
-      component: <LocationSpendingChart expenses={filteredYearExpenses} />,
-      colSpan: "lg:col-span-2",
-    },
-    "top-expenses": {
-      component: (
-        <TopExpensesChart expenses={filteredYearExpenses} limit={10} />
-      ),
-      colSpan: "lg:col-span-2 xl:col-span-2",
-    },
-    "member-heatmap": {
-      component: <MemberCategoryHeatmap expenses={filteredYearExpenses} />,
-      colSpan: "lg:col-span-3 xl:col-span-4 2xl:col-span-5",
     },
     "category-by-month": {
+      colSpan: "lg:col-span-3 xl:col-span-3",
       component: (
         <CategoryByMonthChart
           expenses={filteredYearExpenses}
           year={currentYear}
         />
       ),
-      colSpan: "lg:col-span-3 xl:col-span-3",
+    },
+    "category-member-breakdown": {
+      colSpan: "lg:col-span-2 xl:col-span-2",
+      component: (
+        <CategoryMemberBreakdownChart expenses={filteredYearExpenses} />
+      ),
+    },
+    "category-total": {
+      colSpan: "lg:col-span-2 xl:col-span-2",
+      component: <CategoryTotalChart expenses={filteredYearExpenses} />,
+    },
+    "location-spending": {
+      colSpan: "lg:col-span-2",
+      component: <LocationSpendingChart expenses={filteredYearExpenses} />,
+    },
+    "member-heatmap": {
+      colSpan: "lg:col-span-3 xl:col-span-4 2xl:col-span-5",
+      component: <MemberCategoryHeatmap expenses={filteredYearExpenses} />,
+    },
+    "member-spending": {
+      colSpan: "lg:col-span-2",
+      component: <MemberSpendingChart expenses={filteredYearExpenses} />,
+    },
+    "monthly-spending": {
+      colSpan: "lg:col-span-2 xl:col-span-2",
+      component: (
+        <MonthlySpendingChart
+          expenses={filteredYearExpenses}
+          year={currentYear}
+        />
+      ),
+    },
+    "top-expenses": {
+      colSpan: "lg:col-span-2 xl:col-span-2",
+      component: (
+        <TopExpensesChart expenses={filteredYearExpenses} limit={10} />
+      ),
     },
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center">
         <p className="text-muted-foreground">Loading analytics...</p>
       </div>
     );
@@ -298,14 +291,14 @@ const YearlyChartsPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-secondary p-4 rounded-lg flex items-center justify-between mb-2">
+      <div className="bg-secondary mb-2 flex items-center justify-between rounded-lg p-4">
         <div className="flex items-center">
           <div>
             <h1 className="text-2xl font-bold">
               {currentYear} Expense Analytics
             </h1>
             {isDemoMode && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Demo Mode - Using sample data
               </p>
             )}
@@ -313,14 +306,14 @@ const YearlyChartsPage = () => {
         </div>
         <div className="flex flex-col items-baseline gap-2">
           <div className="flex items-center">
-            <span className="text-sm text-muted-foreground mr-4">
+            <span className="text-muted-foreground mr-4 text-sm">
               Total Spending:
             </span>
             <span className="text-3xl font-bold">
               {formatCurrency(totalYearSpending)}
             </span>
           </div>
-          <p className="text-sm text-muted-foreground self-end">
+          <p className="text-muted-foreground self-end text-sm">
             {expenses.length} transactions this year
           </p>
           {/* Category Filter */}
@@ -335,12 +328,12 @@ const YearlyChartsPage = () => {
       </div>
 
       {/* Drag and Drop Instructions */}
-      <div className="text-right mb-2">
-        <p className="text-xs text-muted-foreground inline-flex items-center gap-1">
+      <div className="mb-2 text-right">
+        <p className="text-muted-foreground inline-flex items-center gap-1 text-xs">
           <span>Drag to rearrange •</span>
           <button
             onClick={resetChartOrder}
-            className="hover:text-foreground transition-colors underline"
+            className="hover:text-foreground underline transition-colors"
           >
             Reset
           </button>
@@ -354,7 +347,7 @@ const YearlyChartsPage = () => {
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={chartOrder} strategy={rectSortingStrategy}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {chartOrder.map((chartId) => {
               const config = chartConfigs[chartId];
               if (!config) return null;

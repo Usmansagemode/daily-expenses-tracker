@@ -1,12 +1,13 @@
-import { supabase } from "@/lib/supabase";
 import type { Tracker, TrackerEntry } from "@/entities/Tracker";
+import { supabase } from "@/lib/supabase";
+
 import { LOCALE_CONFIG } from "../config";
 
 // Helper to throw if supabase is not available
 function ensureSupabase() {
   if (!supabase) {
     throw new Error(
-      "Supabase client not available. Check your environment configuration."
+      "Supabase client not available. Check your environment configuration.",
     );
   }
   return supabase;
@@ -30,18 +31,18 @@ export async function fetchTrackers(): Promise<Tracker[]> {
 // ---------- CREATE TRACKER ----------
 //
 export async function createTracker(
-  tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">
+  tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">,
 ) {
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackers")
     .insert([
       {
-        title: tracker.title,
+        color: tracker.color,
+        currentBalance: tracker.currentBalance ?? tracker.initialBalance,
         description: tracker.description,
         initialBalance: tracker.initialBalance,
-        currentBalance: tracker.currentBalance ?? tracker.initialBalance,
-        color: tracker.color,
+        title: tracker.title,
       },
     ])
     .select()
@@ -59,10 +60,10 @@ export async function updateTracker(id: string, updates: Partial<Tracker>) {
   const { data, error } = await supabase
     .from("trackers")
     .update({
-      title: updates.title,
-      description: updates.description,
-      currentBalance: updates.currentBalance,
       color: updates.color,
+      currentBalance: updates.currentBalance,
+      description: updates.description,
+      title: updates.title,
       updatedAt: new Date().toISOString(),
     })
     .eq("id", id)
@@ -87,19 +88,19 @@ export async function deleteTracker(id: string) {
 //
 export async function addTrackerEntry(
   trackerId: string,
-  entry: Omit<TrackerEntry, "id" | "createdAt">
+  entry: Omit<TrackerEntry, "id" | "createdAt">,
 ) {
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("trackerEntries")
     .insert([
       {
-        trackerId: trackerId,
-        date: entry.date,
-        description: entry.description,
-        debit: entry.debit,
-        credit: entry.credit,
         balance: entry.balance,
+        credit: entry.credit,
+        date: entry.date,
+        debit: entry.debit,
+        description: entry.description,
+        trackerId: trackerId,
       },
     ])
     .select()
@@ -111,7 +112,7 @@ export async function addTrackerEntry(
 
 export async function createTrackerEntry(
   trackerId: string,
-  entry: Omit<TrackerEntry, "id">
+  entry: Omit<TrackerEntry, "id">,
 ) {
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
@@ -128,7 +129,7 @@ export async function createTrackerEntry(
 // ---------- FETCH ENTRIES FOR A SPECIFIC TRACKER ----------
 //
 export async function fetchTrackerEntries(
-  trackerId: string
+  trackerId: string,
 ): Promise<TrackerEntry[]> {
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
@@ -211,17 +212,17 @@ export async function cleanupTrackerEntries(trackerId: string) {
 
   // Step 3: Add carry-over entry
   const newEntry = {
+    balance: currentBalance,
+    createdAt: new Date().toISOString(),
+    credit: 0,
     date: new Date().toISOString(),
+    debit: 0,
     description: `Balance carry-over: ${
       currentBalance >= 0
         ? `${LOCALE_CONFIG.symbol}`
         : `-${LOCALE_CONFIG.symbol}`
     }${Math.abs(currentBalance).toFixed(2)}`,
-    debit: 0,
-    credit: 0,
-    balance: currentBalance,
     trackerId: trackerId,
-    createdAt: new Date().toISOString(),
   };
 
   const { error: insertError } = await supabase
@@ -230,5 +231,5 @@ export async function cleanupTrackerEntries(trackerId: string) {
 
   if (insertError) throw insertError;
 
-  return { trackerId, balance: currentBalance };
+  return { balance: currentBalance, trackerId };
 }

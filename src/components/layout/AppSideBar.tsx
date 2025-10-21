@@ -1,7 +1,7 @@
-import { Receipt, TrendingUp, Wallet, ListChecks, Users } from "lucide-react";
-
-import Link from "next/link";
+import { ListChecks, Receipt, TrendingUp, Users, Wallet } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+
 import {
   Sidebar,
   SidebarContent,
@@ -18,14 +18,14 @@ import {
 
 const items = [
   {
+    icon: Receipt,
     title: "Expenses",
     url: "expenses",
-    icon: Receipt,
   },
   {
+    icon: TrendingUp,
     title: "Yearly Charts",
     url: "yearly-charts",
-    icon: TrendingUp,
   },
 ];
 

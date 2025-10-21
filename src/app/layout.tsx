@@ -1,27 +1,30 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { cookies } from "next/headers";
+
 import AppSideBar from "@/components/layout/AppSideBar";
 import Navbar from "@/components/layout/Navbar";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { cookies } from "next/headers";
-import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
 
+import "./globals.css";
+
+import { Providers } from "./providers";
+
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
-  title: "Daily Expenses",
   description: "An App built to allow you to manage your daily expenses",
+  title: "Daily Expenses",
 };
 
 export default async function RootLayout({

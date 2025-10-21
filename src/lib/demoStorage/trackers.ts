@@ -1,7 +1,7 @@
 // src/lib/demoStorage/trackers.ts
 
-import { Tracker } from "@/entities/Tracker";
 import { mockTrackers } from "@/components/trackers/data/trackerData";
+import { Tracker } from "@/entities/Tracker";
 
 // Shared in-memory storage - this is the single source of truth for demo mode
 let demoTrackers: Tracker[] = JSON.parse(JSON.stringify(mockTrackers));
@@ -16,7 +16,7 @@ export const setDemoTrackers = (trackers: Tracker[]) => {
 
 export const updateDemoTracker = (
   trackerId: string,
-  updates: Partial<Tracker>
+  updates: Partial<Tracker>,
 ) => {
   const index = demoTrackers.findIndex((t) => t.id === trackerId);
   if (index !== -1) {

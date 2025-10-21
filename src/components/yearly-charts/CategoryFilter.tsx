@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Check, X, Filter } from "lucide-react";
+import { Check, Filter, X } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { CATEGORY_ICONS_BY_NAME } from "@/entities/Expense";
+import { CATEGORY_ICONS_BY_NAME } from "@/lib/config";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -60,7 +61,7 @@ const CategoryFilter = ({
       <PopoverContent className="w-80" align="end">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="font-medium text-sm">Select Categories</h4>
+            <h4 className="text-sm font-medium">Select Categories</h4>
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -69,7 +70,7 @@ const CategoryFilter = ({
                 onClick={handleSelectAll}
                 disabled={isAllSelected}
               >
-                <Check className="h-3 w-3 mr-1" />
+                <Check className="mr-1 h-3 w-3" />
                 All
               </Button>
               <Button
@@ -79,13 +80,13 @@ const CategoryFilter = ({
                 onClick={handleClearAll}
                 disabled={selectedCategories.length === 0}
               >
-                <X className="h-3 w-3 mr-1" />
+                <X className="mr-1 h-3 w-3" />
                 Clear
               </Button>
             </div>
           </div>
 
-          <div className="space-y-1 max-h-[320px] overflow-y-auto">
+          <div className="max-h-[320px] space-y-1 overflow-y-auto">
             {categories.map((category) => {
               const isSelected = selectedCategories.includes(category);
               const Icon = CATEGORY_ICONS_BY_NAME[category];
@@ -93,7 +94,7 @@ const CategoryFilter = ({
               return (
                 <div
                   key={category}
-                  className="flex items-center space-x-2 p-2 rounded hover:bg-accent cursor-pointer transition-colors"
+                  className="hover:bg-accent flex cursor-pointer items-center space-x-2 rounded p-2 transition-colors"
                   onClick={() => handleToggle(category)}
                 >
                   <Checkbox
@@ -103,9 +104,9 @@ const CategoryFilter = ({
                   />
                   <label
                     htmlFor={category}
-                    className="text-sm flex-1 cursor-pointer flex items-center gap-2"
+                    className="flex flex-1 cursor-pointer items-center gap-2 text-sm"
                   >
-                    {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
+                    {Icon && <Icon className="text-muted-foreground h-4 w-4" />}
                     <span>{category}</span>
                   </label>
                 </div>
@@ -113,12 +114,12 @@ const CategoryFilter = ({
             })}
           </div>
 
-          <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+          <div className="text-muted-foreground flex items-center justify-between border-t pt-2 text-xs">
             <span>
               {selectedCategories.length} of {categories.length} selected
             </span>
             {filteredCount > 0 && (
-              <span className="text-orange-500 font-medium">
+              <span className="font-medium text-orange-500">
                 {filteredCount} filtered out
               </span>
             )}

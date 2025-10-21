@@ -1,7 +1,8 @@
 // src/hooks/useExpenseMutations.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getIsDemoMode, supabase } from "@/lib/supabase";
+
 import { Expense, ExpenseWithDetails } from "@/entities/Expense";
+import { getIsDemoMode, supabase } from "@/lib/supabase";
 import {
   createExpense,
   deleteExpense,
@@ -45,7 +46,7 @@ export const useExpenseMutations = (year: number, month: number) => {
     onSuccess: (newExpense) => {
       queryClient.setQueryData(
         ["expenses", year, month],
-        (old: Expense[] = []) => [...old, newExpense]
+        (old: Expense[] = []) => [...old, newExpense],
       );
     },
   });
@@ -90,7 +91,7 @@ export const useExpenseMutations = (year: number, month: number) => {
     onSuccess: (id) => {
       queryClient.setQueryData(
         ["expenses", year, month],
-        (old: Expense[] = []) => old.filter((expense) => expense.id !== id)
+        (old: Expense[] = []) => old.filter((expense) => expense.id !== id),
       );
     },
   });
@@ -112,23 +113,23 @@ export const useExpenseMutations = (year: number, month: number) => {
     onSuccess: (ids) => {
       queryClient.setQueryData<Expense[]>(
         ["expenses", year, month],
-        (old = []) => old.filter((expense) => !ids.includes(expense.id))
+        (old = []) => old.filter((expense) => !ids.includes(expense.id)),
       );
     },
   });
 
   return {
-    create: createMutation.mutate,
-    saveAll: saveAllMutation.mutate,
-    saveAllAsync: saveAllMutation.mutateAsync,
-    delete: deleteMutation.mutate,
     bulkDelete: bulkDeleteMutation.mutate,
     bulkDeleteAsync: bulkDeleteMutation.mutateAsync,
+    create: createMutation.mutate,
+    delete: deleteMutation.mutate,
+    isDeleting: bulkDeleteMutation.isPending,
     isPending:
       createMutation.isPending ||
       saveAllMutation.isPending ||
       deleteMutation.isPending,
     isSaving: saveAllMutation.isPending,
-    isDeleting: bulkDeleteMutation.isPending,
+    saveAll: saveAllMutation.mutate,
+    saveAllAsync: saveAllMutation.mutateAsync,
   };
 };

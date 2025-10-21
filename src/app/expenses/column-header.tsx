@@ -1,7 +1,8 @@
 // Create this component if you want sortable headers
 import { Column } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 interface DataTableColumnHeaderProps<TData, TValue> {
   column: Column<TData, TValue>;

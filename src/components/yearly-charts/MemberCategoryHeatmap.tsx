@@ -1,8 +1,14 @@
 "use client";
 
-import { ExpenseWithDetails } from "@/entities/Expense";
 import { useMemo, useState } from "react";
-import { formatCurrency } from "@/lib/utils";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -17,13 +23,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ExpenseWithDetails } from "@/entities/Expense";
+import { formatCurrency } from "@/lib/utils";
 
 interface MemberCategoryHeatmapProps {
   expenses: ExpenseWithDetails[];
@@ -53,7 +54,7 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
     // Get unique members and categories, sorted
     const uniqueMembers = Object.keys(dataMap).sort();
     const uniqueCategories = Array.from(
-      new Set(expenses.map((e) => e.categoryName || "Uncategorized"))
+      new Set(expenses.map((e) => e.categoryName || "Uncategorized")),
     ).sort();
 
     // Find max value for EACH member for relative scaling
@@ -67,10 +68,10 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
     });
 
     return {
-      heatmapData: dataMap,
-      members: uniqueMembers,
       categories: uniqueCategories,
+      heatmapData: dataMap,
       memberMaxValues: memberMaxMap,
+      members: uniqueMembers,
     };
   }, [expenses]);
 
@@ -244,15 +245,15 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
     const memberCategories = heatmapData[member] || {};
     return Object.values(memberCategories).reduce(
       (sum, amount) => sum + amount,
-      0
+      0,
     );
   };
 
   if (members.length === 0 || categories.length === 0) {
     return (
       <div>
-        <h2 className="text-lg font-medium mb-6">Member × Category Heatmap</h2>
-        <div className="flex flex-col items-center justify-center h-[300px]">
+        <h2 className="mb-6 text-lg font-medium">Member × Category Heatmap</h2>
+        <div className="flex h-[300px] flex-col items-center justify-center">
           <p className="text-muted-foreground">No data available</p>
         </div>
       </div>
@@ -264,17 +265,17 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
   return (
     <div>
       {/* Header with title and color scheme selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-medium">Member × Category Heatmap</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm">
             Colors show relative spending for each member (dark = highest
             spending category)
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground whitespace-nowrap">
+          <span className="text-muted-foreground text-sm whitespace-nowrap">
             Color Scheme:
           </span>
           <Select
@@ -295,13 +296,13 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
         </div>
       </div>
 
-      <div className="rounded-md border overflow-x-auto">
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[150px] font-semibold">Member</TableHead>
               {categories.map((category) => (
-                <TableHead key={category} className="text-center min-w-[100px]">
+                <TableHead key={category} className="min-w-[100px] text-center">
                   {category}
                 </TableHead>
               ))}
@@ -313,7 +314,7 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
                 <TableCell className="font-medium">
                   <div>
                     <div>{member}</div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-muted-foreground text-xs">
                       Total: {formatCurrency(getMemberTotal(member))}
                     </div>
                   </div>
@@ -328,13 +329,7 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <div
-                              className={`
-                                h-14 rounded flex items-center justify-center
-                                ${colorClass}
-                                transition-all duration-200 hover:scale-105 hover:brightness-110
-                                cursor-pointer border border-gray-200 dark:border-gray-700
-                                font-medium
-                              `}
+                              className={`flex h-14 items-center justify-center rounded ${colorClass} cursor-pointer border border-gray-200 font-medium transition-all duration-200 hover:scale-105 hover:brightness-110 dark:border-gray-700`}
                             >
                               <span className="text-xs">
                                 {value > 0
@@ -351,13 +346,13 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
                               <p className="text-muted-foreground">
                                 {category}
                               </p>
-                              <p className="font-semibold mt-1">
+                              <p className="mt-1 font-semibold">
                                 {formatCurrency(value)}
                               </p>
                               <p className="text-muted-foreground mt-1">
                                 {memberMaxValues[member] > 0 &&
                                   `${Math.round(
-                                    (value / memberMaxValues[member]) * 100
+                                    (value / memberMaxValues[member]) * 100,
                                   )}% of ${member}'s highest category`}
                               </p>
                             </div>
@@ -374,13 +369,13 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
       </div>
 
       {/* Dynamic Legend */}
-      <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+      <div className="text-muted-foreground mt-6 flex items-center justify-center gap-4 text-xs">
         <span>Low</span>
         <div className="flex gap-1">
           {legendColors.map((color, index) => (
             <div
               key={index}
-              className={`w-8 h-8 rounded border border-gray-300 ${color} ${
+              className={`h-8 w-8 rounded border border-gray-300 ${color} ${
                 color.includes("yellow") ||
                 color.includes("orange-100") ||
                 color.includes("green-100") ||
@@ -399,32 +394,32 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
 
       {/* Color scheme info */}
       <div className="mt-2 text-center">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           Using:{" "}
           <span className="font-medium">{getColorSchemeName(colorScheme)}</span>
         </p>
       </div>
 
       {/* Summary stats */}
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-3 rounded-lg bg-muted">
-          <p className="text-xs text-muted-foreground">Members</p>
+      <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="bg-muted rounded-lg p-3">
+          <p className="text-muted-foreground text-xs">Members</p>
           <p className="text-lg font-semibold">{members.length}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted">
-          <p className="text-xs text-muted-foreground">Categories</p>
+        <div className="bg-muted rounded-lg p-3">
+          <p className="text-muted-foreground text-xs">Categories</p>
           <p className="text-lg font-semibold">{categories.length}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted">
-          <p className="text-xs text-muted-foreground">Highest Overall</p>
+        <div className="bg-muted rounded-lg p-3">
+          <p className="text-muted-foreground text-xs">Highest Overall</p>
           <p className="text-lg font-semibold">
             {formatCurrency(Math.max(...Object.values(memberMaxValues)), {
               minimumFractionDigits: 0,
             })}
           </p>
         </div>
-        <div className="p-3 rounded-lg bg-muted">
-          <p className="text-xs text-muted-foreground">Data Points</p>
+        <div className="bg-muted rounded-lg p-3">
+          <p className="text-muted-foreground text-xs">Data Points</p>
           <p className="text-lg font-semibold">
             {members.length * categories.length}
           </p>

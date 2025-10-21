@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -25,9 +26,9 @@ export default function LoginPage() {
 
     try {
       const response = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
       });
 
       if (response.ok) {
@@ -44,7 +45,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Expense Tracker</CardTitle>
@@ -62,7 +63,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 autoFocus
               />
-              {error && <p className="text-sm text-destructive">{error}</p>}
+              {error && <p className="text-destructive text-sm">{error}</p>}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Checking..." : "Access Expenses"}

@@ -1,37 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import {
-  Expense,
-  ExpenseWithDetails,
-  DEFAULT_CATEGORIES,
-  DEFAULT_TAGS,
-  DEFAULT_MEMBERS,
-} from "@/entities/Expense";
-import { expensesData } from "@/components/expenses/data/expenseData";
 
-// Transform to ExpenseWithDetails
-const transformToExpenseWithDetails = (
-  expenses: Expense[]
-): ExpenseWithDetails[] => {
-  return expenses.map((expense) => {
-    const category = DEFAULT_CATEGORIES.find(
-      (c) => c.id === expense.categoryId
-    );
-    const tag = DEFAULT_TAGS.find((t) => t.id === expense.tagId);
-    const member = DEFAULT_MEMBERS.find((m) => m.id === expense.memberId);
-    return {
-      ...expense,
-      categoryName: category?.name || null,
-      tagName: tag?.name || null,
-      memberName: member?.fullName || null,
-    };
-  });
-};
+import { expensesData } from "@/components/expenses/data/expenseData";
+import { Expense, ExpenseWithDetails } from "@/entities/Expense";
+import {
+  DEFAULT_CATEGORIES,
+  DEFAULT_MEMBERS,
+  DEFAULT_TAGS,
+} from "@/lib/config";
+import { supabase } from "@/lib/supabase";
+import { transformToExpenseWithDetails } from "@/lib/utils";
 
 // Demo data fetcher
 const fetchDemoExpenses = async (
   year: number,
-  month: number
+  month: number,
 ): Promise<ExpenseWithDetails[]> => {
   // Simulate API delay for realism
   await new Promise((resolve) => setTimeout(resolve, 500));
@@ -49,7 +31,7 @@ const fetchDemoExpenses = async (
 // Real API fetcher
 const fetchApiExpenses = async (
   year: number,
-  month: number
+  month: number,
 ): Promise<ExpenseWithDetails[]> => {
   // Check if supabase is available
   if (!supabase) {
@@ -74,9 +56,9 @@ export const useExpenses = (year: number, month: number) => {
   const isDemo = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
 
   return useQuery({
-    queryKey: ["expenses", year, month],
     queryFn: () =>
       isDemo ? fetchDemoExpenses(year, month) : fetchApiExpenses(year, month),
+    queryKey: ["expenses", year, month],
     staleTime: isDemo ? Infinity : 5 * 60 * 1000, // Demo data never stale
   });
 };

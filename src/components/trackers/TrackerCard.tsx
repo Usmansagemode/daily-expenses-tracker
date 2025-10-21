@@ -1,6 +1,10 @@
 // src/components/trackers/TrackerCard.tsx
 "use client";
 
+import { useState } from "react";
+import { MoreHorizontal, Plus, TrendingDown, TrendingUp } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,15 +13,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Plus, TrendingUp, TrendingDown } from "lucide-react";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,18 +30,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Tracker } from "@/entities/Tracker";
-
-import { useState } from "react";
 import { formatCurrency } from "@/lib/utils";
 
 // Update TrackerCard props
@@ -67,8 +66,8 @@ const TrackerCard = ({
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("en-US", {
-      month: "short",
       day: "numeric",
+      month: "short",
       year: "numeric",
     });
   };
@@ -76,11 +75,11 @@ const TrackerCard = ({
   const isDebt = tracker.currentBalance < 0;
   const totalDebit = tracker?.entries?.reduce(
     (sum, entry) => sum + entry.debit,
-    0
+    0,
   );
   const totalCredit = tracker?.entries?.reduce(
     (sum, entry) => sum + entry.credit,
-    0
+    0,
   );
 
   return (
@@ -88,7 +87,7 @@ const TrackerCard = ({
       <Card className="relative overflow-hidden">
         {/* Color indicator */}
         <div
-          className="absolute top-0 left-0 w-1 h-full"
+          className="absolute top-0 left-0 h-full w-1"
           style={{ backgroundColor: tracker.color }}
         />
 
@@ -111,7 +110,7 @@ const TrackerCard = ({
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => onAddEntry(tracker)}>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="mr-2 h-4 w-4" />
                   Add Entry
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -138,8 +137,8 @@ const TrackerCard = ({
           {/* Balance Summary */}
           <div className="mt-4 grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-muted-foreground">Current Balance</p>
-              <div className="flex items-center gap-1 mt-1">
+              <p className="text-muted-foreground text-xs">Current Balance</p>
+              <div className="mt-1 flex items-center gap-1">
                 <p
                   className={`text-2xl font-bold ${
                     isDebt
@@ -157,8 +156,8 @@ const TrackerCard = ({
               </div>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground">Initial</p>
-              <p className="text-2xl font-bold mt-1">
+              <p className="text-muted-foreground text-xs">Initial</p>
+              <p className="mt-1 text-2xl font-bold">
                 {formatCurrencySign(tracker.initialBalance)}
               </p>
             </div>
@@ -191,9 +190,9 @@ const TrackerCard = ({
                 <TableRow>
                   <TableHead className="w-[100px]">Date</TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead className="text-right w-[80px]">Debit</TableHead>
-                  <TableHead className="text-right w-[80px]">Credit</TableHead>
-                  <TableHead className="text-right w-[100px]">
+                  <TableHead className="w-[80px] text-right">Debit</TableHead>
+                  <TableHead className="w-[80px] text-right">Credit</TableHead>
+                  <TableHead className="w-[100px] text-right">
                     Balance
                   </TableHead>
                 </TableRow>
@@ -212,7 +211,7 @@ const TrackerCard = ({
                         </TableCell>
                         <TableCell className="text-right text-xs">
                           {entry.debit > 0 ? (
-                            <span className="text-green-600 font-medium">
+                            <span className="font-medium text-green-600">
                               +{formatCurrencySign(entry.debit)}
                             </span>
                           ) : (
@@ -221,7 +220,7 @@ const TrackerCard = ({
                         </TableCell>
                         <TableCell className="text-right text-xs">
                           {entry.credit > 0 ? (
-                            <span className="text-red-600 font-medium">
+                            <span className="font-medium text-red-600">
                               -{formatCurrencySign(entry.credit)}
                             </span>
                           ) : (
@@ -237,7 +236,7 @@ const TrackerCard = ({
                   <TableRow>
                     <TableCell
                       colSpan={5}
-                      className="text-center py-6 text-muted-foreground"
+                      className="text-muted-foreground py-6 text-center"
                     >
                       No entries yet
                     </TableCell>
@@ -251,7 +250,7 @@ const TrackerCard = ({
             <Button
               variant="ghost"
               size="sm"
-              className="w-full mt-2 cursor-pointer"
+              className="mt-2 w-full cursor-pointer"
               onClick={() => setShowAll(true)}
             >
               View All {tracker.entries.length} Entries
@@ -259,7 +258,7 @@ const TrackerCard = ({
           )}
 
           {/* Quick Actions */}
-          <div className="flex gap-2 mt-4">
+          <div className="mt-4 flex gap-2">
             <Button
               size="sm"
               className="flex-1 gap-2"
@@ -284,7 +283,7 @@ const TrackerCard = ({
               Are you sure you want to continue?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="flex justify-end gap-2 mt-4">
+          <DialogFooter className="mt-4 flex justify-end gap-2">
             <Button
               variant="outline"
               className="cursor-point"

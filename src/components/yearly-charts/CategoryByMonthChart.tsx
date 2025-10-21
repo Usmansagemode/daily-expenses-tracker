@@ -1,17 +1,18 @@
 "use client";
 
+import { useMemo } from "react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+
 import {
+  type ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency, getCategoryColor } from "@/lib/utils";
-import { useMemo } from "react";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 interface CategoryByMonthChartProps {
   expenses: ExpenseWithDetails[];
@@ -40,12 +41,12 @@ const CategoryByMonthChart = ({
 
     // Get unique categories
     const categories = Array.from(
-      new Set(expenses.map((e) => e.categoryName || "Uncategorized"))
+      new Set(expenses.map((e) => e.categoryName || "Uncategorized")),
     ).sort();
 
     // Initialize data structure
     const monthlyData = months.map((month) => {
-      const data: any = { month };
+      const data: Record<string, number | string> = { month };
       categories.forEach((cat) => {
         data[cat] = 0;
       });
@@ -56,26 +57,28 @@ const CategoryByMonthChart = ({
     expenses.forEach((expense) => {
       const month = new Date(expense.date).getMonth();
       const category = expense.categoryName || "Uncategorized";
-      monthlyData[month][category] += expense.amount;
+
+      monthlyData[month][category] =
+        ((monthlyData[month][category] as number) || 0) + expense.amount;
     });
 
     // Generate chart config with colors
     const config: ChartConfig = {};
     categories.forEach((category) => {
       config[category] = {
-        label: category,
         color: getCategoryColor(category),
+        label: category,
       };
     });
 
-    return { chartData: monthlyData, chartConfig: config, categories };
+    return { categories, chartConfig: config, chartData: monthlyData };
   }, [expenses]);
 
   const categories = Object.keys(chartConfig);
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">
+      <h2 className="mb-6 text-lg font-medium">
         Category Trends Over The Year
       </h2>
       <ChartContainer config={chartConfig} className="min-h-[400px] w-full">

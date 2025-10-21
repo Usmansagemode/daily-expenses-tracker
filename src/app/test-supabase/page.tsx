@@ -2,10 +2,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { Expense } from "@/entities/Expense";
 import { supabase } from "@/lib/supabase";
 
 export default function TestPage() {
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -20,7 +22,7 @@ export default function TestPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl mb-4">Supabase Test</h1>
+      <h1 className="mb-4 text-2xl">Supabase Test</h1>
       <pre>{JSON.stringify(expenses, null, 2)}</pre>
     </div>
   );

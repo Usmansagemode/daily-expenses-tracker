@@ -1,28 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown } from "lucide-react";
-import { mockTrackers } from "@/components/trackers/data/trackerData";
-import { Tracker, TrackerEntry } from "@/entities/Tracker";
-import TrackerCard from "@/components/trackers/TrackerCard";
-import { CreateTrackerSheet } from "@/components/trackers/CreateTrackerSheet";
+import { Plus, TrendingDown, TrendingUp } from "lucide-react";
 // import { AddEntrySheet } from "@/components/trackers/AddEntrySheet";
 import { toast } from "sonner";
+
+import { AddEntrySheet } from "@/components/trackers/AddEntrySheet";
+import { CreateTrackerSheet } from "@/components/trackers/CreateTrackerSheet";
+import TrackerCard from "@/components/trackers/TrackerCard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { AddEntrySheet } from "@/components/trackers/AddEntrySheet";
+import { Tracker, TrackerEntry } from "@/entities/Tracker";
 import { useTrackers } from "@/hooks/trackers/useTrackers";
 import { useTrackerMutations } from "@/hooks/trackers/useTrackersMutations";
-import { formatCurrency } from "@/lib/utils";
 import { LOCALE_CONFIG } from "@/lib/config";
+import { formatCurrency } from "@/lib/utils";
 
 const TrackersPage = () => {
-  // const [trackers, setTrackers] = useState<Tracker[]>(mockTrackers);
   const { data: trackers = [], isLoading } = useTrackers();
   const {
     create,
@@ -45,12 +44,12 @@ const TrackersPage = () => {
 
   const getTotalNet = () => {
     if (trackers.length === 0)
-      return { total: 0, breakdown: "No trackers yet" };
+      return { breakdown: "No trackers yet", total: 0 };
 
     const breakdownParts = trackers.map((t) => {
       const sign = t.currentBalance >= 0 ? "+" : "-";
       return `${sign}${LOCALE_CONFIG.symbol}${Math.abs(
-        t.currentBalance
+        t.currentBalance,
       ).toFixed(2)} (${t.title})`;
     });
 
@@ -58,11 +57,11 @@ const TrackersPage = () => {
     const breakdown =
       breakdownParts.join(" ") + ` = ${LOCALE_CONFIG.symbol}${total}`;
 
-    return { total, breakdown };
+    return { breakdown, total };
   };
 
   const handleCreateTracker = async (
-    newTracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">
+    newTracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">,
   ) => {
     const trackerWithEntries = {
       ...newTracker,
@@ -78,7 +77,7 @@ const TrackersPage = () => {
     updated: Omit<
       Tracker,
       "id" | "createdAt" | "updatedAt" | "entries" | "initialBalance"
-    >
+    >,
   ) => {
     if (!editingTracker) return;
 
@@ -100,9 +99,9 @@ const TrackersPage = () => {
 
   const handleAddEntry = async (
     trackerId: string,
-    entryData: Omit<TrackerEntry, "id" | "balance" | "createdAt">
+    entryData: Omit<TrackerEntry, "id" | "balance" | "createdAt">,
   ) => {
-    await addEntry({ trackerId, entryData });
+    await addEntry({ entryData, trackerId });
   };
 
   const openEditSheet = (tracker: Tracker) => {
@@ -121,11 +120,11 @@ const TrackersPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-secondary p-6 rounded-lg">
+      <div className="bg-secondary rounded-lg p-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Misc Trackers</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-muted-foreground mt-1 text-sm">
               Track debts, savings, loans, and more
             </p>
           </div>
@@ -144,7 +143,7 @@ const TrackersPage = () => {
         <Tooltip>
           <TooltipTrigger>
             <div className="mt-6 flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Net Total:</span>
+              <span className="text-muted-foreground text-sm">Net Total:</span>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-3xl font-bold ${
@@ -171,7 +170,7 @@ const TrackersPage = () => {
       </div>
       {/* Trackers Grid */}
       {trackers.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {trackers.map((tracker) => (
             <TrackerCard
               key={tracker.id}

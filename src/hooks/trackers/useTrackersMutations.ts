@@ -1,15 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Tracker, TrackerEntry } from "@/entities/Tracker";
-import {
-  createTracker,
-  updateTracker,
-  deleteTracker,
-  cleanupTrackerEntries,
-  createTrackerEntry,
-} from "@/lib/supabase/trackers";
 import { toast } from "sonner";
-import { getIsDemoMode } from "@/lib/supabase";
+
+import { Tracker, TrackerEntry } from "@/entities/Tracker";
 import { getDemoTrackersRef } from "@/lib/demoStorage/trackers";
+import { getIsDemoMode } from "@/lib/supabase";
+import {
+  cleanupTrackerEntries,
+  createTracker,
+  createTrackerEntry,
+  deleteTracker,
+  updateTracker,
+} from "@/lib/supabase/trackers";
 
 const isDemoMode = getIsDemoMode();
 
@@ -19,7 +20,7 @@ export const useTrackerMutations = () => {
   // Create tracker
   const createMutation = useMutation({
     mutationFn: async (
-      tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">
+      tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt">,
     ) => {
       await new Promise((r) => setTimeout(r, 300));
 
@@ -27,8 +28,8 @@ export const useTrackerMutations = () => {
         const demoTrackers = getDemoTrackersRef();
         const newTracker: Tracker = {
           ...tracker,
-          id: crypto.randomUUID(),
           createdAt: new Date(),
+          id: crypto.randomUUID(),
           updatedAt: new Date(),
         };
         demoTrackers.push(newTracker);
@@ -107,16 +108,16 @@ export const useTrackerMutations = () => {
 
         const newEntry: TrackerEntry = {
           ...entryData,
-          id: crypto.randomUUID(),
           balance: newBalance,
           createdAt: new Date(),
+          id: crypto.randomUUID(),
         };
 
         tracker.entries.push(newEntry);
         tracker.currentBalance = newBalance;
         tracker.updatedAt = new Date();
 
-        return { trackerId, newEntry, newBalance };
+        return { newBalance, newEntry, trackerId };
       }
 
       // Production mode
@@ -138,7 +139,7 @@ export const useTrackerMutations = () => {
       // Update the tracker's current balance
       await updateTracker(trackerId, { currentBalance: newBalance });
 
-      return { trackerId, newEntry: entry, newBalance };
+      return { newBalance, newEntry: entry, trackerId };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["trackers"] });
@@ -169,31 +170,25 @@ export const useTrackerMutations = () => {
 
         // Add carry-over entry
         const carryOverEntry: TrackerEntry = {
-          id: crypto.randomUUID(),
-          date: new Date(),
-          description: "Balance carry-over (cleanup)",
-          debit: latestBalance,
-          credit: 0,
           balance: latestBalance,
           createdAt: new Date(),
+          credit: 0,
+          date: new Date(),
+          debit: latestBalance,
+          description: "Balance carry-over (cleanup)",
+          id: crypto.randomUUID(),
         };
 
         tracker.entries.push(carryOverEntry);
         tracker.currentBalance = latestBalance;
         tracker.updatedAt = new Date();
 
-        return { trackerId, balance: latestBalance };
+        return { balance: latestBalance, trackerId };
       }
 
       // Production mode
       const result = await cleanupTrackerEntries(trackerId);
       return result;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["trackers"] });
-      toast.success("Entries cleaned up!", {
-        description: "All entries replaced with carry-over balance",
-      });
     },
     onError: (error) => {
       console.error("Cleanup error:", error);
@@ -201,19 +196,25 @@ export const useTrackerMutations = () => {
         description: "Please try again",
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
+      toast.success("Entries cleaned up!", {
+        description: "All entries replaced with carry-over balance",
+      });
+    },
   });
 
   return {
-    create: createMutation.mutate,
-    update: updateMutation.mutate,
-    delete: deleteMutation.mutate,
     addEntry: addEntryMutation.mutate,
     cleanup: cleanupMutation.mutate,
+    create: createMutation.mutate,
+    delete: deleteMutation.mutate,
     isPending:
       createMutation.isPending ||
       updateMutation.isPending ||
       deleteMutation.isPending ||
       addEntryMutation.isPending ||
       cleanupMutation.isPending,
+    update: updateMutation.mutate,
   };
 };

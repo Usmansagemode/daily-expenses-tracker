@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetContent,
@@ -8,9 +12,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tracker } from "@/entities/Tracker";
 import { LOCALE_CONFIG } from "@/lib/config";
@@ -20,7 +21,7 @@ interface CreateTrackerSheetProps {
   onOpenChange: (open: boolean) => void;
   tracker?: Tracker; // If provided, we're editing
   onSave: (
-    tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">
+    tracker: Omit<Tracker, "id" | "createdAt" | "updatedAt" | "entries">,
   ) => void;
 }
 
@@ -43,14 +44,15 @@ export const CreateTrackerSheet = ({
   const [title, setTitle] = useState(tracker?.title || "");
   const [description, setDescription] = useState(tracker?.description || "");
   const [initialBalance, setInitialBalance] = useState(
-    tracker?.initialBalance?.toString() || "0"
+    tracker?.initialBalance?.toString() || "0",
   );
   const [selectedColor, setSelectedColor] = useState(
-    tracker?.color || PRESET_COLORS[0].value
+    tracker?.color || PRESET_COLORS[0].value,
   );
 
   useEffect(() => {
     if (tracker) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(tracker.title || "");
       setDescription(tracker.description || "");
       setInitialBalance(tracker.initialBalance?.toString() || "0");
@@ -68,11 +70,11 @@ export const CreateTrackerSheet = ({
     e.preventDefault();
 
     onSave({
-      title,
+      color: selectedColor,
+      currentBalance: parseFloat(initialBalance) || 0,
       description: description || undefined,
       initialBalance: parseFloat(initialBalance) || 0,
-      currentBalance: parseFloat(initialBalance) || 0,
-      color: selectedColor,
+      title,
     });
 
     // Reset form
@@ -85,7 +87,7 @@ export const CreateTrackerSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+      <SheetContent className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader>
           <SheetTitle>
             {tracker ? "Edit Tracker" : "Create New Tracker"}
@@ -95,7 +97,7 @@ export const CreateTrackerSheet = ({
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">
@@ -128,7 +130,7 @@ export const CreateTrackerSheet = ({
               Initial Balance <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                 ${LOCALE_CONFIG.symbol}
               </span>
               <Input
@@ -143,7 +145,7 @@ export const CreateTrackerSheet = ({
                 disabled={!!tracker}
               />
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Use negative for debts (e.g., -5000). Positive for savings or
               assets.
             </p>
@@ -152,7 +154,7 @@ export const CreateTrackerSheet = ({
           {/* Color Picker */}
           <div className="space-y-2">
             <Label>Color</Label>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex flex-wrap gap-2">
               {PRESET_COLORS.map((color) => (
                 <button
                   key={color.value}

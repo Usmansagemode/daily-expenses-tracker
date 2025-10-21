@@ -11,10 +11,12 @@ export async function POST(request: NextRequest) {
       // Set cookie that expires in 30 days
       response.cookies.set("expense_session", password, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 30, // 30 days
+        maxAge: 60 * 60 * 24 * 30,
+        // 30 days
         path: "/",
+
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
       });
 
       return response;

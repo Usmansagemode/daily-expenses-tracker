@@ -1,14 +1,7 @@
 "use client";
 
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import { Button } from "@/components/ui/button";
-import { ExpenseWithDetails } from "@/entities/Expense";
 import { useMemo, useState } from "react";
+import { BarChart3, LineChart as LineChartIcon } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -19,7 +12,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { BarChart3, LineChart as LineChartIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { ExpenseWithDetails } from "@/entities/Expense";
 import { GREEN, ORANGE, RED } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
 
@@ -30,8 +31,8 @@ interface MonthlySpendingChartProps {
 
 const chartConfig = {
   amount: {
-    label: "Spending",
     color: "hsl(var(--chart-1))",
+    label: "Spending",
   },
 } satisfies ChartConfig;
 
@@ -67,11 +68,11 @@ const MonthlySpendingChart = ({
     const max = Math.max(...monthlyTotals);
 
     return {
-      monthlyData: months.map((month, index) => ({
-        month,
-        amount: monthlyTotals[index],
-      })),
       maxAmount: max,
+      monthlyData: months.map((month, index) => ({
+        amount: monthlyTotals[index],
+        month,
+      })),
     };
   }, [expenses]);
 
@@ -91,9 +92,9 @@ const MonthlySpendingChart = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-medium">Monthly Spending Trend</h2>
-        <div className="flex gap-1 bg-secondary rounded-md p-1">
+        <div className="bg-secondary flex gap-1 rounded-md p-1">
           <Button
             variant={chartType === "area" ? "default" : "ghost"}
             size="sm"

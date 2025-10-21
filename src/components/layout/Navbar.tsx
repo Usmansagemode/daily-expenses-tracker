@@ -2,7 +2,6 @@
 
 import { LogOut, Moon, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 import {
   DropdownMenu,
@@ -12,14 +11,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ModeToggle } from "./ThemeButton";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
+
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { SidebarTrigger, useSidebar } from "../ui/sidebar";
+
+import { ModeToggle } from "./ThemeButton";
 
 const Navbar = () => {
   const { toggleSidebar } = useSidebar();
   return (
-    <nav className="p-4 flex items-center justify-between sticky top-0 bg-background z-10">
+    <nav className="bg-background sticky top-0 z-10 flex items-center justify-between p-4">
       {/* LEFT */}
       <SidebarTrigger />
 
@@ -40,15 +42,15 @@ const Navbar = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <User className="h-[1.2rem] w-[1.2rem] mr-2" />
+              <User className="mr-2 h-[1.2rem] w-[1.2rem]" />
               Profile
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Settings className="h-[1.2rem] w-[1.2rem] mr-2" />
+              <Settings className="mr-2 h-[1.2rem] w-[1.2rem]" />
               Settings
             </DropdownMenuItem>
             <DropdownMenuItem variant="destructive">
-              <LogOut className="h-[1.2rem] w-[1.2rem] mr-2" />
+              <LogOut className="mr-2 h-[1.2rem] w-[1.2rem]" />
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

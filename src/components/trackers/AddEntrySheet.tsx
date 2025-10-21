@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetContent,
@@ -8,9 +12,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LOCALE_CONFIG } from "@/lib/config";
 
@@ -27,7 +28,7 @@ interface AddEntrySheetProps {
       description?: string;
       debit: number;
       credit: number;
-    }
+    },
   ) => void;
 }
 
@@ -40,7 +41,7 @@ export const AddEntrySheet = ({
   onSave,
 }: AddEntrySheetProps) => {
   const [date, setDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [description, setDescription] = useState("");
   const [debit, setDebit] = useState("0");
@@ -58,10 +59,10 @@ export const AddEntrySheet = ({
     }
 
     onSave(trackerId, {
-      date: new Date(date),
-      description: description || undefined,
-      debit: parsedDebit,
       credit: parsedCredit,
+      date: new Date(date),
+      debit: parsedDebit,
+      description: description || undefined,
     });
 
     // Reset form
@@ -75,7 +76,7 @@ export const AddEntrySheet = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+      <SheetContent className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Add Entry to {trackerTitle}</SheetTitle>
           <SheetDescription>
@@ -83,8 +84,8 @@ export const AddEntrySheet = ({
             <span
               className={
                 currentBalance >= 0
-                  ? "text-green-600 dark:text-green-500 font-semibold"
-                  : "text-red-600 dark:text-red-500 font-semibold"
+                  ? "font-semibold text-green-600 dark:text-green-500"
+                  : "font-semibold text-red-600 dark:text-red-500"
               }
             >
               ${LOCALE_CONFIG.symbol}
@@ -93,7 +94,7 @@ export const AddEntrySheet = ({
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           {/* Date */}
           <div className="space-y-2">
             <Label htmlFor="date">Date</Label>
@@ -123,7 +124,7 @@ export const AddEntrySheet = ({
             <div className="space-y-2">
               <Label htmlFor="debit">Debit (Money In)</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                   ${LOCALE_CONFIG.symbol}
                 </span>
                 <Input
@@ -154,7 +155,7 @@ export const AddEntrySheet = ({
             <div className="space-y-2">
               <Label htmlFor="credit">Credit (Money Out)</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                   ${LOCALE_CONFIG.symbol}
                 </span>
                 <Input

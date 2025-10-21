@@ -1,15 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
+
 import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency, getCategoryColor } from "@/lib/utils";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 
 interface CategoryTotalChartProps {
   expenses: ExpenseWithDetails[];
@@ -17,8 +18,8 @@ interface CategoryTotalChartProps {
 
 const chartConfig = {
   amount: {
-    label: "Total Spending",
     color: "hsl(var(--chart-2))",
+    label: "Total Spending",
   },
 } satisfies ChartConfig;
 
@@ -32,13 +33,13 @@ const CategoryTotalChart = ({ expenses }: CategoryTotalChartProps) => {
     });
 
     return Object.entries(totals)
-      .map(([category, amount]) => ({ category, amount }))
+      .map(([category, amount]) => ({ amount, category }))
       .sort((a, b) => b.amount - a.amount);
   }, [expenses]);
 
   return (
     <div>
-      <h2 className="text-lg font-medium mb-6">Total Spending by Category</h2>
+      <h2 className="mb-6 text-lg font-medium">Total Spending by Category</h2>
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <BarChart accessibilityLayer data={categoryData} layout="vertical">
           <CartesianGrid horizontal={false} />

@@ -1,8 +1,11 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import sortKeysFix from "eslint-plugin-sort-keys-fix";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const simpleImportSort = require("eslint-plugin-simple-import-sort");
+const sortKeysFix = require("eslint-plugin-sort-keys-fix");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
