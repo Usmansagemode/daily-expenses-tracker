@@ -202,8 +202,8 @@ export const DEFAULT_CATEGORIES: Category[] = [
 ];
 
 export const DEFAULT_TAGS: Tag[] = [
-  { id: '1', name: 'Walmart', createdAt: new Date('2025-01-01') },
-  { id: '2', name: 'Target', createdAt: new Date('2025-01-01') },
+  { id: "costco", name: "Costco", createdAt: new Date("2025-01-01") },
+  { id: "aldi", name: "Aldi", createdAt: new Date("2025-01-01") },
   // Add your own locations here
 ];
 
