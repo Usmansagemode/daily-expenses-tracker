@@ -2,9 +2,9 @@
 
 A modern, self-hosted expense tracking application built with Next.js, Supabase, and shadcn/ui. Track your daily expenses with meaningful charts, categorize spending, and gain insights into your financial habits. Furthermore, you may track debts, savings, loans, and any financial goals outside of daily expenses. Each tracker maintains a running balance with debit (money in) and credit (money out) entries, giving you a clear view of your financial progress over time.
 
-| Dashboard | Expenses | Trackers |
-|------------|-----------|--------------|
-| ![Dashboard](public/screenshots/yearly_charts_zoomedout.webp) | ![Expenses](public/screenshots/expenses.webp) | ![Trackers](public/screenshots/trackers.webp) 
+| Dashboard                                                     | Expenses                                      | Trackers                                      |
+| ------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| ![Dashboard](public/screenshots/yearly_charts_zoomedout.webp) | ![Expenses](public/screenshots/expenses.webp) | ![Trackers](public/screenshots/trackers.webp) |
 
 ## ✨ Features
 
@@ -20,8 +20,6 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 - **Friend Loans**: Money lent or borrowed from friends/family
 - **Project Funds**: Budget tracking for specific projects or goals
 
-
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -29,6 +27,7 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 Before you begin, ensure you have the following installed:
 
 #### 1. **Node.js** (v18 or higher)
+
 - Download from [nodejs.org](https://nodejs.org/)
 - Verify installation:
   ```bash
@@ -37,11 +36,15 @@ Before you begin, ensure you have the following installed:
   ```
 
 #### 2. **pnpm** (Package Manager)
+
 Install pnpm globally:
+
 ```bash
 npm install -g pnpm
 ```
+
 Verify installation:
+
 ```bash
 pnpm --version
 # Should output: 8.x.x or higher
@@ -78,6 +81,7 @@ pnpm install
 #### 3.2 Create a New Project
 
 Fill in the following:
+
 - **Name**: `daily-expenses` (or any name you prefer)
 - **Database Password**: Generate a strong password (save it securely!)
 - **Region**: Choose the closest region to you
@@ -88,6 +92,7 @@ Click **"Create new project"** and wait ~2 minutes for setup.
 #### 3.3 Get Your API Credentials
 
 Once your project is ready:
+
 1. Click on **Project Settings** (gear icon in sidebar)
 2. Navigate to **API** section
 3. Copy the following:
@@ -166,6 +171,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxxxxxxxx...
 ```
 
 **Replace:**
+
 - `your_secure_password_here` → Your chosen password for the app. You only need this if you are hosting this to Vercel and want some security.
 - `https://xxxxx.supabase.co` → Your Supabase Project URL
 - `eyJxxxxxxxxxxx...` → Your Supabase anon public key
@@ -189,15 +195,15 @@ You should see the login page. Enter your `APP_PASSWORD` to access the app!
 ### Option 1: Update Default Data (Before First Run)
 
 Categories are meant to represent broad spending types (e.g., food, transport, utilities), while tags can be used for specific vendors or locations (e.g., Walmart, Target, Amazon).
-Simply update the lists in src/entities/Expense.ts to match your personal or project requirements. 
+Simply update the lists in src/lib/config.ts to match your personal or project requirements.
 The intention for Members is to be able to set who paid for the expense. This will enable you to see how much a certain family member/friend is paying.
 
+Edit `src/lib/config.ts`:
 
-Edit `src/entities/Expense.ts`:
 ```typescript
 export const DEFAULT_CATEGORIES: Category[] = [
-  { id: '1', name: 'Grocery', createdAt: new Date('2025-01-01') },
-  { id: '2', name: 'Petrol', createdAt: new Date('2025-01-01') },
+  { id: "1", name: "Grocery", createdAt: new Date("2025-01-01") },
+  { id: "2", name: "Petrol", createdAt: new Date("2025-01-01") },
   // Add your own categories here
 ];
 
@@ -222,7 +228,6 @@ export const DEFAULT_MEMBERS: Member[] = [
     createdAt: new Date("2025-01-01"),
   },
 ];
-
 ```
 
 ## 🖼️ App Icon / Favicon
@@ -281,11 +286,13 @@ Your app will be live at: `https://your-project-name.vercel.app`
 ## 🔒 Security Best Practices
 
 ### For Local Development:
+
 - Keep `.env.local` private (never commit it)
 - Use a strong `APP_PASSWORD`
 - Keep your database password secure
 
 ### For Production:
+
 1. **Use a strong APP_PASSWORD** (at least 12 characters)
 2. **Enable HTTPS** (Vercel does this automatically)
 3. **Don't share your password publicly**
@@ -293,7 +300,9 @@ Your app will be live at: `https://your-project-name.vercel.app`
    - Go to Supabase → Database → Backups
 
 ### Optional: Add IP Whitelisting
+
 If you want extra security, you can restrict access to specific IPs in Vercel:
+
 1. Go to **Settings** → **Firewall**
 2. Add your home/work IP addresses
 
@@ -315,6 +324,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 ## 📖 Usage Guide
 
 ### Adding an Expense
+
 1. Click **"Add Expense"** button
 2. Fill in:
    - **Date**: When the expense occurred
@@ -325,6 +335,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 3. Click 'Save Changes' to store updates to the database!
 
 ### Viewing Analytics
+
 - Navigate to **Yearly Charts** to see:
   - Monthly spending trends for the year
   - Category breakdowns
@@ -333,11 +344,13 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
   - And many more to come
 
 ### Managing Categories
+
 Categories and tags are stored locally for simplicity since they rarely change once set up.
 Keeping them client-side avoids unnecessary database queries and keeps the app fast.
 However, avoid removing categories that are already used in stored expenses, as that may lead to mismatched or meaningless charts. Or at least keep the minimum count of categories and tags the same.
 
 ### Managing Trackers
+
 Trackers let you manage finances beyond daily expenses — like debts, loans, savings goals, or any running balance you want to track.
 
 1. Click **“Add Tracker”** to create a new tracker (e.g., “Vacation Savings”, “Credit Card”, “Car Loan”).
@@ -346,12 +359,12 @@ Trackers let you manage finances beyond daily expenses — like debts, loans, sa
 4. You can **edit**, **delete**, or **clean up** entries (remove empty or zero-value records) anytime.
 5. The **color bar** on the left helps you visually distinguish between different trackers.
 
-
 ---
 
 ## 🛠️ Development
 
 ### Project Structure
+
 ```
 daily-expenses-tracker/
 ├── src/
@@ -367,7 +380,7 @@ daily-expenses-tracker/
 │   │   └── trackers/         # Track-related components
 │   ├── entities/             # Data models & types
 │   ├── hooks/                # Custom React hooks
-│   ├── lib/                  # Utilities & Supabase client
+│   ├── lib/                  # Config, Utilities & Supabase client
 │   └── middleware.ts         # Password protection middleware
 ├── .env.local                # Environment variables (not in git)
 ├── package.json
@@ -391,6 +404,7 @@ pnpm lint         # Run ESLint
 ### Adding New Features
 
 Want to extend the app? Here are some ideas:
+
 - 💳 Budget limits per category
 - 📧 Email reports
 - 👥 Multi-user support with proper auth
@@ -423,6 +437,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📧 Support
 
 If you have questions or run into issues:
+
 1. Check existing [GitHub Issues](https://github.com/yourusername/daily-expenses-tracker/issues)
 2. Create a new issue with detailed information
 3. Star ⭐ the repo if you find it helpful!
@@ -439,12 +454,13 @@ If you have questions or run into issues:
 - [ ] Export reports (PDF, CSV)
 
 ## 🪪 License
+
 This project is open-source and available under the [MIT License](./LICENSE).
 
 ## 🤝 Contributing
+
 Contributions, issues, and feature requests are welcome!
 Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).
-
 
 ---
 
