@@ -281,7 +281,7 @@ const MemberCategoryHeatmap = ({ expenses }: MemberCategoryHeatmapProps) => {
             value={colorScheme}
             onValueChange={(value: ColorScheme) => setColorScheme(value)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Select color scheme" />
             </SelectTrigger>
             <SelectContent>
