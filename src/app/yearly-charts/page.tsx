@@ -12,6 +12,9 @@ import { getIsDemoMode, isSupabaseAvailable, supabase } from "@/lib/supabase";
 import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
 import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
 import CategoryFilter from "@/components/yearly-charts/CategoryFilter";
+import MemberCategoryHeatmap from "@/components/yearly-charts/MemberCategoryHeatmap";
+import LocationSpendingChart from "@/components/yearly-charts/LocationSpendingChart";
+import TopExpensesChart from "@/components/yearly-charts/TopExpensesChart";
 
 const isDemoMode = getIsDemoMode();
 
@@ -175,6 +178,18 @@ const YearlyChartsPage = () => {
         </div>
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
           <CategoryMemberBreakdownChart expenses={filteredYearExpenses} />
+        </div>
+        {/* Location Spending - Similar size to Member donut */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2">
+          <LocationSpendingChart expenses={filteredYearExpenses} />
+        </div>
+
+        {/* Top 10 Expenses - Give it more width */}
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-2 xl:col-span-2">
+          <TopExpensesChart expenses={filteredYearExpenses} limit={10} />
+        </div>
+        <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-3 xl:col-span-4 2xl:col-span-5">
+          <MemberCategoryHeatmap expenses={filteredYearExpenses} />
         </div>
         {/* Category by Month - Takes 3 columns */}
         <div className="bg-primary-foreground p-6 rounded-lg lg:col-span-3 xl:col-span-3">

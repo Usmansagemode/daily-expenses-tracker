@@ -63,10 +63,22 @@ export const DEFAULT_CATEGORIES: Category[] = [
 
 // Default tags to seed your app
 export const DEFAULT_TAGS: Tag[] = [
-  { id: "1", name: "Costco", createdAt: new Date("2025-01-01") },
-  { id: "2", name: "Aldi", createdAt: new Date("2025-01-01") },
-  { id: "3", name: "Tire Shop", createdAt: new Date("2025-01-01") },
-  { id: "4", name: "None", createdAt: new Date("2025-01-01") },
+  { id: "costco", name: "Costco", createdAt: new Date("2025-01-01") },
+  { id: "aldi", name: "Aldi", createdAt: new Date("2025-01-01") },
+  { id: "tire-shop", name: "Tire Shop", createdAt: new Date("2025-01-01") },
+  { id: "walmart", name: "Walmart", createdAt: new Date("2025-01-01") },
+  { id: "giant-eagle", name: "Giant Eagle", createdAt: new Date("2025-01-01") },
+  { id: "sams-club", name: "Sams Club", createdAt: new Date("2025-01-01") },
+  { id: "amazon", name: "Amazon", createdAt: new Date("2025-01-01") },
+  { id: "shein", name: "Shein", createdAt: new Date("2025-01-01") },
+  {
+    id: "pitts-halal-brothers",
+    name: "Pitts Halal Brothers",
+    createdAt: new Date("2025-01-01"),
+  },
+  { id: "joe-and-pie", name: "Joe & Pie", createdAt: new Date("2025-01-01") },
+  { id: "98k", name: "98K", createdAt: new Date("2025-01-01") },
+  { id: "others", name: "Others", createdAt: new Date("2025-01-01") },
 ];
 
 // Default members to choose who paid

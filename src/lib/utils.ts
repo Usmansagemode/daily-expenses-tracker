@@ -39,6 +39,7 @@ export const getCategoryColor = (categoryName: string): string => {
     ] || "oklch(0.646 0.222 41.116)" // default to chart-1
   );
 };
+
 export const formatCurrency = (
   amount: number,
   options?: Intl.NumberFormatOptions
