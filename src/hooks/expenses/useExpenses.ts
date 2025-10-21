@@ -5,6 +5,7 @@ import {
   ExpenseWithDetails,
   DEFAULT_CATEGORIES,
   DEFAULT_TAGS,
+  DEFAULT_MEMBERS,
 } from "@/entities/Expense";
 import { expensesData } from "@/components/expenses/data/expenseData";
 
@@ -17,10 +18,12 @@ const transformToExpenseWithDetails = (
       (c) => c.id === expense.categoryId
     );
     const tag = DEFAULT_TAGS.find((t) => t.id === expense.tagId);
+    const member = DEFAULT_MEMBERS.find((m) => m.id === expense.memberId);
     return {
       ...expense,
       categoryName: category?.name || null,
       tagName: tag?.name || null,
+      memberName: member?.fullName || null,
     };
   });
 };

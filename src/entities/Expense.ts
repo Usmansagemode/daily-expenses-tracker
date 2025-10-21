@@ -15,6 +15,7 @@ import {
 export type Expense = {
   id: string;
   amount: number;
+  memberId: string | null;
   categoryId: string | null; // References Category.id
   tagId: string | null; // References Tag.id (single location)
   date: Date; // or string in ISO format
@@ -35,6 +36,14 @@ export type Category = {
 // Tag type - editable and expandable
 export type Tag = {
   id: string;
+  name: string;
+  createdAt: Date;
+};
+
+// Member type
+export type Member = {
+  id: string;
+  fullName: string;
   name: string;
   createdAt: Date;
 };
@@ -60,6 +69,22 @@ export const DEFAULT_TAGS: Tag[] = [
   { id: "4", name: "None", createdAt: new Date("2025-01-01") },
 ];
 
+// Default members to choose who paid
+export const DEFAULT_MEMBERS: Member[] = [
+  {
+    id: "1",
+    fullName: "Usman Khalid Mian",
+    name: "Usman",
+    createdAt: new Date("2025-01-01"),
+  },
+  {
+    id: "2",
+    fullName: "Anoosha Fayyaz",
+    name: "Anoosha",
+    createdAt: new Date("2025-01-01"),
+  },
+];
+
 // Type for creating a new expense (without system fields)
 export type CreateExpenseInput = {
   amount: number;
@@ -78,6 +103,7 @@ export type UpdateExpenseInput = Partial<CreateExpenseInput> & {
 export type ExpenseWithDetails = Expense & {
   categoryName: string | null;
   tagName: string | null;
+  memberName: string | null;
 };
 
 // Map by category name

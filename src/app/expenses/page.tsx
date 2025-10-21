@@ -5,6 +5,7 @@ import {
   DEFAULT_CATEGORIES,
   DEFAULT_TAGS,
   Expense,
+  DEFAULT_MEMBERS,
 } from "@/entities/Expense";
 import { createColumns } from "./columns";
 import { DataTable } from "./data-table";
@@ -114,7 +115,9 @@ const ExpensesPage = () => {
     let newExpense: ExpenseWithDetails = {
       id: crypto.randomUUID(),
       amount: 0,
-      categoryId: null,
+      memberId: "1",
+      memberName: null,
+      categoryId: "1",
       tagId: null,
       categoryName: null,
       tagName: null,
@@ -135,7 +138,7 @@ const ExpensesPage = () => {
   const handleSaveAll = async () => {
     try {
       const expensesToSave: Expense[] = localExpenses.map(
-        ({ categoryName, tagName, ...expense }) => expense
+        ({ categoryName, tagName, memberName, ...expense }) => expense
       );
 
       await saveAllAsync(expensesToSave); // Use async version
@@ -229,6 +232,7 @@ const ExpensesPage = () => {
   const columns = useMemo(
     () =>
       createColumns({
+        members: DEFAULT_MEMBERS,
         categories: DEFAULT_CATEGORIES,
         tags: DEFAULT_TAGS,
         onUpdate: handleUpdate,

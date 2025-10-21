@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ExpenseWithDetails, Category, Tag } from "@/entities/Expense";
+import { ExpenseWithDetails, Category, Tag, Member } from "@/entities/Expense";
 import { DataTableColumnHeader } from "./column-header";
 import { RowActions } from "./row-actions";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface CreateColumnsProps {
+  members: Member[];
   categories: Category[];
   tags: Tag[];
   onUpdate: (
@@ -112,6 +113,7 @@ const EditableDescriptionCell = ({
 };
 
 export const createColumns = ({
+  members,
   categories,
   tags,
   onUpdate,
@@ -259,6 +261,44 @@ export const createColumns = ({
               {tags.map((tag) => (
                 <SelectItem key={tag.id} value={tag.id}>
                   {tag.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      },
+    },
+    {
+      accessorKey: "memberName",
+      header: ({ column }) => {
+        return <DataTableColumnHeader column={column} title="Paid by" />;
+      },
+      cell: ({ row }) => {
+        const [value, setValue] = useState(row.original.memberId || "none");
+
+        useEffect(() => {
+          setValue(row.original.memberId || "none");
+        }, [row.original.memberId]);
+        return (
+          <Select
+            value={value}
+            onValueChange={(newValue) => {
+              setValue(newValue);
+              onUpdate(
+                row.original.id,
+                "memberId",
+                newValue === "none" ? null : newValue
+              );
+            }}
+          >
+            <SelectTrigger className="h-8 w-32 border bg-transparent hover:bg-accent focus:ring-1 focus:ring-ring">
+              <SelectValue placeholder="Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">None</SelectItem>
+              {members.map((member) => (
+                <SelectItem key={member.id} value={member.id}>
+                  {member.name}
                 </SelectItem>
               ))}
             </SelectContent>

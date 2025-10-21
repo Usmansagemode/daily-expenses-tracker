@@ -5,6 +5,7 @@ export const expensesData: Expense[] = [
   {
     id: "1",
     amount: 127.45,
+    memberId: "2",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-10-14"),
@@ -15,6 +16,7 @@ export const expensesData: Expense[] = [
   {
     id: "2",
     amount: 45.99,
+    memberId: "2",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-10-13"),
@@ -25,6 +27,7 @@ export const expensesData: Expense[] = [
   {
     id: "3",
     amount: 89.5,
+    memberId: "1",
     categoryId: "1",
     tagId: "2",
     date: new Date("2025-10-12"),
@@ -35,6 +38,7 @@ export const expensesData: Expense[] = [
   {
     id: "4",
     amount: 55.0,
+    memberId: "1",
     categoryId: "7",
     tagId: null,
     date: new Date("2025-10-11"),
@@ -45,6 +49,7 @@ export const expensesData: Expense[] = [
   {
     id: "5",
     amount: 299.99,
+    memberId: "1",
     categoryId: "9",
     tagId: "3",
     date: new Date("2025-10-10"),
@@ -55,6 +60,7 @@ export const expensesData: Expense[] = [
   {
     id: "6",
     amount: 156.78,
+    memberId: "1",
     categoryId: "4",
     tagId: null,
     date: new Date("2025-10-09"),
@@ -65,6 +71,7 @@ export const expensesData: Expense[] = [
   {
     id: "7",
     amount: 32.5,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-10-08"),
@@ -75,6 +82,7 @@ export const expensesData: Expense[] = [
   {
     id: "8",
     amount: 145.0,
+    memberId: "1",
     categoryId: "8",
     tagId: null,
     date: new Date("2025-10-07"),
@@ -85,6 +93,7 @@ export const expensesData: Expense[] = [
   {
     id: "9",
     amount: 210.25,
+    memberId: "1",
     categoryId: "6",
     tagId: "4",
     date: new Date("2025-10-06"),
@@ -95,6 +104,7 @@ export const expensesData: Expense[] = [
   {
     id: "10",
     amount: 78.6,
+    memberId: "1",
     categoryId: "5",
     tagId: null,
     date: new Date("2025-10-05"),
@@ -107,6 +117,7 @@ export const expensesData: Expense[] = [
   {
     id: "11",
     amount: 23.5,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-09-04"),
@@ -117,6 +128,7 @@ export const expensesData: Expense[] = [
   {
     id: "12",
     amount: 540.0,
+    memberId: "1",
     categoryId: "9",
     tagId: "5",
     date: new Date("2025-09-03"),
@@ -127,16 +139,18 @@ export const expensesData: Expense[] = [
   {
     id: "13",
     amount: 65.0,
+    memberId: "1",
     categoryId: "3",
     tagId: "2",
     date: new Date("2025-09-02"),
-    description: "Gym membership renewal",
+    description: "Gym memberIdship renewal",
     createdAt: new Date("2025-09-02"),
     updatedAt: new Date("2025-09-02"),
   },
   {
     id: "14",
     amount: 120.0,
+    memberId: "1",
     categoryId: "8",
     tagId: null,
     date: new Date("2025-09-01"),
@@ -147,6 +161,7 @@ export const expensesData: Expense[] = [
   {
     id: "15",
     amount: 18.25,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-09-30"),
@@ -157,6 +172,7 @@ export const expensesData: Expense[] = [
   {
     id: "16",
     amount: 940.0,
+    memberId: "1",
     categoryId: "8",
     tagId: null,
     date: new Date("2025-09-29"),
@@ -167,6 +183,7 @@ export const expensesData: Expense[] = [
   {
     id: "17",
     amount: 76.4,
+    memberId: "1",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-09-28"),
@@ -179,6 +196,7 @@ export const expensesData: Expense[] = [
   {
     id: "18",
     amount: 45.0,
+    memberId: "1",
     categoryId: "4",
     tagId: "2",
     date: new Date("2025-08-27"),
@@ -189,6 +207,7 @@ export const expensesData: Expense[] = [
   {
     id: "19",
     amount: 12.75,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-08-26"),
@@ -199,6 +218,7 @@ export const expensesData: Expense[] = [
   {
     id: "20",
     amount: 230.0,
+    memberId: "1",
     categoryId: "6",
     tagId: null,
     date: new Date("2025-08-25"),
@@ -209,6 +229,7 @@ export const expensesData: Expense[] = [
   {
     id: "21",
     amount: 85.99,
+    memberId: "1",
     categoryId: "3",
     tagId: null,
     date: new Date("2025-08-24"),
@@ -219,6 +240,7 @@ export const expensesData: Expense[] = [
   {
     id: "22",
     amount: 59.0,
+    memberId: "1",
     categoryId: "5",
     tagId: "3",
     date: new Date("2025-08-23"),
@@ -229,6 +251,7 @@ export const expensesData: Expense[] = [
   {
     id: "23",
     amount: 130.25,
+    memberId: "1",
     categoryId: "7",
     tagId: "4",
     date: new Date("2025-08-22"),
@@ -241,6 +264,7 @@ export const expensesData: Expense[] = [
   {
     id: "24",
     amount: 35.0,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-07-21"),
@@ -251,6 +275,7 @@ export const expensesData: Expense[] = [
   {
     id: "25",
     amount: 210.75,
+    memberId: "1",
     categoryId: "9",
     tagId: null,
     date: new Date("2025-07-20"),
@@ -261,6 +286,7 @@ export const expensesData: Expense[] = [
   {
     id: "26",
     amount: 92.4,
+    memberId: "1",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-07-19"),
@@ -271,6 +297,7 @@ export const expensesData: Expense[] = [
   {
     id: "27",
     amount: 420.0,
+    memberId: "1",
     categoryId: "8",
     tagId: "5",
     date: new Date("2025-07-18"),
@@ -281,6 +308,7 @@ export const expensesData: Expense[] = [
   {
     id: "28",
     amount: 60.0,
+    memberId: "1",
     categoryId: "3",
     tagId: null,
     date: new Date("2025-07-17"),
@@ -293,6 +321,7 @@ export const expensesData: Expense[] = [
   {
     id: "29",
     amount: 44.25,
+    memberId: "1",
     categoryId: "5",
     tagId: null,
     date: new Date("2025-06-16"),
@@ -303,6 +332,7 @@ export const expensesData: Expense[] = [
   {
     id: "30",
     amount: 25.99,
+    memberId: "1",
     categoryId: "2",
     tagId: "3",
     date: new Date("2025-06-15"),
@@ -313,6 +343,7 @@ export const expensesData: Expense[] = [
   {
     id: "31",
     amount: 180.0,
+    memberId: "1",
     categoryId: "4",
     tagId: null,
     date: new Date("2025-06-14"),
@@ -323,6 +354,7 @@ export const expensesData: Expense[] = [
   {
     id: "32",
     amount: 75.5,
+    memberId: "1",
     categoryId: "1",
     tagId: "2",
     date: new Date("2025-06-13"),
@@ -335,6 +367,7 @@ export const expensesData: Expense[] = [
   {
     id: "33",
     amount: 320.0,
+    memberId: "1",
     categoryId: "5",
     tagId: null,
     date: new Date("2025-05-12"),
@@ -345,6 +378,7 @@ export const expensesData: Expense[] = [
   {
     id: "34",
     amount: 45.75,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-05-11"),
@@ -355,6 +389,7 @@ export const expensesData: Expense[] = [
   {
     id: "35",
     amount: 89.99,
+    memberId: "1",
     categoryId: "3",
     tagId: null,
     date: new Date("2025-05-10"),
@@ -365,6 +400,7 @@ export const expensesData: Expense[] = [
   {
     id: "36",
     amount: 155.0,
+    memberId: "1",
     categoryId: "7",
     tagId: null,
     date: new Date("2025-05-09"),
@@ -377,6 +413,7 @@ export const expensesData: Expense[] = [
   {
     id: "37",
     amount: 67.8,
+    memberId: "1",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-04-08"),
@@ -387,6 +424,7 @@ export const expensesData: Expense[] = [
   {
     id: "38",
     amount: 120.0,
+    memberId: "1",
     categoryId: "6",
     tagId: null,
     date: new Date("2025-04-07"),
@@ -397,6 +435,7 @@ export const expensesData: Expense[] = [
   {
     id: "39",
     amount: 280.0,
+    memberId: "1",
     categoryId: "9",
     tagId: "3",
     date: new Date("2025-04-06"),
@@ -407,6 +446,7 @@ export const expensesData: Expense[] = [
   {
     id: "40",
     amount: 42.5,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-04-05"),
@@ -419,6 +459,7 @@ export const expensesData: Expense[] = [
   {
     id: "41",
     amount: 95.0,
+    memberId: "1",
     categoryId: "4",
     tagId: null,
     date: new Date("2025-03-04"),
@@ -429,6 +470,7 @@ export const expensesData: Expense[] = [
   {
     id: "42",
     amount: 210.0,
+    memberId: "1",
     categoryId: "8",
     tagId: null,
     date: new Date("2025-03-03"),
@@ -439,6 +481,7 @@ export const expensesData: Expense[] = [
   {
     id: "43",
     amount: 68.9,
+    memberId: "1",
     categoryId: "1",
     tagId: "2",
     date: new Date("2025-03-02"),
@@ -449,6 +492,7 @@ export const expensesData: Expense[] = [
   {
     id: "44",
     amount: 35.25,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-03-01"),
@@ -461,6 +505,7 @@ export const expensesData: Expense[] = [
   {
     id: "45",
     amount: 150.0,
+    memberId: "1",
     categoryId: "6",
     tagId: null,
     date: new Date("2025-02-28"),
@@ -471,6 +516,7 @@ export const expensesData: Expense[] = [
   {
     id: "46",
     amount: 89.99,
+    memberId: "1",
     categoryId: "3",
     tagId: null,
     date: new Date("2025-02-27"),
@@ -481,6 +527,7 @@ export const expensesData: Expense[] = [
   {
     id: "47",
     amount: 55.0,
+    memberId: "1",
     categoryId: "7",
     tagId: null,
     date: new Date("2025-02-26"),
@@ -491,6 +538,7 @@ export const expensesData: Expense[] = [
   {
     id: "48",
     amount: 180.0,
+    memberId: "1",
     categoryId: "5",
     tagId: null,
     date: new Date("2025-02-25"),
@@ -503,6 +551,7 @@ export const expensesData: Expense[] = [
   {
     id: "49",
     amount: 1200.0,
+    memberId: "1",
     categoryId: "8",
     tagId: null,
     date: new Date("2025-01-15"),
@@ -513,6 +562,7 @@ export const expensesData: Expense[] = [
   {
     id: "50",
     amount: 450.0,
+    memberId: "1",
     categoryId: "4",
     tagId: null,
     date: new Date("2025-01-10"),
@@ -523,6 +573,7 @@ export const expensesData: Expense[] = [
   {
     id: "51",
     amount: 89.0,
+    memberId: "1",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-01-08"),
@@ -533,6 +584,7 @@ export const expensesData: Expense[] = [
   {
     id: "52",
     amount: 75.0,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-01-05"),
@@ -543,6 +595,7 @@ export const expensesData: Expense[] = [
   {
     id: "53",
     amount: 299.0,
+    memberId: "1",
     categoryId: "9",
     tagId: "3",
     date: new Date("2025-01-03"),
@@ -553,10 +606,11 @@ export const expensesData: Expense[] = [
   {
     id: "54",
     amount: 65.5,
+    memberId: "1",
     categoryId: "3",
     tagId: null,
     date: new Date("2025-01-02"),
-    description: "Gym membership",
+    description: "Gym memberIdship",
     createdAt: new Date("2025-01-02"),
     updatedAt: new Date("2025-01-02"),
   },
@@ -565,6 +619,7 @@ export const expensesData: Expense[] = [
   {
     id: "55",
     amount: 85.25,
+    memberId: "1",
     categoryId: "1",
     tagId: "1",
     date: new Date("2025-11-20"),
@@ -575,6 +630,7 @@ export const expensesData: Expense[] = [
   {
     id: "56",
     amount: 120.0,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-11-15"),
@@ -587,6 +643,7 @@ export const expensesData: Expense[] = [
   {
     id: "57",
     amount: 350.0,
+    memberId: "1",
     categoryId: "6",
     tagId: null,
     date: new Date("2025-12-24"),
@@ -597,6 +654,7 @@ export const expensesData: Expense[] = [
   {
     id: "58",
     amount: 95.0,
+    memberId: "1",
     categoryId: "2",
     tagId: null,
     date: new Date("2025-12-20"),
@@ -607,6 +665,7 @@ export const expensesData: Expense[] = [
   {
     id: "59",
     amount: 180.0,
+    memberId: "1",
     categoryId: "4",
     tagId: null,
     date: new Date("2025-12-15"),
@@ -617,6 +676,7 @@ export const expensesData: Expense[] = [
   {
     id: "60",
     amount: 75.5,
+    memberId: "1",
     categoryId: "1",
     tagId: "2",
     date: new Date("2025-12-10"),

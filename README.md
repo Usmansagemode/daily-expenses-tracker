@@ -10,7 +10,7 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 
 - **Meaningful Yearly Charts** - Visualize spending with interactive charts over the year
 - **Monthly View** - Track expenses month by month
-- **Categories & Tags** - Organize expenses by category and location
+- **Members, Categories & Tags** - Organize expenses by family members, category and location
 - **Dark Mode** - UI in both light and dark themes
 - **Password Protected** - Simple password protection for your data
 - **Responsive** - Works on desktop, tablet, and mobile
@@ -184,12 +184,13 @@ You should see the login page. Enter your `APP_PASSWORD` to access the app!
 
 ---
 
-## 🎨 Customizing Categories & Tags
+## 🎨 Customizing Members, Categories & Tags
 
 ### Option 1: Update Default Data (Before First Run)
 
 Categories are meant to represent broad spending types (e.g., food, transport, utilities), while tags can be used for specific vendors or locations (e.g., Walmart, Target, Amazon).
 Simply update the lists in src/entities/Expense.ts to match your personal or project requirements. 
+The intention for Members is to be able to set who paid for the expense. This will enable you to see how much a certain family member/friend is paying.
 
 
 Edit `src/entities/Expense.ts`:
@@ -205,6 +206,23 @@ export const DEFAULT_TAGS: Tag[] = [
   { id: '2', name: 'Target', createdAt: new Date('2025-01-01') },
   // Add your own locations here
 ];
+
+// Default members to choose who paid
+export const DEFAULT_MEMBERS: Member[] = [
+  {
+    id: "1",
+    fullName: "Roronoa Zoro",
+    name: "Zoro",
+    createdAt: new Date("2025-01-01"),
+  },
+  {
+    id: "2",
+    fullName: "Monkey D. Luffy",
+    name: "Luffy",
+    createdAt: new Date("2025-01-01"),
+  },
+];
+
 ```
 
 ## 🖼️ App Icon / Favicon
