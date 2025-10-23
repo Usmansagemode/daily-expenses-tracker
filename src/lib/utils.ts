@@ -44,8 +44,39 @@ export const getCategoryColor = (categoryName: string): string => {
 
 export const formatCurrency = (
   amount: number,
-  options?: Intl.NumberFormatOptions,
+  options?: Intl.NumberFormatOptions & {compact?: boolean}
 ) => {
+
+    // Short hand formating(Fix big number out of the box issue)
+    if(options?.compact){
+      const absAmount = Math.abs(amount);
+      let formatted = amount.toString();
+      let suffix = "";
+
+      if(absAmount >= 1_000_000_000){
+        formatted = (absAmount / 1_000_000_000).toFixed(1).replace(/\.0$/, "")
+        suffix = "B"
+      }else if(absAmount >= 1_000_000){
+        formatted = (absAmount / 1_000_000).toFixed(1).replace(/\.0$/, "")
+        suffix = "M"
+      }else if(absAmount >= 10_000){
+        formatted = (absAmount / 1000).toFixed(1).replace(/\.0$/, "")
+        suffix = "K"
+      }
+
+
+      // Return with currency symbol
+    const formattedCurrency =  new Intl.NumberFormat(LOCALE_CONFIG.locale, {
+      currency: LOCALE_CONFIG.currency,
+      maximumFractionDigits: 1,
+      style: "currency",
+    }).format(parseFloat(formatted))
+
+    return `${formattedCurrency}${suffix}`
+    }
+
+
+    // Default formatting(non compact)
   return new Intl.NumberFormat(LOCALE_CONFIG.locale, {
     currency: LOCALE_CONFIG.currency,
     style: LOCALE_CONFIG.style,
