@@ -114,7 +114,7 @@ const ExpenseCategoryCharts = ({
                   <div className="space-y-1">
                     <div className="flex items-baseline justify-between">
                       <span className="text-xl font-bold">
-                        {formatCurrency(category.amount)}
+                        {formatCurrency(category.amount, {compact: true})}
                       </span>
                       <span className="text-muted-foreground text-xs">
                         {category.count}{" "}
