@@ -8,6 +8,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   OnChangeFn,
+  PaginationState,
   RowSelectionState,
   SortingState,
   useReactTable,
@@ -39,6 +40,11 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   const [sorting, setSorting] = useState<SortingState>([
     { desc: false, id: "createdAt" }, // Default sort by date, newest last
   ]);
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
   // Internal state as fallback
   const [internalSelection, setInternalSelection] = useState({});
   // Use external if provided, otherwise internal
@@ -52,13 +58,11 @@ export function DataTable<TData extends { id: string | number }, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getRowId: (row) => String(row.id),
     getSortedRowModel: getSortedRowModel(),
+    onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     state: {
-      pagination: {
-        pageIndex: 0, //custom initial page index
-        pageSize: 50, //custom default page size
-      },
+      pagination,
       rowSelection,
       sorting,
     },

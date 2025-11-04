@@ -141,7 +141,7 @@ const TrackersPage = () => {
         {/* Net Summary */}
 
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div className="mt-6 flex items-center gap-2">
               <span className="text-muted-foreground text-sm">Net Total:</span>
               <div className="flex items-center gap-2">

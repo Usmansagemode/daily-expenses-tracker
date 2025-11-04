@@ -1,5 +1,12 @@
-import { ListChecks, Receipt, TrendingUp, Users, Wallet } from "lucide-react";
-import Image from "next/image";
+import {
+  Download,
+  Import,
+  ListChecks,
+  Receipt,
+  TrendingUp,
+  Users,
+  Wallet,
+} from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -26,6 +33,11 @@ const items = [
     icon: TrendingUp,
     title: "Yearly Charts",
     url: "yearly-charts",
+  },
+  {
+    icon: Download,
+    title: "Import Expenses",
+    url: "import-expenses",
   },
 ];
 
