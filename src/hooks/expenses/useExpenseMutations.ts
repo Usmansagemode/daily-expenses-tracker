@@ -1,8 +1,8 @@
 // src/hooks/useExpenseMutations.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Expense, ExpenseWithDetails } from "@/entities/Expense";
-import { getIsDemoMode, supabase } from "@/lib/supabase";
+import { Expense } from "@/entities/Expense";
+import { getIsDemoMode } from "@/lib/supabase";
 import {
   createExpense,
   deleteExpense,

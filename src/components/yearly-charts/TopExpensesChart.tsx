@@ -16,7 +16,6 @@ import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency } from "@/lib/utils";

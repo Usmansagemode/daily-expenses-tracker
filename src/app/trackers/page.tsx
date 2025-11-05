@@ -22,7 +22,7 @@ import { LOCALE_CONFIG } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
 
 const TrackersPage = () => {
-  const { data: trackers = [], isLoading } = useTrackers();
+  const { data: trackers = [] } = useTrackers();
   const {
     create,
     update,
@@ -105,7 +105,6 @@ const TrackersPage = () => {
   };
 
   const openEditSheet = (tracker: Tracker) => {
-    console.log(tracker);
     setEditingTracker(tracker);
   };
 
@@ -141,7 +140,7 @@ const TrackersPage = () => {
         {/* Net Summary */}
 
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div className="mt-6 flex items-center gap-2">
               <span className="text-muted-foreground text-sm">Net Total:</span>
               <div className="flex items-center gap-2">

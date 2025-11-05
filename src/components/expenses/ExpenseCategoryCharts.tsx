@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Car, ChevronDown, ChevronUp, CircleHelp, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, CircleHelp } from "lucide-react";
 
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { CATEGORY_ICONS_BY_NAME } from "@/lib/config";

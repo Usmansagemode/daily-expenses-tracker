@@ -1,35 +1,28 @@
 // src/lib/supabase.ts
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-const isDemoMode = process.env.NEXT_PUBLIC_ENVIRONMENT === "demo";
-
-// Get credentials with fallback empty strings
+// Get credentials
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-// Only create Supabase client if NOT in demo mode AND credentials exist
+// Check if we have valid credentials (not empty strings)
+const hasValidCredentials = supabaseUrl && supabaseAnonKey;
+
+// Create Supabase client only if we have valid credentials
 let supabaseInstance: SupabaseClient | null = null;
 
-if (!isDemoMode && supabaseUrl && supabaseAnonKey) {
+if (hasValidCredentials) {
   supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
 }
 
 export const supabase = supabaseInstance;
 
-// Helper function to check if Supabase is available
+// Helper function to check if Supabase is available (not in demo mode)
 export const isSupabaseAvailable = (): boolean => {
   return supabase !== null;
 };
 
-// Helper to get demo mode status
+// Helper to get demo mode status - demo mode is when Supabase is NOT available
 export const getIsDemoMode = (): boolean => {
-  return isDemoMode;
+  return !isSupabaseAvailable();
 };
-
-// // src/lib/supabase.ts
-// import { createClient } from "@supabase/supabase-js";
-
-// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-// const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-// export const supabase = createClient(supabaseUrl, supabaseAnonKey);

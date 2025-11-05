@@ -6,11 +6,13 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 | ------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
 | ![Dashboard](public/screenshots/yearly_charts_zoomedout.webp) | ![Expenses](public/screenshots/expenses.webp) | ![Trackers](public/screenshots/trackers.webp) |
 
-## ✨ Features
+## Features
 
 - **Meaningful Yearly Charts** - Visualize spending with interactive charts over the year
 - **Monthly View** - Track expenses month by month
 - **Members, Categories & Tags** - Organize expenses by family members, category and location
+- **AI-Powered PDF Import** - Upload bank statements and let Google Gemini automatically extract transactions with smart categorization for analysis or migration
+- **CSV Export** - Import your expense data from excel/sheets for analysis or migration
 - **Dark Mode** - UI in both light and dark themes
 - **Password Protected** - Simple password protection for your data
 - **Responsive** - Works on desktop, tablet, and mobile
@@ -20,7 +22,7 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 - **Friend Loans**: Money lent or borrowed from friends/family
 - **Project Funds**: Budget tracking for specific projects or goals
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -54,7 +56,7 @@ pnpm --version
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Step 1: Clone the Repository
 
@@ -168,15 +170,24 @@ APP_PASSWORD=your_secure_password_here
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxxxxxxxx...
+
+# Google Gemini Configuration (Optional but recommended)
+GOOGLE_GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+Note: You may use the app without either Supabase keys or Gemini Keys.
+
+- Demo data will be used if you dont add Supabase keys
+- Only AI PDF will not work if Gemini key is not added.
 
 **Replace:**
 
 - `your_secure_password_here` → Your chosen password for the app. You only need this if you are hosting this to Vercel and want some security.
 - `https://xxxxx.supabase.co` → Your Supabase Project URL
 - `eyJxxxxxxxxxxx...` → Your Supabase anon public key
+- `your_gemini_api_key_here` → Your Google Gemini API key for AI PDF processing
 
-> ⚠️ **Important:** Never commit `.env.local` to GitHub! It's already in `.gitignore`.
+> **Important:** Never commit `.env.local` to GitHub!
 
 ### Step 5: Run the Development Server
 
@@ -190,13 +201,36 @@ You should see the login page. Enter your `APP_PASSWORD` to access the app!
 
 ---
 
-## 🎨 Customizing Members, Categories & Tags
+## AI-Powered PDF Import
+
+The app includes intelligent PDF processing using Google Gemini AI:
+
+### How it works:
+
+1. **Upload any bank statement PDF** from your financial institution
+2. **AI automatically extracts** transactions, dates, amounts, and descriptions
+3. **Smart categorization** matches transactions to your existing categories
+4. **Automatic filtering** excludes transfers, fees, and credit card payments
+5. **Preview and edit** before saving to your database
+
+### Setting up Gemini AI:
+
+1. Get your API key from [Google AI Studio](https://aistudio.google.com/)
+2. Add `GOOGLE_GEMINI_API_KEY` to your `.env.local` file
+3. The app will automatically enable AI import features
+
+### Without Gemini:
+
+You can still use CSV import with manual mapping - all other features work normally!
+
+## Customizing Members, Categories & Tags
 
 ### Option 1: Update Default Data (Before First Run)
 
 Categories are meant to represent broad spending types (e.g., food, transport, utilities), while tags can be used for specific vendors or locations (e.g., Walmart, Target, Amazon).
 Simply update the lists in src/lib/config.ts to match your personal or project requirements.
 The intention for Members is to be able to set who paid for the expense. This will enable you to see how much a certain family member/friend is paying.
+The GEMINI_PDF_RULES constant controls how Google Gemini processes your bank statements.
 
 Edit `src/lib/config.ts`:
 
@@ -228,9 +262,13 @@ export const DEFAULT_MEMBERS: Member[] = [
     createdAt: new Date("2025-01-01"),
   },
 ];
+
+// These rules that are used in the prompt for GEMINI - It makes the AI customization more discoverable for users who want to fine-tune the PDF processing.
+export const GEMINI_PDF_RULES = `Rules:
+1. Use default amounts for expenses.....`;
 ```
 
-## 🖼️ App Icon / Favicon
+## App Icon / Favicon
 
 You can customize the favicon (the small icon shown in browser tabs) to match your brand or theme.  
 Replace the default icon file at:
@@ -241,7 +279,7 @@ For best results, use a 512x512 PNG and convert it to .ico using a free tool lik
 
 ---
 
-## 🚀 Deploying to Vercel
+## Deploying to Vercel
 
 ### Step 1: Push to GitHub
 
@@ -272,6 +310,7 @@ git push -u origin main
    - `APP_PASSWORD` → Your secure password
    - `NEXT_PUBLIC_SUPABASE_URL` → Your Supabase URL
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Your Supabase anon key
+   - `GOOGLE_GEMINI_API_KEY` → Your Gemini api key
 4. Click **"Save"**
 5. **Redeploy** your project (Deployments → ⋯ → Redeploy)
 
@@ -279,11 +318,11 @@ git push -u origin main
 
 Your app will be live at: `https://your-project-name.vercel.app`
 
-> 🔒 **Security Tip:** Your app is now password-protected. Only share the password with people you trust!
+> **Security:** Your app is now password-protected. Only share the password with people you trust!
 
 ---
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
 ### For Local Development:
 
@@ -308,7 +347,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 
 ---
 
-## 📚 Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
 - **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
@@ -318,10 +357,11 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 - **Tables:** [TanStack Table](https://tanstack.com/table)
 - **State Management:** [TanStack Query (React Query)](https://tanstack.com/query)
 - **Type Safety:** TypeScript
+- **AI/ML:** [Google Gemini](https://ai.google.dev/) - For intelligent PDF processing
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Adding an Expense
 
@@ -361,7 +401,7 @@ Trackers let you manage finances beyond daily expenses — like debts, loans, sa
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 
@@ -405,16 +445,16 @@ pnpm lint         # Run ESLint
 
 Want to extend the app? Here are some ideas:
 
-- 💳 Budget limits per category
-- 📧 Email reports
-- 👥 Multi-user support with proper auth
-- 📊 More chart types
-- 📤 Export to CSV/Excel
-- 🔔 Spending alerts
+- Budget limits per category
+- Email reports
+- Multi-user support with proper auth
+- More chart types
+- Export to CSV/Excel Done
+- Spending alerts
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -426,7 +466,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
 - [Supabase](https://supabase.com/) for the awesome backend
@@ -434,7 +474,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📧 Support
+## Support
 
 If you have questions or run into issues:
 
@@ -444,7 +484,7 @@ If you have questions or run into issues:
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Multi-currency support
 - [ ] Budget tracking
@@ -453,11 +493,11 @@ If you have questions or run into issues:
 - [ ] Multi-user/family sharing
 - [ ] Export reports (PDF, CSV)
 
-## 🪪 License
+## License
 
 This project is open-source and available under the [MIT License](./LICENSE).
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).

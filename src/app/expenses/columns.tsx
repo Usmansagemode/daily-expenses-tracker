@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
