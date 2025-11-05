@@ -19,10 +19,7 @@ interface CategoryByMonthChartProps {
   year: number;
 }
 
-const CategoryByMonthChart = ({
-  expenses,
-  year,
-}: CategoryByMonthChartProps) => {
+const CategoryByMonthChart = ({ expenses }: CategoryByMonthChartProps) => {
   const { chartData, chartConfig } = useMemo(() => {
     const months = [
       "Jan",

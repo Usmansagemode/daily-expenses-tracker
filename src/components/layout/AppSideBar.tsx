@@ -1,6 +1,5 @@
 import {
   Download,
-  Import,
   ListChecks,
   Receipt,
   TrendingUp,

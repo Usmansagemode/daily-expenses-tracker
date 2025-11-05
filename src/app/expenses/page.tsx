@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Loader2, Minus, Plus, Save } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,12 +37,6 @@ const ExpensesPage = () => {
   const [localExpenses, setLocalExpenses] = useState<ExpenseWithDetails[]>([]);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  // Sync fetched data to local state
-  // useEffect(() => {
-  //   setLocalExpenses(fetchedData);
-  //   setHasUnsavedChanges(false);
-  // }, [fetchedData]);
-
   useEffect(() => {
     setLocalExpenses(fetchedData);
     setHasUnsavedChanges(false);
@@ -51,9 +45,7 @@ const ExpensesPage = () => {
 
   const {
     create,
-    saveAll,
     saveAllAsync,
-    bulkDelete,
     bulkDeleteAsync,
     delete: deleteExpense,
     isSaving,
@@ -139,7 +131,7 @@ const ExpensesPage = () => {
   const handleSaveAll = async () => {
     try {
       const expensesToSave: Expense[] = localExpenses.map(
-        ({ categoryName, tagName, memberName, ...expense }) => expense,
+        ({ ...expense }) => expense,
       );
 
       await saveAllAsync(expensesToSave); // Use async version

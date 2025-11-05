@@ -36,10 +36,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const MonthlySpendingChart = ({
-  expenses,
-  year,
-}: MonthlySpendingChartProps) => {
+const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
   const { monthlyData, maxAmount } = useMemo(() => {

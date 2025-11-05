@@ -3,16 +3,6 @@ import { supabase } from "@/lib/supabase";
 
 import { LOCALE_CONFIG } from "../config";
 
-// Helper to throw if supabase is not available
-function ensureSupabase() {
-  if (!supabase) {
-    throw new Error(
-      "Supabase client not available. Check your environment configuration.",
-    );
-  }
-  return supabase;
-}
-
 //
 // ---------- FETCH ALL TRACKERS WITH ENTRIES ----------
 //

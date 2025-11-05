@@ -1,12 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { expensesData } from "@/components/expenses/data/expenseData";
-import { Expense, ExpenseWithDetails } from "@/entities/Expense";
-import {
-  DEFAULT_CATEGORIES,
-  DEFAULT_MEMBERS,
-  DEFAULT_TAGS,
-} from "@/lib/config";
+import { ExpenseWithDetails } from "@/entities/Expense";
 import { supabase } from "@/lib/supabase";
 import { transformToExpenseWithDetails } from "@/lib/utils";
 

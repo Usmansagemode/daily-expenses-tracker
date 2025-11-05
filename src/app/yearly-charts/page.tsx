@@ -37,13 +37,6 @@ import { formatCurrency, transformToExpenseWithDetails } from "@/lib/utils";
 
 const isDemoMode = getIsDemoMode();
 
-// Define chart types and their default sizes
-type ChartType = {
-  id: string;
-  component: React.ReactNode;
-  defaultColSpan: string;
-};
-
 // Sortable chart wrapper component
 const SortableChart = ({
   id,

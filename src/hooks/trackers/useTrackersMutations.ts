@@ -37,7 +37,7 @@ export const useTrackerMutations = () => {
       }
       return await createTracker(tracker);
     },
-    onSuccess: (newTracker) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["trackers"] });
     },
   });

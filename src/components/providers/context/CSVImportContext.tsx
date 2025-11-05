@@ -82,10 +82,7 @@ const CSVImportContext = createContext<CSVImportContextType | undefined>(
 
 export function CSVImportProvider({ children }: { children: React.ReactNode }) {
   const now = new Date();
-  const { saveAll, isSaving } = useExpenseMutations(
-    now.getFullYear(),
-    now.getMonth(),
-  );
+  const { saveAll } = useExpenseMutations(now.getFullYear(), now.getMonth());
 
   const [documentStyle, setDocumentStyle] = useState<DocumentStyle | null>(
     null,

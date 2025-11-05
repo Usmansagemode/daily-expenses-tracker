@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Moon, Settings, User } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -13,13 +13,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
+import { SidebarTrigger } from "../ui/sidebar";
 
 import { ModeToggle } from "./ThemeButton";
 
 const Navbar = () => {
-  const { toggleSidebar } = useSidebar();
   return (
     <nav className="bg-background sticky top-0 z-10 flex items-center justify-between p-4">
       {/* LEFT */}

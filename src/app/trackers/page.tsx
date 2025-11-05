@@ -22,7 +22,7 @@ import { LOCALE_CONFIG } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
 
 const TrackersPage = () => {
-  const { data: trackers = [], isLoading } = useTrackers();
+  const { data: trackers = [] } = useTrackers();
   const {
     create,
     update,
