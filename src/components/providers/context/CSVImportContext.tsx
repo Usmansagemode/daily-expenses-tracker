@@ -97,13 +97,12 @@ export function CSVImportProvider({ children }: { children: React.ReactNode }) {
 
   // File handling
   const handleFile = (file: File) => {
-    console.log("Handling file:", file.name);
     if (!documentStyle) return;
 
     Papa.parse(file, {
       complete: (results) => {
         const data = results.data as RowData[];
-        console.log("Parsed CSV Data:", data);
+
         const filteredData = data.filter((row) => {
           return Object.values(row).some(
             (val) => val !== null && val !== undefined && val !== "",
@@ -122,8 +121,6 @@ export function CSVImportProvider({ children }: { children: React.ReactNode }) {
                 ? autoMapStandardWithCategory(csvHeaders)
                 : autoMapWideFormat(csvHeaders);
 
-          console.log("CSV Headers:", csvHeaders);
-          console.log("Auto Mapping:", autoMapping);
           setHeaders(csvHeaders);
           setRows(filteredData);
           setMapping(autoMapping);

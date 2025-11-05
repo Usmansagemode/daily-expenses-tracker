@@ -85,7 +85,7 @@ function UploadStep() {
       }
 
       const { expenses } = await response.json();
-      console.log("Parsed expenses from PDF:", expenses);
+
       toast.success("PDF Processed Successfully", {
         description: `Found ${expenses.length} ${expenses.length === 1 ? "transaction" : "transactions"}`,
       });

@@ -105,7 +105,6 @@ const TrackersPage = () => {
   };
 
   const openEditSheet = (tracker: Tracker) => {
-    console.log(tracker);
     setEditingTracker(tracker);
   };
 

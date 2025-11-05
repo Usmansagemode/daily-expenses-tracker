@@ -162,8 +162,6 @@ const ExpensesPage = () => {
     [rowSelection],
   );
 
-  console.log(selectedIds);
-
   const handleBulkDelete = async () => {
     if (selectedIds.length === 0) {
       toast.error("No expenses selected");
