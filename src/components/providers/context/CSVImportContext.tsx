@@ -16,10 +16,8 @@ import {
   autoMapStandardFields,
   autoMapStandardWithCategory,
   autoMapWideFormat,
-  BASIC_FIELDS,
   levenshteinDistance,
   NONE_VALUE,
-  STANDARD_FIELDS,
 } from "@/lib/csv-import";
 
 export type DocumentStyle =
@@ -76,14 +74,6 @@ interface CSVImportContextType {
   isWideFormatMapping: (
     mapping: Mapping | null,
   ) => mapping is WideFormatMapping;
-
-  // Constants
-  STANDARD_FIELDS: readonly string[];
-  BASIC_FIELDS: readonly string[];
-  NONE_VALUE: string;
-  DEFAULT_CATEGORIES: typeof DEFAULT_CATEGORIES;
-  DEFAULT_MEMBERS: typeof DEFAULT_MEMBERS;
-  DEFAULT_TAGS: typeof DEFAULT_TAGS;
 }
 
 const CSVImportContext = createContext<CSVImportContextType | undefined>(
@@ -409,14 +399,6 @@ export function CSVImportProvider({ children }: { children: React.ReactNode }) {
     handleStandardFieldSelect,
     handleCategoryColumnToggle,
     handleCategoryMappingChange,
-
-    // Constants
-    STANDARD_FIELDS,
-    BASIC_FIELDS,
-    NONE_VALUE,
-    DEFAULT_CATEGORIES,
-    DEFAULT_MEMBERS,
-    DEFAULT_TAGS,
 
     // Type guards
     isStandardMapping,

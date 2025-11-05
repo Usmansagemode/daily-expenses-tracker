@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { STANDARD_WITH_CATEGORY_FIELDS } from "@/lib/csv-import";
+import { NONE_VALUE, STANDARD_WITH_CATEGORY_FIELDS } from "@/lib/csv-import";
 
 export function StandardWithCategoryMapping() {
   const {
@@ -24,7 +24,6 @@ export function StandardWithCategoryMapping() {
     handleMappingComplete,
     setStep,
     isStandardMapping,
-    NONE_VALUE,
   } = useCSVImport();
 
   const isRequired = (field: string) => {

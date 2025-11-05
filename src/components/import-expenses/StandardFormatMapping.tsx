@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NONE_VALUE, STANDARD_FIELDS } from "@/lib/csv-import";
 
 export function StandardFormatMapping() {
   const {
@@ -23,8 +24,6 @@ export function StandardFormatMapping() {
     handleMappingComplete,
     setStep,
     isStandardMapping,
-    STANDARD_FIELDS,
-    NONE_VALUE,
   } = useCSVImport();
 
   const isRequired = (field: string) => {

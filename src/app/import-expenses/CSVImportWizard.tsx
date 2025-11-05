@@ -31,6 +31,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DEFAULT_CATEGORIES,
+  DEFAULT_MEMBERS,
+  DEFAULT_TAGS,
+} from "@/lib/config";
 import { isGeminiConfigured } from "@/lib/gemini";
 import { getIsDemoMode } from "@/lib/supabase";
 
@@ -271,9 +276,7 @@ function PreviewStep() {
     setStep,
     setMappedData,
     handleSave,
-    DEFAULT_CATEGORIES,
-    DEFAULT_MEMBERS,
-    DEFAULT_TAGS,
+
     documentStyle,
   } = useCSVImport();
 

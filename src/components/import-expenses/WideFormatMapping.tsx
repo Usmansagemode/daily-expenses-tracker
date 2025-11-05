@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { WideFormatMapping } from "@/entities/Import";
+import { DEFAULT_CATEGORIES } from "@/lib/config";
+import { BASIC_FIELDS, NONE_VALUE } from "@/lib/csv-import";
 
 export function WideFormatMappingComponent() {
   const {
@@ -27,9 +29,6 @@ export function WideFormatMappingComponent() {
     handleMappingComplete,
     setStep,
     isWideFormatMapping,
-    BASIC_FIELDS,
-    NONE_VALUE,
-    DEFAULT_CATEGORIES,
   } = useCSVImport();
 
   const isRequired = (field: string) => {
