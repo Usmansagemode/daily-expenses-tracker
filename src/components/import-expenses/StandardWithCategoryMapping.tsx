@@ -10,13 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const STANDARD_WITH_CATEGORY_FIELDS = [
-  "date",
-  "amount",
-  "description",
-  "categoryName",
-] as const;
+import { STANDARD_WITH_CATEGORY_FIELDS } from "@/lib/csv-import";
 
 export function StandardWithCategoryMapping() {
   const {

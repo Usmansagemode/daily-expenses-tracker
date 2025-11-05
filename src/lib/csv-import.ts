@@ -28,6 +28,13 @@ export const STANDARD_FIELDS = [
   "memberName",
 ] as const;
 
+export const STANDARD_WITH_CATEGORY_FIELDS = [
+  "date",
+  "amount",
+  "description",
+  "categoryName",
+] as const;
+
 export const BASIC_FIELDS = [
   "date",
   "description",
@@ -94,13 +101,6 @@ export const autoMapStandardWithCategory = (
   csvHeaders: string[],
 ): StandardMapping => {
   const map: StandardMapping = {};
-
-  const STANDARD_WITH_CATEGORY_FIELDS = [
-    "date",
-    "amount",
-    "description",
-    "categoryName",
-  ];
 
   STANDARD_WITH_CATEGORY_FIELDS.forEach((field) => {
     let bestMatch = "";

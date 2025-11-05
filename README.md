@@ -6,7 +6,7 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 | ------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
 | ![Dashboard](public/screenshots/yearly_charts_zoomedout.webp) | ![Expenses](public/screenshots/expenses.webp) | ![Trackers](public/screenshots/trackers.webp) |
 
-## ✨ Features
+## Features
 
 - **Meaningful Yearly Charts** - Visualize spending with interactive charts over the year
 - **Monthly View** - Track expenses month by month
@@ -22,7 +22,7 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 - **Friend Loans**: Money lent or borrowed from friends/family
 - **Project Funds**: Budget tracking for specific projects or goals
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -56,7 +56,7 @@ pnpm --version
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Step 1: Clone the Repository
 
@@ -223,13 +223,14 @@ The app includes intelligent PDF processing using Google Gemini AI:
 
 You can still use CSV import with manual mapping - all other features work normally!
 
-## 🎨 Customizing Members, Categories & Tags
+## Customizing Members, Categories & Tags
 
 ### Option 1: Update Default Data (Before First Run)
 
 Categories are meant to represent broad spending types (e.g., food, transport, utilities), while tags can be used for specific vendors or locations (e.g., Walmart, Target, Amazon).
 Simply update the lists in src/lib/config.ts to match your personal or project requirements.
 The intention for Members is to be able to set who paid for the expense. This will enable you to see how much a certain family member/friend is paying.
+The GEMINI_PDF_RULES constant controls how Google Gemini processes your bank statements.
 
 Edit `src/lib/config.ts`:
 
@@ -261,9 +262,13 @@ export const DEFAULT_MEMBERS: Member[] = [
     createdAt: new Date("2025-01-01"),
   },
 ];
+
+// These rules that are used in the prompt for GEMINI - It makes the AI customization more discoverable for users who want to fine-tune the PDF processing.
+export const GEMINI_PDF_RULES = `Rules:
+1. Use default amounts for expenses.....`;
 ```
 
-## 🖼️ App Icon / Favicon
+## App Icon / Favicon
 
 You can customize the favicon (the small icon shown in browser tabs) to match your brand or theme.  
 Replace the default icon file at:
@@ -274,7 +279,7 @@ For best results, use a 512x512 PNG and convert it to .ico using a free tool lik
 
 ---
 
-## 🚀 Deploying to Vercel
+## Deploying to Vercel
 
 ### Step 1: Push to GitHub
 
@@ -313,11 +318,11 @@ git push -u origin main
 
 Your app will be live at: `https://your-project-name.vercel.app`
 
-> 🔒 **Security:** Your app is now password-protected. Only share the password with people you trust!
+> **Security:** Your app is now password-protected. Only share the password with people you trust!
 
 ---
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
 ### For Local Development:
 
@@ -342,7 +347,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 
 ---
 
-## 📚 Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
 - **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
@@ -356,7 +361,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Adding an Expense
 
@@ -396,7 +401,7 @@ Trackers let you manage finances beyond daily expenses — like debts, loans, sa
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 
@@ -440,16 +445,16 @@ pnpm lint         # Run ESLint
 
 Want to extend the app? Here are some ideas:
 
-- 💳 Budget limits per category
-- 📧 Email reports
-- 👥 Multi-user support with proper auth
-- 📊 More chart types
-- 📤 Export to CSV/Excel Done
-- 🔔 Spending alerts
+- Budget limits per category
+- Email reports
+- Multi-user support with proper auth
+- More chart types
+- Export to CSV/Excel Done
+- Spending alerts
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -461,7 +466,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
 - [Supabase](https://supabase.com/) for the awesome backend
@@ -469,7 +474,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📧 Support
+## Support
 
 If you have questions or run into issues:
 
@@ -479,7 +484,7 @@ If you have questions or run into issues:
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Multi-currency support
 - [ ] Budget tracking
@@ -488,11 +493,11 @@ If you have questions or run into issues:
 - [ ] Multi-user/family sharing
 - [ ] Export reports (PDF, CSV)
 
-## 🪪 License
+## License
 
 This project is open-source and available under the [MIT License](./LICENSE).
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).
