@@ -12,14 +12,12 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { MEMBER_CHART_COLORS } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
 
 interface CategoryMemberBreakdownChartProps {
   expenses: ExpenseWithDetails[];
 }
-
-// Color palette for members (matching MemberSpendingChart)
-const MEMBER_COLORS = ["#8b5cf6", "#ec4899"];
 
 const CategoryMemberBreakdownChart = ({
   expenses,
@@ -65,7 +63,7 @@ const CategoryMemberBreakdownChart = ({
     const config: ChartConfig = {};
     uniqueMembers.forEach((member, index) => {
       config[member] = {
-        color: MEMBER_COLORS[index % MEMBER_COLORS.length],
+        color: MEMBER_CHART_COLORS[index % MEMBER_CHART_COLORS.length],
         label: member,
       };
     });

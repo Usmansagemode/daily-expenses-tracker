@@ -5,9 +5,9 @@ import { Loader2, Minus, Plus, Save } from "lucide-react";
 import { toast } from "sonner";
 
 import { BulkUpdate } from "@/components/expenses/BulkUpdate";
-import ExpenseCategoryCharts from "@/components/expenses/ExpenseCategoryCharts";
+import ExpenseHeader from "@/components/expenses/ExpenseHeader";
 import { Button } from "@/components/ui/button";
-import { Expense, ExpenseWithDetails } from "@/entities/Expense";
+import { ExpenseWithDetails } from "@/entities/Expense";
 import { useExpenseMutations } from "@/hooks/expenses/useExpenseMutations";
 import { useExpenses } from "@/hooks/expenses/useExpenses";
 import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
@@ -16,7 +16,7 @@ import {
   DEFAULT_MEMBERS,
   DEFAULT_TAGS,
 } from "@/lib/config";
-import { stripExpenseDetails } from "@/lib/expense-utils";
+import { stripExpenseDetails } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils";
 
 import { createColumns } from "./columns";
@@ -265,7 +265,7 @@ const ExpensesPage = () => {
 
   return (
     <div className="mt-2">
-      <ExpenseCategoryCharts
+      <ExpenseHeader
         data={localExpenses}
         formattedTotal={formatCurrency(total)}
         currentMonth={currentMonth}

@@ -45,6 +45,19 @@ export const CATEGORY_COLORS_BY_NAME = {
   Utilities: "oklch(0.58 0.16 200)", // Dark Blue (automotive)
 } as const;
 
+export const MEMBER_CHART_COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+  "#FFC658",
+  "#8DD1E1",
+  "#D084D0",
+  "#FF6B6B",
+];
+
 type CurrencyCode = "USD" | "PKR" | "EUR" | "GBP" | "INR";
 type Symbol = "$" | "Rs." | "€" | "£" | "₹";
 
@@ -130,7 +143,7 @@ export const GEMINI_PDF_RULES = `Rules:
 2. Use negative amounts for refunds ONLY (as it is the opposite of an expense) Do not record income.
 3. Parse dates to ISO format (YYYY-MM-DD)
 4. Match each transaction to the BEST category and tag from the list above
-5. If no good match, use categoryId: "3" (Misc)
+5. If no good match, use categoryId: "3" (Misc). If no good match for tag, use tagId: "others".
 6. Clean up merchant names (remove extra info - keep only the name). This will be the description field.
 7. Skip these transactions:
    - Any transaction that is NOT a direct purchase from a merchant/store/restaurant

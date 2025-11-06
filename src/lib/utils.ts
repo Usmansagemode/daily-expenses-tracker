@@ -15,6 +15,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const stripExpenseDetails = (expense: ExpenseWithDetails): Expense => ({
+  amount: expense.amount,
+  categoryId: expense.categoryId,
+  createdAt: expense.createdAt,
+  date: expense.date,
+  description: expense.description,
+  id: expense.id,
+  memberId: expense.memberId,
+  tagId: expense.tagId,
+  updatedAt: expense.updatedAt,
+});
+
 // Helper function to transform expenses to ExpenseWithDetails
 export const transformToExpenseWithDetails = (
   expenses: Expense[],

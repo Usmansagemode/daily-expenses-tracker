@@ -11,17 +11,12 @@ import {
 } from "@/components/ui/chart";
 import { LabelProps } from "@/entities/Charts";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { MEMBER_CHART_COLORS } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
 
 interface MemberSpendingChartProps {
   expenses: ExpenseWithDetails[];
 }
-
-// Color palette for members
-const MEMBER_COLORS = [
-  "#ec4899", // pink
-  "#8b5cf6", // violet
-];
 
 const chartConfig = {
   amount: {
@@ -138,7 +133,7 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
             {memberData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={MEMBER_COLORS[index % MEMBER_COLORS.length]}
+                fill={MEMBER_CHART_COLORS[index % MEMBER_CHART_COLORS.length]}
               />
             ))}
           </Pie>
@@ -156,7 +151,8 @@ const MemberSpendingChart = ({ expenses }: MemberSpendingChartProps) => {
               <div
                 className="h-3 w-3 rounded-full"
                 style={{
-                  backgroundColor: MEMBER_COLORS[index % MEMBER_COLORS.length],
+                  backgroundColor:
+                    MEMBER_CHART_COLORS[index % MEMBER_CHART_COLORS.length],
                 }}
               />
               <span className="font-medium">{member.name}</span>
