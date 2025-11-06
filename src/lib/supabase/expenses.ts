@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 /** ---------- Create single expense ----------*/
 export async function createExpense(
-  expense: Omit<Expense, "createdAt" | "updatedAt">
+  expense: Omit<Expense, "createdAt" | "updatedAt">,
 ) {
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
@@ -23,14 +23,14 @@ export async function createExpense(
 /** ---------- saveALL ----------*/
 export async function saveAll(expenses: Expense[]) {
   // Production mode - bulk upsert to Supabase
-  const expensesToSave = expenses.map((expense) => ({
-    ...expense,
-    updatedAt: new Date().toISOString(),
-  }));
+  // const expensesToSave = expenses.map((expense) => ({
+  //   ...expense,
+  //   updatedAt: new Date().toISOString(),
+  // }));
   if (!supabase) throw new Error("Supabase not initialized");
   const { data, error } = await supabase
     .from("expenses")
-    .upsert(expensesToSave, { onConflict: "id" })
+    .upsert(expenses, { onConflict: "id" })
     .select();
 
   if (error) throw error;

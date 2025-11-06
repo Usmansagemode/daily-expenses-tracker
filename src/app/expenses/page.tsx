@@ -15,6 +15,7 @@ import {
   DEFAULT_MEMBERS,
   DEFAULT_TAGS,
 } from "@/lib/config";
+import { stripExpenseDetails } from "@/lib/expense-utils";
 import { formatCurrency } from "@/lib/utils";
 
 import { createColumns } from "./columns";
@@ -130,10 +131,11 @@ const ExpensesPage = () => {
 
   const handleSaveAll = async () => {
     try {
-      const expensesToSave: Expense[] = localExpenses.map(
-        ({ ...expense }) => expense,
-      );
-
+      // const expensesToSave: Expense[] = localExpenses.map(
+      //   ({ ...expense }) => expense,
+      // );
+      const expensesToSave = localExpenses.map(stripExpenseDetails);
+      console.log("Saving expenses:", expensesToSave);
       await saveAllAsync(expensesToSave); // Use async version
       setHasUnsavedChanges(false);
 
