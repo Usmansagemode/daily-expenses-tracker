@@ -374,6 +374,37 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
    - **Description**: Notes about the expense (optional)
 3. Click 'Save Changes' to store updates to the database!
 
+### Importing Expenses
+
+Import expenses in bulk from CSV files or PDF bank statements:
+
+#### CSV Import
+
+1. Navigate to **Import** page
+2. Select **"CSV File"** option
+3. Choose your document style:
+   - **Standard Format**: For bank statements or spreadsheets with date, amount, and description in separate columns
+   - **Wide Format**: For spreadsheets where each category is a column (e.g., monthly budget trackers)
+4. Upload your CSV file
+5. Map columns to expense fields (auto-detection will suggest matches)
+6. Review and edit the imported data in the preview
+7. Click **"Save"** to add all expenses to your database
+
+#### PDF Bank Statement Import (AI-Powered)
+
+1. Navigate to **Import** page
+2. Select **"PDF Bank Statement"** option
+3. Upload your bank statement PDF (works with any bank format)
+4. AI will automatically:
+   - Extract all transactions
+   - Parse dates, amounts, and merchant names
+   - Categorize expenses based on your existing categories
+   - Clean up and format the data
+5. Review and edit the imported transactions in the preview
+6. Click **"Save"** to add expenses to your database
+
+**Note**: PDF parsing uses Google Gemini AI and may take 10-30 seconds. The free tier allows 1,500 requests per day.
+
 ### Viewing Analytics
 
 - Navigate to **Yearly Charts** to see:
