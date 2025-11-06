@@ -170,10 +170,6 @@ const YearlyChartsPage = () => {
     fetchExpenses();
   }, [currentYear]);
 
-  const totalYearSpending = useMemo(() => {
-    return expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  }, [expenses]);
-
   // Filter expenses by selected categories
   const filteredYearExpenses = useMemo(() => {
     return expenses.filter((expense) => {
@@ -303,7 +299,9 @@ const YearlyChartsPage = () => {
               Total Spending:
             </span>
             <span className="text-3xl font-bold">
-              {formatCurrency(totalYearSpending)}
+              {formatCurrency(
+                filteredYearExpenses.reduce((sum, e) => sum + e.amount, 0),
+              )}
             </span>
           </div>
           <p className="text-muted-foreground self-end text-sm">
