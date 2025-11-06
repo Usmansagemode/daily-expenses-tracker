@@ -46,6 +46,10 @@ const EditableAmountCell = ({
 }) => {
   const [value, setValue] = useState(expense.amount.toString());
 
+  useEffect(() => {
+    setValue(expense.amount.toString());
+  }, [expense.amount]);
+
   const handleBlur = () => {
     const numValue = parseFloat(value);
     if (!isNaN(numValue) && numValue !== expense.amount) {
@@ -95,6 +99,10 @@ const EditableDescriptionCell = ({
   ) => void;
 }) => {
   const [value, setValue] = useState(expense.description || "");
+
+  useEffect(() => {
+    setValue(expense.description || "");
+  }, [expense.description]);
 
   const handleBlur = () => {
     if (value !== expense.description) {

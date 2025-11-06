@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Loader2, Minus, Plus, Save } from "lucide-react";
 import { toast } from "sonner";
 
+import { BulkUpdate } from "@/components/expenses/BulkUpdate";
 import ExpenseCategoryCharts from "@/components/expenses/ExpenseCategoryCharts";
 import { Button } from "@/components/ui/button";
 import { Expense, ExpenseWithDetails } from "@/entities/Expense";
@@ -94,6 +95,34 @@ const ExpensesPage = () => {
     setHasUnsavedChanges(true);
   };
 
+  const handleBulkUpdate = (
+    field: keyof ExpenseWithDetails,
+    value: ExpenseWithDetails[keyof ExpenseWithDetails],
+  ) => {
+    const selectedIds = Object.keys(rowSelection).filter(
+      (id) => rowSelection[id],
+    );
+
+    if (selectedIds.length === 0) return;
+
+    // Update all selected expenses
+    setLocalExpenses((prev) =>
+      prev.map((expense) =>
+        selectedIds.includes(expense.id)
+          ? { ...expense, [field]: value }
+          : expense,
+      ),
+    );
+
+    setHasUnsavedChanges(true);
+
+    toast.success("Bulk update applied", {
+      description: `Updated ${selectedIds.length} ${
+        selectedIds.length === 1 ? "expense" : "expenses"
+      }`,
+    });
+  };
+
   const handleDelete = (id: string) => {
     setLocalExpenses((prev) => prev.filter((expense) => expense.id !== id));
     setHasUnsavedChanges(true);
@@ -131,11 +160,8 @@ const ExpensesPage = () => {
 
   const handleSaveAll = async () => {
     try {
-      // const expensesToSave: Expense[] = localExpenses.map(
-      //   ({ ...expense }) => expense,
-      // );
       const expensesToSave = localExpenses.map(stripExpenseDetails);
-      console.log("Saving expenses:", expensesToSave);
+
       await saveAllAsync(expensesToSave); // Use async version
       setHasUnsavedChanges(false);
 
@@ -246,6 +272,16 @@ const ExpensesPage = () => {
         currentYear={currentYear}
         onMonthYearChange={handleMonthYearChange}
       />
+
+      {/* Bulk Update Component */}
+      {selectedIds.length > 0 && (
+        <div className="mb-4">
+          <BulkUpdate
+            selectedCount={selectedIds.length}
+            onApplyBulkUpdate={handleBulkUpdate}
+          />
+        </div>
+      )}
 
       {/* Unsaved changes indicator */}
       {hasUnsavedChanges && (
