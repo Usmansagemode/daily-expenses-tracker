@@ -1,18 +1,40 @@
 // src/lib/supabase.ts
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-// Get credentials
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+// Get credentials - handle both undefined and empty string cases
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() || "";
 
-// Check if we have valid credentials (not empty strings)
-const hasValidCredentials = supabaseUrl && supabaseAnonKey;
+// Check if we have valid credentials
+// Must be non-empty strings AND valid URL format
+const isValidUrl = (url: string): boolean => {
+  if (!url) return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+const hasValidCredentials =
+  supabaseUrl.length > 0 &&
+  supabaseAnonKey.length > 0 &&
+  isValidUrl(supabaseUrl);
 
 // Create Supabase client only if we have valid credentials
 let supabaseInstance: SupabaseClient | null = null;
 
 if (hasValidCredentials) {
-  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+  try {
+    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+  } catch (error) {
+    console.warn(
+      "Failed to create Supabase client, falling back to demo mode:",
+      error,
+    );
+    supabaseInstance = null;
+  }
 }
 
 export const supabase = supabaseInstance;
@@ -26,3 +48,8 @@ export const isSupabaseAvailable = (): boolean => {
 export const getIsDemoMode = (): boolean => {
   return !isSupabaseAvailable();
 };
+
+// Log the mode on initialization (helpful for debugging)
+if (typeof window !== "undefined") {
+  console.log(`Running in ${getIsDemoMode() ? "DEMO" : "PRODUCTION"} mode`);
+}
