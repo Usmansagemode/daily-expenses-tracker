@@ -29,6 +29,7 @@ import CategoryTotalChart from "@/components/yearly-charts/CategoryTotalChart";
 import LocationSpendingChart from "@/components/yearly-charts/LocationSpendingChart";
 import MemberCategoryHeatmap from "@/components/yearly-charts/MemberCategoryHeatmap";
 import MemberSpendingChart from "@/components/yearly-charts/MemberSpendingChart";
+import MonthFilter from "@/components/yearly-charts/MonthFilter";
 import MonthlySpendingChart from "@/components/yearly-charts/MonthlySpendingChart";
 import TopExpensesChart from "@/components/yearly-charts/TopExpensesChart";
 import { ExpenseWithDetails } from "@/entities/Expense";
@@ -79,9 +80,9 @@ const YearlyChartsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const currentYear = new Date().getFullYear();
 
-  // Add category filter state
+  // Add category and month filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
+  const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
   // Chart order state
   const [chartOrder, setChartOrder] = useState<string[]>([]);
 
@@ -171,12 +172,30 @@ const YearlyChartsPage = () => {
   }, [currentYear]);
 
   // Filter expenses by selected categories
+  // const filteredYearExpenses = useMemo(() => {
+  //   return expenses.filter((expense) => {
+  //     const category = expense.categoryName || "Uncategorized";
+  //     return selectedCategories.includes(category);
+  //   });
+  // }, [expenses, selectedCategories]);
+  // Filter expenses by selected categories and months
   const filteredYearExpenses = useMemo(() => {
     return expenses.filter((expense) => {
       const category = expense.categoryName || "Uncategorized";
-      return selectedCategories.includes(category);
+      const month = new Date(expense.date).getMonth();
+
+      // Category filter: if none selected, show all; otherwise filter
+      const categoryMatch =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(category);
+
+      // Month filter: if none selected, show all; otherwise filter
+      const monthMatch =
+        selectedMonths.length === 0 || selectedMonths.includes(month);
+
+      return categoryMatch && monthMatch;
     });
-  }, [expenses, selectedCategories]);
+  }, [expenses, selectedCategories, selectedMonths]);
 
   // DND Kit sensors
   const sensors = useSensors(
@@ -293,7 +312,7 @@ const YearlyChartsPage = () => {
             )}
           </div>
         </div>
-        <div className="flex flex-col items-baseline gap-2">
+        <div className="flex flex-col items-baseline items-end gap-2">
           <div className="flex items-center">
             <span className="text-muted-foreground mr-4 text-sm">
               Total Spending:
@@ -308,7 +327,11 @@ const YearlyChartsPage = () => {
             {expenses.length} transactions this year
           </p>
           {/* Category Filter */}
-          <div className="self-end">
+          <div className="flex gap-2 self-end">
+            <MonthFilter
+              selectedMonths={selectedMonths}
+              onSelectionChange={setSelectedMonths}
+            />
             <CategoryFilter
               categories={allCategories}
               selectedCategories={selectedCategories}
