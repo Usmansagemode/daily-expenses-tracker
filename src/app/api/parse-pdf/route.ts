@@ -101,7 +101,7 @@ Extract all transactions now.`;
     // Validate and transform to Expense format
     const expenses: Expense[] = (transactions as AITransaction[]).map(
       (t, index) => ({
-        amount: Math.abs(parseFloat(String(t.amount))),
+        amount: parseFloat(String(t.amount)),
         categoryId: t.categoryId || "3",
         createdAt: new Date(),
         date: new Date(t.date),

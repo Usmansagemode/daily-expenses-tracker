@@ -140,17 +140,16 @@ export const DEFAULT_MEMBERS: Member[] = [
 
 export const GEMINI_PDF_RULES = `Rules:
 1. Use default amounts for expenses/debits (withdrawals)
-2. Use negative amounts for refunds ONLY (as it is the opposite of an expense) Do not record income.
-3. Parse dates to ISO format (YYYY-MM-DD)
-4. Match each transaction to the BEST category and tag from the list above
-5. If no good match, use categoryId: "3" (Misc). If no good match for tag, use tagId: "others".
-6. Clean up merchant names (remove extra info - keep only the name). This will be the description field.
-7. Skip these transactions:
-   - Any transaction that is NOT a direct purchase from a merchant/store/restaurant
-   - Any transaction containing: "credit card", "bill pay", "payment", "transfer", "fee", "interest"
+2. For Credit Card Statement record negative amount as negative (Append 'refund' in description) but do not record income.
+3. For Debit Card Statement, record positive amount as negative (Append 'refund' in description) but do not record income.
+4. Parse dates to ISO format (YYYY-MM-DD)
+5. Match each transaction to the BEST category and tag from the list above
+6. If no good match, use categoryId: "3" (Misc). If no good match for tag, use tagId: "others".
+7. Clean up merchant names (remove extra info - keep only the name). This will be the description field.
+8. Skip these transactions:
+   - Any transaction containing: "credit card", "bill pay", "payment".
    - Payments to credit card companies (Chase, Discover, Capital One, Amex, etc.)
    - Transfers between my accounts
-   - Bank fees and service charges
    - Any transaction that looks like it's moving money between accounts rather than spending money
-8. Return ONLY the JSON array, nothing else
-9. Do not record credit card payments as expenses.`;
+9. Return ONLY the JSON array, nothing else
+10. Do not record credit card payments as expenses.`;
