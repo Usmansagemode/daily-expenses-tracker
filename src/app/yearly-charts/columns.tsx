@@ -12,19 +12,23 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
   return [
     {
       accessorKey: "id",
-      cell: ({ row }) => row.index + 1,
-      header: "#",
+      cell: ({ row }) => <div className="pl-3 text-left">{row.index + 1}</div>,
+      header: () => <div className="pl-3 text-left">#</div>,
       size: 50,
     },
     {
       accessorKey: "date",
       cell: ({ row }) => {
         const date = new Date(row.original.date);
-        return date.toLocaleDateString(LOCALE_CONFIG.locale, {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        });
+        return (
+          <div className="pl-3 text-left">
+            {date.toLocaleDateString(LOCALE_CONFIG.locale, {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </div>
+        );
       },
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Date" />
@@ -35,7 +39,7 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
       accessorKey: "description",
       cell: ({ row }) => (
         <div
-          className="max-w-[300px] truncate"
+          className="max-w-[300px] truncate pl-3 text-left"
           title={row.original.description || ""}
         >
           {row.original.description || (
@@ -50,7 +54,9 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
     {
       accessorKey: "amount",
       cell: ({ row }) => (
-        <div className="font-medium">{formatCurrency(row.original.amount)}</div>
+        <div className="pl-3 text-left font-medium">
+          {formatCurrency(row.original.amount)}
+        </div>
       ),
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Amount" />
@@ -60,7 +66,7 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
     {
       accessorKey: "categoryName",
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-3 text-left">
           {row.original.categoryName || (
             <span className="text-muted-foreground italic">None</span>
           )}
@@ -74,7 +80,7 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
     {
       accessorKey: "tagName",
       cell: ({ row }) => (
-        <div>
+        <div className="pl-3 text-left">
           {row.original.tagName || (
             <span className="text-muted-foreground italic">None</span>
           )}
@@ -88,7 +94,7 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
     {
       accessorKey: "memberName",
       cell: ({ row }) => (
-        <div>
+        <div className="pl-3 text-left">
           {row.original.memberName || (
             <span className="text-muted-foreground italic">None</span>
           )}
