@@ -95,12 +95,16 @@ const CategoryFilter = ({
                 <div
                   key={category}
                   className="hover:bg-accent flex cursor-pointer items-center space-x-2 rounded p-2 transition-colors"
-                  onClick={() => handleToggle(category)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggle(category);
+                  }}
                 >
                   <Checkbox
                     id={category}
                     checked={isSelected}
                     onCheckedChange={() => handleToggle(category)}
+                    onClick={(e) => e.stopPropagation()}
                   />
                   <label
                     htmlFor={category}

@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getMonthLabels, getYearOptions } from "@/lib/dateUtils";
+
+import YearSelector from "../YearSelector";
 
 interface MonthYearSelectorProps {
   currentMonth: number; // 0-11
@@ -23,28 +26,9 @@ const MonthYearSelector = ({
   currentYear,
   onMonthYearChange,
 }: MonthYearSelectorProps) => {
-  const months = useMemo(
-    () => [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    [],
-  );
+  const months = getMonthLabels();
 
-  const years = useMemo(() => {
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
-  }, []);
+  const years = useMemo(() => getYearOptions(10), []);
 
   const handlePrevious = () => {
     if (currentMonth === 0) {
@@ -66,8 +50,8 @@ const MonthYearSelector = ({
     onMonthYearChange(parseInt(monthIndex), currentYear);
   };
 
-  const handleYearChange = (year: string) => {
-    onMonthYearChange(currentMonth, parseInt(year));
+  const handleYearChange = (year: number) => {
+    onMonthYearChange(currentMonth, year);
   };
 
   return (
@@ -94,18 +78,12 @@ const MonthYearSelector = ({
         </SelectContent>
       </Select>
 
-      <Select value={currentYear.toString()} onValueChange={handleYearChange}>
-        <SelectTrigger className="h-8 w-24">
-          <SelectValue>{currentYear}</SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {years.map((year) => (
-            <SelectItem key={year} value={year.toString()}>
-              {year}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <YearSelector
+        value={currentYear}
+        onValueChange={handleYearChange}
+        range={10}
+        triggerClassName="h-8 w-24"
+      />
 
       <Button
         variant="outline"

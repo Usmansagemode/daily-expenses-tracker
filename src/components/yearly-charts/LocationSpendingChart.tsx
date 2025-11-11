@@ -101,7 +101,7 @@ const LocationSpendingChart = ({ expenses }: LocationSpendingChartProps) => {
     <div>
       <h2 className="mb-6 text-lg font-medium">Spending by Location</h2>
 
-      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+      {/* <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <PieChart>
           <ChartTooltip
             content={
@@ -138,7 +138,7 @@ const LocationSpendingChart = ({ expenses }: LocationSpendingChartProps) => {
             ))}
           </Pie>
         </PieChart>
-      </ChartContainer>
+      </ChartContainer> */}
 
       {/* Summary Table */}
       <div className="mt-6 space-y-2">

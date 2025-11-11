@@ -11,26 +11,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { MONTHS } from "@/lib/dateUtils";
 
 interface MonthFilterProps {
   selectedMonths: number[];
   onSelectionChange: (selected: number[]) => void;
 }
-
-const MONTHS = [
-  { label: "January", short: "Jan", value: 0 },
-  { label: "February", short: "Feb", value: 1 },
-  { label: "March", short: "Mar", value: 2 },
-  { label: "April", short: "Apr", value: 3 },
-  { label: "May", short: "May", value: 4 },
-  { label: "June", short: "Jun", value: 5 },
-  { label: "July", short: "Jul", value: 6 },
-  { label: "August", short: "Aug", value: 7 },
-  { label: "September", short: "Sep", value: 8 },
-  { label: "October", short: "Oct", value: 9 },
-  { label: "November", short: "Nov", value: 10 },
-  { label: "December", short: "Dec", value: 11 },
-];
 
 const MonthFilter = ({
   selectedMonths,

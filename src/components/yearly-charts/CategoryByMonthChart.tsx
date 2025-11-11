@@ -12,6 +12,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { getShortMonthLabels } from "@/lib/dateUtils";
 import { formatCurrency, getCategoryColor } from "@/lib/utils";
 
 interface CategoryByMonthChartProps {
@@ -21,20 +22,7 @@ interface CategoryByMonthChartProps {
 
 const CategoryByMonthChart = ({ expenses }: CategoryByMonthChartProps) => {
   const { chartData, chartConfig } = useMemo(() => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    const months = getShortMonthLabels();
 
     // Get unique categories
     const categories = Array.from(

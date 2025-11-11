@@ -29,6 +29,7 @@ interface DataTableProps<TData extends { id: string | number }, TValue> {
   data: TData[];
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
+  isReadOnly?: boolean;
 }
 
 export function DataTable<TData extends { id: string | number }, TValue>({
@@ -36,7 +37,9 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   data,
   rowSelection: externalSelection,
   onRowSelectionChange,
+  isReadOnly = false,
 }: DataTableProps<TData, TValue>) {
+  console.log("DataTable render with data:", data);
   const [sorting, setSorting] = useState<SortingState>([
     { desc: false, id: "createdAt" }, // Default sort by date, newest last
   ]);
@@ -120,7 +123,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} showSelectionCount={!isReadOnly} />
     </div>
   );
 }

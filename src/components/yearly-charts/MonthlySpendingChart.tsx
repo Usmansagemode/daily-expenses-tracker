@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { get } from "http";
 import { BarChart3, LineChart as LineChartIcon } from "lucide-react";
 import {
   Area,
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { GREEN, ORANGE, RED } from "@/lib/config";
+import { getShortMonthLabels } from "@/lib/dateUtils";
 import { formatCurrency } from "@/lib/utils";
 
 interface MonthlySpendingChartProps {
@@ -40,20 +42,7 @@ const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
   const { monthlyData, maxAmount } = useMemo(() => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    const months = getShortMonthLabels();
 
     const monthlyTotals = new Array(12).fill(0);
 

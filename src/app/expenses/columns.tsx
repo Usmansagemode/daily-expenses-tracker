@@ -330,5 +330,12 @@ export const createColumns = ({
       cell: ({ row }) => <RowActions row={row} onDelete={onDelete} />,
       id: "actions",
     },
+    {
+      accessorKey: "createdAt",
+      cell: () => null,
+      enableHiding: false,
+      header: () => null,
+      id: "createdAt",
+    },
   ];
 };
