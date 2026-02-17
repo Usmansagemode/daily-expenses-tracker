@@ -24,7 +24,7 @@ import {
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { GREEN, ORANGE, RED } from "@/lib/config";
 import { getShortMonthLabels } from "@/lib/dateUtils";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 
 interface MonthlySpendingChartProps {
   expenses: ExpenseWithDetails[];
@@ -126,7 +126,7 @@ const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) =>
-                formatCurrency(value, { minimumFractionDigits: 0 })
+                formatCurrencyCompact(value)
               }
             />
             <ChartTooltip
@@ -158,7 +158,7 @@ const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) =>
-                formatCurrency(value, { minimumFractionDigits: 0 })
+                formatCurrencyCompact(value)
               }
             />
             <ChartTooltip

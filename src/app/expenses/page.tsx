@@ -38,10 +38,12 @@ const ExpensesPage = () => {
   // Local state for editing
   const [localExpenses, setLocalExpenses] = useState<ExpenseWithDetails[]>([]);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [goToLastPage, setGoToLastPage] = useState(false);
 
   useEffect(() => {
     setLocalExpenses(fetchedData);
     setHasUnsavedChanges(false);
+    setGoToLastPage(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedData.length, currentMonth, currentYear]);
 
@@ -153,6 +155,7 @@ const ExpensesPage = () => {
     // Add to local state
     setLocalExpenses((prev) => [...prev, newExpense]);
     setHasUnsavedChanges(true);
+    setGoToLastPage(true);
 
     // Create in backend
     create(newExpense);
@@ -321,6 +324,7 @@ const ExpensesPage = () => {
           data={localExpenses}
           rowSelection={rowSelection}
           onRowSelectionChange={setRowSelection}
+          goToLastPage={goToLastPage}
         />
       </div>
 

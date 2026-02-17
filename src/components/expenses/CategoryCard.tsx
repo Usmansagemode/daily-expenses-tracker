@@ -1,7 +1,7 @@
 import { CircleHelp } from "lucide-react";
 
 import { CATEGORY_ICONS_BY_NAME } from "@/lib/config";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
@@ -31,7 +31,11 @@ const CategoryCard = ({
       <CardContent className="pt-0">
         <div className="space-y-2">
           <div className="flex items-baseline justify-between">
-            <span className="text-lg font-bold">{formatCurrency(amount)}</span>
+            <span className="text-lg font-bold" title={formatCurrency(amount)}>
+              {amount >= 10000
+                ? formatCurrencyCompact(amount)
+                : formatCurrency(amount)}
+            </span>
             <span className="text-muted-foreground text-xs">{count}</span>
           </div>
 

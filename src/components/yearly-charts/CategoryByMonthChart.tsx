@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { getShortMonthLabels } from "@/lib/dateUtils";
-import { formatCurrency, getCategoryColor } from "@/lib/utils";
+import { formatCurrency, formatCurrencyCompact, getCategoryColor } from "@/lib/utils";
 
 interface CategoryByMonthChartProps {
   expenses: ExpenseWithDetails[];
@@ -80,15 +80,31 @@ const CategoryByMonthChart = ({ expenses }: CategoryByMonthChartProps) => {
             tickMargin={10}
             axisLine={false}
             tickFormatter={(value) =>
-              formatCurrency(value, { minimumFractionDigits: 0 })
+              formatCurrencyCompact(value)
             }
           />
           <ChartTooltip
             content={
               <ChartTooltipContent
-                formatter={(value) =>
-                  formatCurrency(value as number, { minimumFractionDigits: 0 })
-                }
+                indicator="dot"
+                formatter={(value, name) => (
+                  <>
+                    <div
+                      className="bg-[--color-bg] h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                      style={
+                        {
+                          "--color-bg": chartConfig[name as string]?.color,
+                        } as React.CSSProperties
+                      }
+                    />
+                    <span className="text-muted-foreground">{name}</span>
+                    <span className="ml-auto font-mono font-medium">
+                      {formatCurrency(value as number, {
+                        minimumFractionDigits: 0,
+                      })}
+                    </span>
+                  </>
+                )}
               />
             }
           />

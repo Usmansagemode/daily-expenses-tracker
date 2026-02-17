@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -30,6 +30,7 @@ interface DataTableProps<TData extends { id: string | number }, TValue> {
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
   isReadOnly?: boolean;
+  goToLastPage?: boolean;
 }
 
 export function DataTable<TData extends { id: string | number }, TValue>({
@@ -38,11 +39,9 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   rowSelection: externalSelection,
   onRowSelectionChange,
   isReadOnly = false,
+  goToLastPage = false,
 }: DataTableProps<TData, TValue>) {
-  console.log("DataTable render with data:", data);
-  const [sorting, setSorting] = useState<SortingState>([
-    { desc: false, id: "createdAt" }, // Default sort by date, newest last
-  ]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -53,6 +52,18 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   // Use external if provided, otherwise internal
   const rowSelection = externalSelection ?? internalSelection;
   const setRowSelection = onRowSelectionChange ?? setInternalSelection;
+
+  // When goToLastPage changes to true, clear sorting and jump to the last page
+  useEffect(() => {
+    if (goToLastPage) {
+      setSorting([]);
+      const lastPage = Math.max(
+        0,
+        Math.ceil(data.length / pagination.pageSize) - 1,
+      );
+      setPagination((prev) => ({ ...prev, pageIndex: lastPage }));
+    }
+  }, [goToLastPage, data.length, pagination.pageSize]);
 
   const table = useReactTable({
     columns,

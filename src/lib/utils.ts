@@ -64,3 +64,13 @@ export const formatCurrency = (
     ...options, // Allow overrides
   }).format(amount);
 };
+
+export const formatCurrencyCompact = (amount: number) => {
+  return new Intl.NumberFormat(LOCALE_CONFIG.locale, {
+    currency: LOCALE_CONFIG.currency,
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+    notation: "compact",
+    style: LOCALE_CONFIG.style,
+  }).format(amount);
+};

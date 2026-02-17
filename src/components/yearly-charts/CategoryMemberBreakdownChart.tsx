@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { MEMBER_CHART_COLORS } from "@/lib/config";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 
 interface CategoryMemberBreakdownChartProps {
   expenses: ExpenseWithDetails[];
@@ -97,7 +97,7 @@ const CategoryMemberBreakdownChart = ({
           <XAxis
             type="number"
             tickFormatter={(value) =>
-              formatCurrency(value, { minimumFractionDigits: 0 })
+              formatCurrencyCompact(value)
             }
           />
           <YAxis

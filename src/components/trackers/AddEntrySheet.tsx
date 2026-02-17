@@ -76,8 +76,8 @@ export const AddEntrySheet = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full overflow-y-auto sm:max-w-md">
-        <SheetHeader>
+      <SheetContent className="w-full overflow-y-auto p-4 sm:max-w-md">
+        <SheetHeader className="p-0">
           <SheetTitle>Add Entry to {trackerTitle}</SheetTitle>
           <SheetDescription>
             Current balance:{" "}
@@ -88,7 +88,7 @@ export const AddEntrySheet = ({
                   : "font-semibold text-red-600 dark:text-red-500"
               }
             >
-              ${LOCALE_CONFIG.symbol}
+              {LOCALE_CONFIG.symbol}
               {currentBalance.toFixed(2)}
             </span>
           </SheetDescription>
@@ -125,7 +125,7 @@ export const AddEntrySheet = ({
               <Label htmlFor="debit">Debit (Money In)</Label>
               <div className="relative">
                 <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-                  ${LOCALE_CONFIG.symbol}
+                  {LOCALE_CONFIG.symbol}
                 </span>
                 <Input
                   id="debit"
@@ -147,7 +147,7 @@ export const AddEntrySheet = ({
                       e.preventDefault();
                     }
                   }}
-                  className="pl-7"
+                  className="pl-8"
                 />
               </div>
             </div>
@@ -156,7 +156,7 @@ export const AddEntrySheet = ({
               <Label htmlFor="credit">Credit (Money Out)</Label>
               <div className="relative">
                 <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-                  ${LOCALE_CONFIG.symbol}
+                  {LOCALE_CONFIG.symbol}
                 </span>
                 <Input
                   id="credit"
@@ -178,7 +178,7 @@ export const AddEntrySheet = ({
                       e.preventDefault();
                     }
                   }}
-                  className="pl-7"
+                  className="pl-8"
                 />
               </div>
             </div>

@@ -10,7 +10,11 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { formatCurrency, getCategoryColor } from "@/lib/utils";
+import {
+  formatCurrency,
+  formatCurrencyCompact,
+  getCategoryColor,
+} from "@/lib/utils";
 
 interface CategoryTotalChartProps {
   expenses: ExpenseWithDetails[];
@@ -41,13 +45,16 @@ const CategoryTotalChart = ({ expenses }: CategoryTotalChartProps) => {
     <div>
       <h2 className="mb-6 text-lg font-medium">Total Spending by Category</h2>
       <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-        <BarChart accessibilityLayer data={categoryData} layout="vertical">
+        <BarChart
+          accessibilityLayer
+          data={categoryData}
+          layout="vertical"
+          margin={{ right: 20 }}
+        >
           <CartesianGrid horizontal={false} />
           <XAxis
             type="number"
-            tickFormatter={(value) =>
-              formatCurrency(value, { minimumFractionDigits: 0 })
-            }
+            tickFormatter={(value) => formatCurrencyCompact(value)}
           />
           <YAxis
             dataKey="category"

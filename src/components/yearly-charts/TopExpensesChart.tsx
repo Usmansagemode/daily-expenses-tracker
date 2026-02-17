@@ -18,7 +18,7 @@ import {
   ChartTooltip,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/utils";
 
 interface TopExpensesChartProps {
@@ -107,7 +107,7 @@ const TopExpensesChart = ({ expenses, limit = 10 }: TopExpensesChartProps) => {
           <XAxis
             type="number"
             tickFormatter={(value) =>
-              formatCurrency(value, { minimumFractionDigits: 0 })
+              formatCurrencyCompact(value)
             }
           />
           <YAxis

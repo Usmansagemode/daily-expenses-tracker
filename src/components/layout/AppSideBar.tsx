@@ -3,7 +3,6 @@ import {
   ListChecks,
   Receipt,
   TrendingUp,
-  Users,
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -98,11 +97,7 @@ const AppSideBar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="flex items-center">
-          <Users className="m-2 h-4 w-4" /> Sage Family
-        </div>
-      </SidebarFooter>
+      <SidebarFooter />
     </Sidebar>
   );
 };
