@@ -140,7 +140,7 @@ const ExpensesPage = () => {
       categoryId: "1",
       categoryName: null,
       createdAt: new Date(),
-      date: new Date(),
+      date: new Date(currentYear, currentMonth), // current chosen month and year
       description: "",
       id: crypto.randomUUID(),
       memberId: "1",

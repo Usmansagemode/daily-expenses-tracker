@@ -87,8 +87,8 @@ export const CreateTrackerSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full overflow-y-auto sm:max-w-md">
-        <SheetHeader>
+      <SheetContent className="w-full overflow-y-auto p-4 sm:max-w-md">
+        <SheetHeader className="p-0">
           <SheetTitle>
             {tracker ? "Edit Tracker" : "Create New Tracker"}
           </SheetTitle>
@@ -131,7 +131,7 @@ export const CreateTrackerSheet = ({
             </Label>
             <div className="relative">
               <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-                ${LOCALE_CONFIG.symbol}
+                {LOCALE_CONFIG.symbol}
               </span>
               <Input
                 id="initialBalance"
