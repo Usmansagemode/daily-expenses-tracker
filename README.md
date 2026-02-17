@@ -171,14 +171,18 @@ APP_PASSWORD=your_secure_password_here
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxxxxxxxx...
 
-# Google Gemini Configuration (Optional but recommended)
+# Google Gemini Configuration (Optional - for in-app PDF import)
 GOOGLE_GEMINI_API_KEY=your_gemini_api_key_here
+
+# Anthropic Configuration (Optional - for CLI PDF parsing script)
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
 Note: You may use the app without either Supabase keys or Gemini Keys.
 
 - Demo data will be used if you dont add Supabase keys
 - Only AI PDF will not work if Gemini key is not added.
+- The CLI PDF parsing script (`npm run parse-pdf`) needs either Claude Code CLI or `ANTHROPIC_API_KEY`.
 
 **Replace:**
 
@@ -405,6 +409,35 @@ Import expenses in bulk from CSV files or PDF bank statements:
 
 **Note**: PDF parsing uses Google Gemini AI and may take 10-30 seconds. The free tier allows 1,500 requests per day.
 
+#### PDF Bank Statement Import (Claude CLI)
+
+As an alternative to the in-app Gemini PDF import, you can use the included CLI script powered by [Claude Code](https://docs.anthropic.com/en/docs/claude-code). This runs locally via the Claude Code CLI and outputs a wide-format CSV ready for upload.
+
+**Prerequisites (one of the following):**
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated, **or**
+- `ANTHROPIC_API_KEY` set in your `.env.local` or shell environment
+
+**Usage:**
+
+```bash
+# Basic usage — output goes to scripts/output/
+npm run parse-pdf -- ./bank-statement.pdf
+
+# Custom output path
+npm run parse-pdf -- ./bank-statement.pdf --output ./my-expenses.csv
+
+# Specify which member paid
+npm run parse-pdf -- ./bank-statement.pdf --member Anoosha
+```
+
+The script will:
+1. Spawn a Claude agent that reads the PDF
+2. Extract and categorize all transactions using your configured categories, tags, and members
+3. Output a wide-format CSV to `scripts/output/`
+
+Then simply upload the generated CSV via **Import > CSV File > Wide Format** in the app.
+
 ### Viewing Analytics
 
 - Navigate to **Yearly Charts** to see:
@@ -470,6 +503,9 @@ pnpm start        # Start production server
 
 # Linting
 pnpm lint         # Run ESLint
+
+# PDF Parsing (requires Claude Code CLI)
+npm run parse-pdf -- ./statement.pdf
 ```
 
 ### Adding New Features
