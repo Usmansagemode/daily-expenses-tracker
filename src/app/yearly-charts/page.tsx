@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { set } from "date-fns";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { DataTable } from "@/app/expenses/data-table";
@@ -17,6 +16,7 @@ import MonthFilter from "@/components/yearly-charts/MonthFilter";
 import YearlyChartsGrid from "@/components/yearly-charts/YearlyChartsGrid";
 import YearSelector from "@/components/YearSelector";
 import { useYearlyExpenses } from "@/hooks/yearly-expenses/useYearlyExpenses";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { getYearOptions } from "@/lib/dateUtils";
 import { getIsDemoMode } from "@/lib/supabase";
 import { formatCurrency } from "@/lib/utils";
@@ -65,7 +65,7 @@ const YearlyChartsPage = () => {
   const filteredYearExpenses = useMemo(() => {
     return expenses.filter((expense) => {
       const category = expense.categoryName || "Uncategorized";
-      const month = new Date(expense.date).getMonth();
+      const month = parseLocalDate(expense.date as unknown as string).getMonth();
 
       // Category filter: if none selected, show all; otherwise filter
       const categoryMatch =

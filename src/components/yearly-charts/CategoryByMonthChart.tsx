@@ -12,7 +12,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { getShortMonthLabels } from "@/lib/dateUtils";
+import { getShortMonthLabels, parseLocalDate } from "@/lib/dateUtils";
 import { formatCurrency, formatCurrencyCompact, getCategoryColor } from "@/lib/utils";
 
 interface CategoryByMonthChartProps {
@@ -40,7 +40,7 @@ const CategoryByMonthChart = ({ expenses }: CategoryByMonthChartProps) => {
 
     // Fill in the data
     expenses.forEach((expense) => {
-      const month = new Date(expense.date).getMonth();
+      const month = parseLocalDate(expense.date as unknown as string).getMonth();
       const category = expense.categoryName || "Uncategorized";
 
       monthlyData[month][category] =

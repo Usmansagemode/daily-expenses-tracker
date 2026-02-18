@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { expensesData } from "@/components/expenses/data/expenseData";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { getIsDemoMode, supabase } from "@/lib/supabase";
 import { transformToExpenseWithDetails } from "@/lib/utils";
@@ -15,7 +16,7 @@ const fetchDemoYearlyExpenses = async (
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   const filteredExpenses = expensesData.filter((expense) => {
-    const expenseDate = new Date(expense.date);
+    const expenseDate = parseLocalDate(expense.date as unknown as string);
     return expenseDate.getFullYear() === year;
   });
 
@@ -32,14 +33,14 @@ const fetchApiYearlyExpenses = async (
     return [];
   }
 
-  const startDate = new Date(year, 0, 1); // Jan 1
-  const endDate = new Date(year, 11, 31, 23, 59, 59); // Dec 31
+  const startDate = `${year}-01-01`;
+  const endDate = `${year}-12-31`;
 
   const { data, error } = await supabase
     .from("expenses")
     .select("*")
-    .gte("date", startDate.toISOString())
-    .lte("date", endDate.toISOString())
+    .gte("date", startDate)
+    .lte("date", endDate)
     .order("date", { ascending: false });
 
   if (error) throw error;

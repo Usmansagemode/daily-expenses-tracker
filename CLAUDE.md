@@ -67,6 +67,9 @@ src/
 - Use shadcn/ui primitives for UI building blocks
 - Forms use React Hook Form + Zod schemas
 
+### Writing Documentation
+- When writing or editing README.md or any user-facing markdown files, always use the `ai-humanizer` MCP server tool to humanize the text before finalizing it
+
 ### General
 - Unused vars prefixed with `_` (ESLint configured)
 - Prettier with `prettier-plugin-tailwindcss` for class sorting

@@ -17,6 +17,7 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/utils";
@@ -50,7 +51,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-muted-foreground">Date:</span>
-            <span>{format(new Date(data.date), "MMM d, yyyy")}</span>
+            <span>{format(parseLocalDate(data.date as string), "MMM d, yyyy")}</span>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-muted-foreground">Paid by:</span>
@@ -160,7 +161,7 @@ const TopExpensesChart = ({ expenses, limit = 10 }: TopExpensesChartProps) => {
                 <span className="px-2 py-0.5 rounded bg-background">
                   {expense.category}
                 </span>
-                <span>{format(new Date(expense.date), "MMM d, yyyy")}</span>
+                <span>{format(parseLocalDate(expense.date as unknown as string), "MMM d, yyyy")}</span>
                 <span>•</span>
                 <span>{expense.member}</span>
                 {expense.location !== "Unknown" && (

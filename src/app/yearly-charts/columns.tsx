@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { LOCALE_CONFIG } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils";
@@ -19,7 +20,7 @@ export const createReadOnlyColumns = (): ColumnDef<ExpenseWithDetails>[] => {
     {
       accessorKey: "date",
       cell: ({ row }) => {
-        const date = new Date(row.original.date);
+        const date = parseLocalDate(row.original.date as unknown as string);
         return (
           <div className="pl-3 text-left">
             {date.toLocaleDateString(LOCALE_CONFIG.locale, {

@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/chart";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { GREEN, ORANGE, RED } from "@/lib/config";
-import { getShortMonthLabels } from "@/lib/dateUtils";
+import { getShortMonthLabels, parseLocalDate } from "@/lib/dateUtils";
 import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 
 interface MonthlySpendingChartProps {
@@ -47,7 +47,7 @@ const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
     const monthlyTotals = new Array(12).fill(0);
 
     expenses.forEach((expense) => {
-      const month = new Date(expense.date).getMonth();
+      const month = parseLocalDate(expense.date as unknown as string).getMonth();
       monthlyTotals[month] += expense.amount;
     });
 

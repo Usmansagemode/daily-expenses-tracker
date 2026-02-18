@@ -37,6 +37,17 @@ export const getCurrentMonth = (): Month => {
   return MONTHS[currentMonth];
 };
 
+/**
+ * Parse a date string (YYYY-MM-DD) as local time, not UTC.
+ * new Date("2026-01-15") parses as UTC midnight, which shifts back a day in US timezones.
+ * This function ensures the date is interpreted in local time.
+ */
+export const parseLocalDate = (dateStr: string | Date): Date => {
+  if (dateStr instanceof Date) return dateStr;
+  const [year, month, day] = dateStr.split("T")[0].split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
 // For your year options too
 export const getYearOptions = (range: number = 10): number[] => {
   const currentYear = new Date().getFullYear();
