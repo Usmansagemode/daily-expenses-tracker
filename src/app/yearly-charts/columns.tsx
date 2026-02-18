@@ -2,9 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { LOCALE_CONFIG } from "@/lib/config";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { formatCurrency } from "@/lib/utils";
 
 import { DataTableColumnHeader } from "../expenses/column-header";

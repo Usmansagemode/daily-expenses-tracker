@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { expensesData } from "@/components/expenses/data/expenseData";
-import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { getIsDemoMode, supabase } from "@/lib/supabase";
 import { transformToExpenseWithDetails } from "@/lib/utils";
 

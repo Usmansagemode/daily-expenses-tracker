@@ -17,8 +17,8 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
-import { parseLocalDate } from "@/lib/dateUtils";
 import { ExpenseWithDetails } from "@/entities/Expense";
+import { parseLocalDate } from "@/lib/dateUtils";
 import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/utils";
 

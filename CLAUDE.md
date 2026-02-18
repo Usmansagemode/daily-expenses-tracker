@@ -42,35 +42,38 @@ src/
 ## Code Conventions
 
 ### TypeScript
+
 - Strict mode enabled
 - Use `@/*` path alias for imports (maps to `./src/*`)
 - Define types/interfaces in `src/entities/`
 
 ### Imports (enforced by ESLint)
+
 - Sorted via `eslint-plugin-simple-import-sort`
 - Order: React/packages → internal `@/` imports → relative imports
 - Object keys sorted (warn) via `sort-keys-fix`
 
 ### Styling
+
 - Use Tailwind CSS utility classes; combine with `cn()` helper from `@/lib/utils`
 - shadcn/ui components live in `src/components/ui/` — add new ones via `npx shadcn@latest add <component>`
 - Colors use `oklch()` format; chart/category colors defined in `src/lib/config.ts`
 - Currency formatting via `formatCurrency()` from `@/lib/utils`
 
 ### Data Fetching & State
+
 - Server state managed with TanStack React Query (hooks in `src/hooks/`)
 - Follow existing pattern: `use<Feature>` for queries, `use<Feature>Mutations` for mutations
 - Demo mode fallback: app works without Supabase by using hardcoded demo data
 
 ### Components
+
 - Feature components organized by domain in `src/components/<feature>/`
 - Use shadcn/ui primitives for UI building blocks
 - Forms use React Hook Form + Zod schemas
 
-### Writing Documentation
-- When writing or editing README.md or any user-facing markdown files, always use the `ai-humanizer` MCP server tool to humanize the text before finalizing it
-
 ### General
+
 - Unused vars prefixed with `_` (ESLint configured)
 - Prettier with `prettier-plugin-tailwindcss` for class sorting
 - Keep config (categories, tags, members, locale) in `src/lib/config.ts`

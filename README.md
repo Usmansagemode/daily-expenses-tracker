@@ -1,6 +1,6 @@
 # Daily Expenses Tracker
 
-A modern, self-hosted expense tracking application built with Next.js, Supabase, and shadcn/ui. Track your daily expenses with meaningful charts, categorize spending, and gain insights into your financial habits. Furthermore, you may track debts, savings, loans, and any financial goals outside of daily expenses. Each tracker maintains a running balance with debit (money in) and credit (money out) entries, giving you a clear view of your financial progress over time.
+A self-hosted expense tracker built with Next.js, Supabase, and shadcn/ui. Log daily expenses, categorize spending, and view charts. You can also track debts, savings, loans, and other financial goals — each with a running balance of debit (money in) and credit (money out) entries.
 
 | Dashboard                                                     | Expenses                                      | Trackers                                      |
 | ------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
@@ -8,19 +8,18 @@ A modern, self-hosted expense tracking application built with Next.js, Supabase,
 
 ## Features
 
-- **Meaningful Yearly Charts** - Visualize spending with interactive charts over the year
-- **Monthly View** - Track expenses month by month
-- **Members, Categories & Tags** - Organize expenses by family members, category and location
-- **AI-Powered PDF Import** - Upload bank statements and let Google Gemini automatically extract transactions with smart categorization for analysis or migration
-- **CSV Export** - Import your expense data from excel/sheets for analysis or migration
-- **Dark Mode** - UI in both light and dark themes
-- **Password Protected** - Simple password protection for your data
+- **Yearly charts** - Interactive spending charts by month and category
+- **Monthly view** - Track expenses month by month
+- **Members, categories & tags** - Organize expenses by family member, category, and location
+- **PDF import** - Upload a bank statement and Gemini extracts transactions, parses amounts, and categorizes them
+- **CSV export** - Export expense data for analysis or migration
+- **Dark mode** - Light and dark themes
+- **Password protected** - Simple password protection for your data
 - **Responsive** - Works on desktop, tablet, and mobile
-- **Yearly Analytics** - Comprehensive yearly spending insights
-- **Debt Repayment**: Credit cards, personal loans, or money owed
-- **Savings Goals**: Emergency fund, vacation savings, house down payment
-- **Friend Loans**: Money lent or borrowed from friends/family
-- **Project Funds**: Budget tracking for specific projects or goals
+- **Debt repayment**: Credit cards, personal loans, or money owed
+- **Savings goals**: Emergency fund, vacation savings, house down payment
+- **Friend loans**: Money lent or borrowed from friends/family
+- **Project funds**: Budget tracking for specific projects or goals
 
 ## Getting Started
 
@@ -207,15 +206,15 @@ You should see the login page. Enter your `APP_PASSWORD` to access the app!
 
 ## AI-Powered PDF Import
 
-The app includes intelligent PDF processing using Google Gemini AI:
+The app uses Google Gemini to parse bank statement PDFs:
 
 ### How it works:
 
-1. **Upload any bank statement PDF** from your financial institution
-2. **AI automatically extracts** transactions, dates, amounts, and descriptions
-3. **Smart categorization** matches transactions to your existing categories
-4. **Automatic filtering** excludes transfers, fees, and credit card payments
-5. **Preview and edit** before saving to your database
+1. Upload any bank statement PDF from your financial institution
+2. Gemini extracts transactions, dates, amounts, and descriptions
+3. Matches transactions to your existing categories
+4. Filters out transfers, fees, and credit card payments
+5. Preview and edit before saving to your database
 
 ### Setting up Gemini AI:
 
@@ -231,10 +230,9 @@ You can still use CSV import with manual mapping - all other features work norma
 
 ### Option 1: Update Default Data (Before First Run)
 
-Categories are meant to represent broad spending types (e.g., food, transport, utilities), while tags can be used for specific vendors or locations (e.g., Walmart, Target, Amazon).
-Simply update the lists in src/lib/config.ts to match your personal or project requirements.
-The intention for Members is to be able to set who paid for the expense. This will enable you to see how much a certain family member/friend is paying.
-The GEMINI_PDF_RULES constant controls how Google Gemini processes your bank statements.
+Categories represent broad spending types (e.g., food, transport, utilities). Tags are for specific vendors or locations (e.g., Walmart, Target, Amazon). Members track who paid for the expense — useful for seeing each person's spending in a shared household.
+
+The `GEMINI_PDF_RULES` constant controls how Gemini processes your bank statements.
 
 Edit `src/lib/config.ts`:
 
@@ -274,7 +272,7 @@ export const GEMINI_PDF_RULES = `Rules:
 
 ## App Icon / Favicon
 
-You can customize the favicon (the small icon shown in browser tabs) to match your brand or theme.  
+You can customize the favicon (the small icon shown in browser tabs) to match your brand or theme.
 Replace the default icon file at:
 
 `/public/favicon.ico`
@@ -361,7 +359,7 @@ If you want extra security, you can restrict access to specific IPs in Vercel:
 - **Tables:** [TanStack Table](https://tanstack.com/table)
 - **State Management:** [TanStack Query (React Query)](https://tanstack.com/query)
 - **Type Safety:** TypeScript
-- **AI/ML:** [Google Gemini](https://ai.google.dev/) - For intelligent PDF processing
+- **AI/ML:** [Google Gemini](https://ai.google.dev/) - For PDF parsing
 
 ---
 
@@ -457,7 +455,7 @@ However, avoid removing categories that are already used in stored expenses, as 
 
 Trackers let you manage finances beyond daily expenses — like debts, loans, savings goals, or any running balance you want to track.
 
-1. Click **“Add Tracker”** to create a new tracker (e.g., “Vacation Savings”, “Credit Card”, “Car Loan”).
+1. Click **"Add Tracker"** to create a new tracker (e.g., "Vacation Savings", "Credit Card", "Car Loan").
 2. Add entries to record debits (money added) or credits (money spent).
 3. Each tracker automatically maintains a **running balance**.
 4. You can **edit**, **delete**, or **clean up** entries (remove empty or zero-value records) anytime.
@@ -535,9 +533,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Acknowledgments
 
-- [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
-- [Supabase](https://supabase.com/) for the awesome backend
-- [Vercel](https://vercel.com/) for seamless deployment
+- [shadcn/ui](https://ui.shadcn.com/) for UI components
+- [Supabase](https://supabase.com/) for the backend
+- [Vercel](https://vercel.com/) for hosting
 
 ---
 
@@ -564,13 +562,8 @@ If you have questions or run into issues:
 
 This project is open-source and available under the [MIT License](./LICENSE).
 
-## Contributing
-
-Contributions, issues, and feature requests are welcome!
-Feel free to open a [discussion](../../discussions) or [pull request](../../pulls).
-
 ---
 
 **Made with care and love by Usman Khalid Mian**
 
-[⬆ Back to top](#-daily-expenses-tracker)
+[⬆ Back to top](#daily-expenses-tracker)

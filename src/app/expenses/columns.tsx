@@ -13,9 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { parseLocalDate } from "@/lib/dateUtils";
 import { Category, ExpenseWithDetails, Member, Tag } from "@/entities/Expense";
 import { LOCALE_CONFIG } from "@/lib/config";
+import { parseLocalDate } from "@/lib/dateUtils";
 
 import { DataTableColumnHeader } from "./column-header";
 import { RowActions } from "./row-actions";
@@ -172,11 +172,17 @@ export const createColumns = ({
       accessorKey: "date",
       cell: ({ row }) => {
         const [dateValue, setDateValue] = useState(
-          parseLocalDate(row.original.date as unknown as string).toISOString().split("T")[0],
+          parseLocalDate(row.original.date as unknown as string)
+            .toISOString()
+            .split("T")[0],
         );
 
         useEffect(() => {
-          setDateValue(parseLocalDate(row.original.date as unknown as string).toISOString().split("T")[0]);
+          setDateValue(
+            parseLocalDate(row.original.date as unknown as string)
+              .toISOString()
+              .split("T")[0],
+          );
         }, [row.original.date]);
 
         return (
