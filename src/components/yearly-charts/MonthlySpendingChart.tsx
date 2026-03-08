@@ -78,7 +78,7 @@ const MonthlySpendingChart = ({ expenses }: MonthlySpendingChartProps) => {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-start justify-between">
         <h2 className="text-lg font-medium">Monthly Spending Trend</h2>
         <div
           className="bg-secondary flex gap-1 rounded-md p-1"

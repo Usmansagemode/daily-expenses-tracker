@@ -18,6 +18,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
 
 import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
 import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
@@ -58,13 +59,20 @@ const SortableChart = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`chart-card bg-primary-foreground rounded-lg p-6 ${colSpan} ${
+      className={`chart-card bg-primary-foreground rounded-lg px-6 pb-6 pt-4 ${colSpan} ${
         isDragging ? "z-50 opacity-50" : "opacity-100"
-      } hover:border-primary/30 cursor-grab border-2 border-transparent transition-all duration-200 active:cursor-grabbing`}
+      } border-2 border-transparent transition-all duration-200`}
       {...attributes}
-      {...listeners}
     >
-      {children}
+      <div className="flex items-start gap-2">
+        <div
+          {...listeners}
+          className="text-muted-foreground/30 hover:text-muted-foreground mt-1.5 shrink-0 cursor-grab transition-colors active:cursor-grabbing"
+        >
+          <GripVertical className="h-4 w-4" />
+        </div>
+        <div className="min-w-0 flex-1">{children}</div>
+      </div>
     </div>
   );
 };
