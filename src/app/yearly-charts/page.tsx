@@ -158,7 +158,7 @@ const YearlyChartsPage = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() =>
-                    exportToExcel(filteredYearExpenses, currentYear)
+                    void exportToExcel(filteredYearExpenses, currentYear)
                   }
                 >
                   <FileSpreadsheet className="mr-2 h-4 w-4" />
