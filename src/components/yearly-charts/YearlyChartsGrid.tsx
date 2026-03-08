@@ -58,7 +58,7 @@ const SortableChart = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-primary-foreground rounded-lg p-6 ${colSpan} ${
+      className={`chart-card bg-primary-foreground rounded-lg p-6 ${colSpan} ${
         isDragging ? "z-50 opacity-50" : "opacity-100"
       } hover:border-primary/30 cursor-grab border-2 border-transparent transition-all duration-200 active:cursor-grabbing`}
       {...attributes}
@@ -188,7 +188,7 @@ const YearlyChartsGrid = ({
   return (
     <div className="space-y-4">
       {/* Drag and Drop Instructions */}
-      <div className="text-right">
+      <div className="text-right print:hidden">
         <p className="text-muted-foreground inline-flex items-center gap-1 text-xs">
           <span>Drag to rearrange •</span>
           <button

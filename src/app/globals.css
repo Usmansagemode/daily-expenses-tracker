@@ -120,3 +120,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4 landscape;
+  }
+
+  /* Hide chrome */
+  nav,
+  aside,
+  [data-sidebar],
+  [data-sidebar-wrapper] {
+    display: none !important;
+  }
+
+  /* Full width content */
+  main,
+  body > div {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Avoid page breaks inside chart cards */
+  .chart-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Reset card backgrounds for print */
+  .bg-secondary,
+  .bg-primary-foreground {
+    background: white !important;
+  }
+}
