@@ -70,9 +70,13 @@ const YearlyChartsPage = () => {
   const handleExportPdf = () => {
     setShowCharts(true);
     const originalTitle = document.title;
+    const html = document.documentElement;
+    const originalClass = html.className;
     document.title = `daily-expenses-${currentYear}-report`;
+    html.className = originalClass.replace("dark", "").trim();
     setTimeout(() => {
       window.print();
+      html.className = originalClass;
       document.title = originalTitle;
     }, 150);
   };
