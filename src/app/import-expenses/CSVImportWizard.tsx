@@ -12,9 +12,17 @@ import { WideFormatMappingComponent } from "@/components/import-expenses/WideFor
 import {
   CSVImportProvider,
   DocumentStyle,
+  Step,
   useCSVImport,
 } from "@/components/providers/context/CSVImportContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -38,6 +46,57 @@ import {
 } from "@/lib/config";
 import { isGeminiConfigured } from "@/lib/gemini";
 import { getIsDemoMode } from "@/lib/supabase";
+
+const WIZARD_STEPS: { id: Step; label: string }[] = [
+  { id: "upload", label: "Upload" },
+  { id: "map", label: "Map Columns" },
+  { id: "preview", label: "Preview & Save" },
+];
+
+function StepIndicator({ step }: { step: Step }) {
+  const currentIndex = WIZARD_STEPS.findIndex((s) => s.id === step);
+
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        {WIZARD_STEPS.map((s, i) => (
+          <React.Fragment key={s.id}>
+            <BreadcrumbItem>
+              {i === currentIndex ? (
+                <BreadcrumbPage className="flex items-center gap-1.5 font-semibold">
+                  <span className="bg-primary text-primary-foreground inline-flex h-5 w-5 items-center justify-center rounded-full text-xs">
+                    {i + 1}
+                  </span>
+                  {s.label}
+                </BreadcrumbPage>
+              ) : (
+                <span
+                  className={`flex items-center gap-1.5 text-sm ${
+                    i < currentIndex
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  <span
+                    className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs ${
+                      i < currentIndex
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  {s.label}
+                </span>
+              )}
+            </BreadcrumbItem>
+            {i < WIZARD_STEPS.length - 1 && <BreadcrumbSeparator />}
+          </React.Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
 
 // Step 1: Upload Component
 function UploadStep() {
@@ -350,7 +409,12 @@ function ImportWizard() {
     }
   };
 
-  return <div className="space-y-6 p-4">{renderStep()}</div>;
+  return (
+    <div className="space-y-6 p-4">
+      <StepIndicator step={step} />
+      {renderStep()}
+    </div>
+  );
 }
 
 // Outer component that provides the context

@@ -4,6 +4,7 @@ import { CATEGORY_ICONS_BY_NAME } from "@/lib/config";
 import { formatCurrency, formatCurrencyCompact } from "@/lib/utils";
 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { NumberTicker } from "../ui/number-ticker";
 
 interface CategoryCardProps {
   categoryName: string;
@@ -32,9 +33,14 @@ const CategoryCard = ({
         <div className="space-y-2">
           <div className="flex items-baseline justify-between">
             <span className="text-lg font-bold" title={formatCurrency(amount)}>
-              {amount >= 10000
-                ? formatCurrencyCompact(amount)
-                : formatCurrency(amount)}
+              {amount >= 10000 ? (
+                formatCurrencyCompact(amount)
+              ) : (
+                <>
+                  <span>$</span>
+                  <NumberTicker value={amount} decimalPlaces={2} />
+                </>
+              )}
             </span>
             <span className="text-muted-foreground text-xs">{count}</span>
           </div>

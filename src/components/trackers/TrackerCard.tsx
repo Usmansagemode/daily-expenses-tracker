@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { MoreHorizontal, Plus, TrendingDown, TrendingUp } from "lucide-react";
 
+import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,6 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MagicCard } from "@/components/ui/magic-card";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import {
   Table,
   TableBody,
@@ -81,9 +84,17 @@ const TrackerCard = ({
     0,
   );
 
+  const initialAbs = Math.abs(tracker.initialBalance);
+  const currentAbs = Math.abs(tracker.currentBalance);
+  const progressValue =
+    initialAbs > 0
+      ? Math.min(100, Math.max(0, (currentAbs / initialAbs) * 100))
+      : 0;
+
   return (
     <>
-      <Card className="relative overflow-hidden">
+      <MagicCard className="rounded-xl" gradientOpacity={0.5}>
+      <Card className="relative overflow-hidden border-0 shadow-none">
         {/* Color indicator */}
         <div
           className="absolute top-0 left-0 h-full w-1"
@@ -134,32 +145,44 @@ const TrackerCard = ({
           </div>
 
           {/* Balance Summary */}
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-muted-foreground text-xs">Current Balance</p>
-              <div className="mt-1 flex items-center gap-1">
-                <p
-                  className={`text-2xl font-bold ${
-                    isDebt
-                      ? "text-red-600 dark:text-red-500"
-                      : "text-green-600 dark:text-green-500"
-                  }`}
-                >
-                  {formatCurrencySign(tracker.currentBalance)}
+          <div className="mt-4 flex items-center gap-4">
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-muted-foreground text-xs">Current Balance</p>
+                <div className="mt-1 flex items-center gap-1">
+                  <p
+                    className={`text-2xl font-bold ${
+                      isDebt
+                        ? "text-red-600 dark:text-red-500"
+                        : "text-green-600 dark:text-green-500"
+                    }`}
+                  >
+                    {formatCurrencySign(tracker.currentBalance)}
+                  </p>
+                  {isDebt ? (
+                    <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-500" />
+                  ) : (
+                    <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-500" />
+                  )}
+                </div>
+              </div>
+              <div>
+                <p className="text-muted-foreground text-xs">Initial</p>
+                <p className="mt-1 text-2xl font-bold">
+                  {formatCurrencySign(tracker.initialBalance)}
                 </p>
-                {isDebt ? (
-                  <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-500" />
-                ) : (
-                  <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-500" />
-                )}
               </div>
             </div>
-            <div>
-              <p className="text-muted-foreground text-xs">Initial</p>
-              <p className="mt-1 text-2xl font-bold">
-                {formatCurrencySign(tracker.initialBalance)}
-              </p>
-            </div>
+            {initialAbs > 0 && (
+              <AnimatedCircularProgressBar
+                value={progressValue}
+                min={0}
+                max={100}
+                gaugePrimaryColor={tracker.color ?? "var(--color-primary)"}
+                gaugeSecondaryColor="var(--color-secondary)"
+                className="size-14 text-xs"
+              />
+            )}
           </div>
 
           {/* Stats */}
@@ -183,6 +206,7 @@ const TrackerCard = ({
 
         <CardContent className="pt-0">
           {/* Entries Table */}
+          <div className="relative">
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -244,6 +268,10 @@ const TrackerCard = ({
               </TableBody>
             </Table>
           </div>
+          {!showAll && tracker.entries.length > 5 && (
+            <ProgressiveBlur className="h-12" position="bottom" />
+          )}
+          </div>
 
           {!showAll && tracker.entries.length > 5 && (
             <Button
@@ -269,6 +297,7 @@ const TrackerCard = ({
           </div>
         </CardContent>
       </Card>
+      </MagicCard>
 
       <Dialog open={cleanupDialogOpen} onOpenChange={setCleanupDialogOpen}>
         <DialogContent className="max-w-sm">

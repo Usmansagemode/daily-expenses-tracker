@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { ExpenseWithDetails } from "@/entities/Expense";
-import { DEFAULT_MEMBERS } from "@/lib/config";
+import { DEFAULT_MEMBERS, LOCALE_CONFIG } from "@/lib/config";
 
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { NumberTicker } from "../ui/number-ticker";
 
 import CategoryCard from "./CategoryCard";
 import MemberCard from "./MemberCard";
@@ -15,7 +17,8 @@ import MonthYearSelector from "./MonthYearSelector";
 
 interface ExpenseHeaderProps {
   data: ExpenseWithDetails[];
-  formattedTotal: string | number;
+  total: number;
+  deltaPercent?: number | null;
   currentMonth: number;
   currentYear: number;
   onMonthYearChange: (month: number, year: number) => void;
@@ -23,7 +26,8 @@ interface ExpenseHeaderProps {
 
 const ExpenseHeader = ({
   data,
-  formattedTotal,
+  total,
+  deltaPercent,
   currentMonth,
   currentYear,
   onMonthYearChange,
@@ -119,9 +123,26 @@ const ExpenseHeader = ({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center text-right">
-              <p className="text-muted-foreground mr-2 text-sm">Total </p>
-              <p className="text-2xl font-bold">{formattedTotal}</p>
+            <div className="flex items-center gap-2 text-right">
+              <p className="text-muted-foreground text-sm">Total</p>
+              <p className="text-2xl font-bold">
+                <span>{LOCALE_CONFIG.symbol}</span>
+                <NumberTicker value={total} decimalPlaces={2} />
+              </p>
+              {deltaPercent != null && (
+                <Badge
+                  variant="secondary"
+                  className={
+                    deltaPercent >= 0
+                      ? "text-red-600 dark:text-red-400"
+                      : "text-green-600 dark:text-green-400"
+                  }
+                  title="vs last month"
+                >
+                  {deltaPercent >= 0 ? "↑" : "↓"}{" "}
+                  {Math.abs(deltaPercent).toFixed(1)}%
+                </Badge>
+              )}
             </div>
             <Button
               onClick={() => setShowCharts(!showCharts)}

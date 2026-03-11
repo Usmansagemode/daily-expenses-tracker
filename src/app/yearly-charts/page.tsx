@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import CategoryFilter from "@/components/yearly-charts/CategoryFilter";
 import MonthFilter from "@/components/yearly-charts/MonthFilter";
 import YearlyChartsGrid from "@/components/yearly-charts/YearlyChartsGrid";
@@ -91,6 +92,7 @@ const YearlyChartsPage = () => {
 
   return (
     <div className="space-y-6">
+      <ScrollProgress className="print:hidden" />
       {/* Print-only title */}
       <div className="hidden print:block">
         <h1 className="text-2xl font-bold">

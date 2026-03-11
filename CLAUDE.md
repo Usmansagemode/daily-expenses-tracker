@@ -7,6 +7,7 @@ Personal finance app for tracking expenses, managing debt/savings/loans, and vis
 - **Framework**: Next.js 15 (App Router) + React 19
 - **Database**: Supabase (PostgreSQL)
 - **Styling**: Tailwind CSS v4 + shadcn/ui (new-york style, neutral base color, CSS variables)
+- **Animation**: Motion (motion/react) — used by MagicUI components
 - **Charts**: Recharts
 - **Tables**: TanStack Table + TanStack React Query
 - **Forms**: React Hook Form + Zod validation
@@ -25,12 +26,13 @@ Personal finance app for tracking expenses, managing debt/savings/loans, and vis
 src/
 ├── app/              # Pages & API routes (Next.js App Router)
 ├── components/
-│   ├── ui/           # shadcn/ui primitives (do not edit manually)
+│   ├── ui/           # shadcn/ui + MagicUI primitives (do not edit manually)
 │   ├── expenses/     # Expense feature components
 │   ├── yearly-charts/# Chart components
 │   ├── trackers/     # Tracker components
-│   ├── layout/       # Navbar, Sidebar
+│   ├── layout/       # Navbar, Sidebar, CommandPalette
 │   └── providers/    # Context & theme providers
+├── docs/             # Feature & architecture documentation
 ├── entities/         # TypeScript data models / types
 ├── hooks/            # Custom React hooks (organized by feature)
 │   ├── expenses/     # useExpenses, useExpenseMutations
@@ -57,6 +59,7 @@ src/
 
 - Use Tailwind CSS utility classes; combine with `cn()` helper from `@/lib/utils`
 - shadcn/ui components live in `src/components/ui/` — add new ones via `npx shadcn@latest add <component>`
+- MagicUI components also land in `src/components/ui/` — add via `npx shadcn@latest add "https://magicui.design/r/<name>"`
 - Colors use `oklch()` format; chart/category colors defined in `src/lib/config.ts`
 - Currency formatting via `formatCurrency()` from `@/lib/utils`
 
@@ -72,8 +75,17 @@ src/
 - Use shadcn/ui primitives for UI building blocks
 - Forms use React Hook Form + Zod schemas
 
+### UI Patterns
+
+- **Skeleton loading**: Use `<Skeleton>` from `@/components/ui/skeleton` in place of spinners — shape the skeleton to match the real layout
+- **Empty states**: Use a centered icon + heading + subtext pattern (see `DataTable` empty row for reference)
+- **Animated numbers**: Use `<NumberTicker>` from `@/components/ui/number-ticker` for currency totals that change on interaction; always put the `$` symbol outside the ticker span
+- **MagicCard**: Wrap interactive cards with `<MagicCard>` and set `border-0 shadow-none` on the inner `<Card>` to avoid double borders
+- **Command palette**: Global ⌘K navigation is in `CommandPalette.tsx` — add new routes to the `NAV_ITEMS` array there
+
 ### General
 
 - Unused vars prefixed with `_` (ESLint configured)
 - Prettier with `prettier-plugin-tailwindcss` for class sorting
 - Keep config (categories, tags, members, locale) in `src/lib/config.ts`
+- See `src/docs/` for feature-level documentation

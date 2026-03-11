@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BulkUpdate } from "@/components/expenses/BulkUpdate";
 import ExpenseHeader from "@/components/expenses/ExpenseHeader";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ExpenseWithDetails } from "@/entities/Expense";
 import { useExpenseMutations } from "@/hooks/expenses/useExpenseMutations";
 import { useExpenses } from "@/hooks/expenses/useExpenses";
@@ -17,7 +18,6 @@ import {
   DEFAULT_TAGS,
 } from "@/lib/config";
 import { stripExpenseDetails } from "@/lib/utils";
-import { formatCurrency } from "@/lib/utils";
 
 import { createColumns } from "./columns";
 import { DataTable } from "./data-table";
@@ -34,6 +34,11 @@ const ExpensesPage = () => {
     currentYear,
     currentMonth,
   );
+
+  // Fetch previous month for delta calculation
+  const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+  const { data: prevData = [] } = useExpenses(prevYear, prevMonth);
 
   // Local state for editing
   const [localExpenses, setLocalExpenses] = useState<ExpenseWithDetails[]>([]);
@@ -246,6 +251,9 @@ const ExpensesPage = () => {
     [localExpenses],
   );
 
+  const prevTotal = prevData.reduce((s, e) => s + e.amount, 0);
+  const deltaPercent = prevTotal === 0 ? null : ((total - prevTotal) / prevTotal) * 100;
+
   const columns = useMemo(
     () =>
       createColumns({
@@ -260,8 +268,25 @@ const ExpensesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+      <div className="mt-2 space-y-4">
+        <div className="bg-secondary mb-8 rounded-md px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-8 w-28" />
+              <Skeleton className="h-8 w-28" />
+            </div>
+          </div>
+          <div className="my-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-28 rounded-lg" />
+            ))}
+          </div>
+        </div>
+        <Skeleton className="h-72 w-full rounded-md" />
       </div>
     );
   }
@@ -270,7 +295,8 @@ const ExpensesPage = () => {
     <div className="mt-2">
       <ExpenseHeader
         data={localExpenses}
-        formattedTotal={formatCurrency(total)}
+        total={total}
+        deltaPercent={deltaPercent}
         currentMonth={currentMonth}
         currentYear={currentYear}
         onMonthYearChange={handleMonthYearChange}
@@ -325,6 +351,7 @@ const ExpensesPage = () => {
           rowSelection={rowSelection}
           onRowSelectionChange={setRowSelection}
           goToLastPage={goToLastPage}
+          isLoading={isLoading}
         />
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -20,6 +20,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CategoryAverageChart from "@/components/yearly-charts/CategoryAverageChart";
 import CategoryByMonthChart from "@/components/yearly-charts/CategoryByMonthChart";
 import CategoryMemberBreakdownChart from "@/components/yearly-charts/CategoryMemberBreakdownChart";
@@ -193,12 +194,67 @@ const YearlyChartsGrid = ({
     },
   };
 
+  const TAB_GROUPS: Record<string, string[]> = {
+    all: chartOrder,
+    breakdowns: ["category-total", "category-average", "location-spending"],
+    people: ["member-spending", "category-member-breakdown", "member-heatmap"],
+    top: ["top-expenses"],
+    trends: ["monthly-spending", "category-by-month"],
+  };
+
+  const renderChartGroup = (ids: string[], draggable = false) => {
+    const grid = (
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        {ids.map((chartId) => {
+          const config = chartConfigs[chartId];
+          if (!config) return null;
+          if (draggable) {
+            return (
+              <SortableChart key={chartId} id={chartId} colSpan={config.colSpan}>
+                {config.component}
+              </SortableChart>
+            );
+          }
+          return (
+            <div
+              key={chartId}
+              className={`chart-card bg-primary-foreground rounded-lg px-6 pb-6 pt-4 ${config.colSpan} border-2 border-transparent`}
+            >
+              {config.component}
+            </div>
+          );
+        })}
+      </div>
+    );
+
+    if (draggable) {
+      return (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={ids} strategy={rectSortingStrategy}>
+            {grid}
+          </SortableContext>
+        </DndContext>
+      );
+    }
+    return grid;
+  };
+
   return (
-    <div className="space-y-4">
-      {/* Drag and Drop Instructions */}
-      <div className="text-right print:hidden">
-        <p className="text-muted-foreground inline-flex items-center gap-1 text-xs">
-          <span>Drag to rearrange •</span>
+    <Tabs defaultValue="trends" className="space-y-4">
+      <div className="flex items-center justify-between print:hidden">
+        <TabsList>
+          <TabsTrigger value="trends">Trends</TabsTrigger>
+          <TabsTrigger value="breakdowns">Breakdowns</TabsTrigger>
+          <TabsTrigger value="people">People</TabsTrigger>
+          <TabsTrigger value="top">Top</TabsTrigger>
+          <TabsTrigger value="all">All</TabsTrigger>
+        </TabsList>
+        <p className="text-muted-foreground text-xs">
+          <span>Drag to rearrange in All •</span>{" "}
           <button
             onClick={resetChartOrder}
             className="hover:text-foreground underline transition-colors"
@@ -208,32 +264,22 @@ const YearlyChartsGrid = ({
         </p>
       </div>
 
-      {/* Charts Grid with DND */}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={chartOrder} strategy={rectSortingStrategy}>
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {chartOrder.map((chartId) => {
-              const config = chartConfigs[chartId];
-              if (!config) return null;
-
-              return (
-                <SortableChart
-                  key={chartId}
-                  id={chartId}
-                  colSpan={config.colSpan}
-                >
-                  {config.component}
-                </SortableChart>
-              );
-            })}
-          </div>
-        </SortableContext>
-      </DndContext>
-    </div>
+      <TabsContent value="trends">
+        {renderChartGroup(TAB_GROUPS.trends)}
+      </TabsContent>
+      <TabsContent value="breakdowns">
+        {renderChartGroup(TAB_GROUPS.breakdowns)}
+      </TabsContent>
+      <TabsContent value="people">
+        {renderChartGroup(TAB_GROUPS.people)}
+      </TabsContent>
+      <TabsContent value="top">
+        {renderChartGroup(TAB_GROUPS.top)}
+      </TabsContent>
+      <TabsContent value="all">
+        {renderChartGroup(TAB_GROUPS.all, true)}
+      </TabsContent>
+    </Tabs>
   );
 };
 
