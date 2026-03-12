@@ -87,6 +87,21 @@ Supabase (PostgreSQL)
 
 ---
 
+## Database Indexes
+
+| Index | Column | Reason |
+|-------|--------|--------|
+| `idx_expenses_date` | `expenses(date DESC)` | Covers range scans (`gte`/`lt`) and `ORDER BY date DESC` used by both `useExpenses` and `useYearlyExpenses` — eliminates full table scans and avoids a separate sort step |
+
+To apply:
+```sql
+CREATE INDEX IF NOT EXISTS idx_expenses_date ON expenses (date DESC);
+```
+
+If multi-tenant filtering by user is added later, replace with a composite index: `(user_id, date DESC)`.
+
+---
+
 ## Date Handling
 
 **Critical**: Supabase returns date columns as `"YYYY-MM-DD"` strings. `new Date("YYYY-MM-DD")` parses as UTC and shifts one day back in US timezones.
